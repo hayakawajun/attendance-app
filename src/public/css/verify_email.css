@@ -1,0 +1,78 @@
+.content {
+    margin: 180px auto;
+    text-align: center;
+}
+
+.information {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.line-break {
+    display: none;
+}
+
+.mail__verification {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 30px;
+    border: solid 1px #000000;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+    background-color: #d7d7d7;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.resending-email__button {
+    border: none;
+    background-color: #ffffff;
+    color: rgb(76, 168, 254);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* タブレット向けブレイクポイント */
+@media screen and (max-width: 768px) {
+    .content {
+        margin: 80px auto;
+    }
+    .information {
+        font-size: 16px;
+    }
+    .line-break {
+        display: block;
+    }
+    .mail__verification {
+        font-size: 16px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+    .resending-email__button {
+        font-size: 16px;
+    }
+}
+
+/* スマートフォン向けブレイクポイント */
+@media screen and (max-width: 480px) {
+    .content {
+        margin: 30px auto;
+    }
+    .information {
+        font-size: 12px;
+    }
+    .line-break {
+        display: block;
+    }
+    .mail__verification {
+        font-size: 14px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    .resending-email__button {
+        font-size: 12px;
+    }
+}
