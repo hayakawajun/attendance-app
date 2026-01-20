@@ -7,7 +7,9 @@
 </head>
 <body>
     管理者ページへようこそ
-    <form action="/logout" method="post">
+    <p>{{ $admin->name }}</p>
+    <p>{{ Auth::guard('admin')->user()->name }}</p>
+    <form action="/admin/logout" method="post">
     @csrf
         <button type="submit">ログアウト</button>
     </form>

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginRequest extends FortifyLoginRequest
 {
@@ -45,7 +46,15 @@ class LoginRequest extends FortifyLoginRequest
                 'min:8',
                 'max:255',
                 function($attribute,$value,$fail){
-                    if(!Auth::attempt(['email' => $this->email, 'password' => $value])){
+                    $guard = ($this->is('admin/*') || $this->is('admin/login'))
+                    ? 'admin' : 'web';
+                    $model = ($guard === 'admin')
+                    ? \App\Models\Admin::class : \App\Models\User::class;
+                    $user = $model::where('email', $this->email)->first();
+
+                    if($user && Hash::check($value, $user->password)){
+                        Auth::guard($guard)->login($user, $this->filled('remember'));
+                    }else{
                         $fail('ログイン情報が登録されていません');
                     }
                 },

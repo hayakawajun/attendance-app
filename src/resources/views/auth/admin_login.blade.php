@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<form class="form__field" action="/login" method="post">
+<form class="form__field" action="/admin/login" method="post">
     @csrf
     <h1 class="form__heading">管理者ログイン</h1>
 
