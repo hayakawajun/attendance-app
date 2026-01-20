@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    管理者ページへようこそ
-    <p>{{ $admin->name }}</p>
-    <p>{{ Auth::guard('admin')->user()->name }}</p>
-    <form action="/admin/logout" method="post">
+@extends('layouts.app')
+
+@section('title','勤怠一覧')
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/attendance_list.css')}}">
+@endsection
+
+@section('content')
+<form action="/admin/logout" method="post">
     @csrf
-        <button type="submit">ログアウト</button>
+        <button type="submit">管理者ログアウト</button>
     </form>
-</body>
-</html>
+@endsection

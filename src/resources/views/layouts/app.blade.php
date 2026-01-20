@@ -16,23 +16,31 @@
         <header class="header">
             <img class="header-logo" src="{{ asset('image/logo.png') }}" alt="COACHTECH">
             <nav class="header__nav">
-            @auth('admin')
-                <form class="header__nav-form" action="/admin/logout" method="post">
-                @csrf
-                    <a class="header__nav-link" href="">勤怠一覧</a>
-                    <a class="header__nav-link" href="">スタッフ一覧</a>
-                    <a class="header__nav-link" href="">申請一覧</a>
-                    <button class="logout__btn">ログアウト</button>
-                </form>
-            @elseauth
-                <form class="header__nav-form" action="/logout" method="post">
-                @csrf
-                    <a class="header__nav-link" href="">勤怠</a>
-                    <a class="header__nav-link" href="">勤怠一覧</a>
-                    <a class="header__nav-link" href="">申請</a>
-                    <button class="logout__btn">ログアウト</button>
-                </form>
-            @endauth
+                <div class="hamburger" id="js-hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="header__nav-inner" id="js-nav-menu">
+                @auth('admin')
+                    <form class="header__nav-form" action="/admin/logout" method="post">
+                    @csrf
+                        <a class="header__nav-link" href="">勤怠一覧</a>
+                        <a class="header__nav-link" href="">スタッフ一覧</a>
+                        <a class="header__nav-link" href="">申請一覧</a>
+                        <button class="logout__btn">ログアウト</button>
+                    </form>
+                @elseauth
+                    <form class="header__nav-form" action="/logout" method="post">
+                    @csrf
+                        <a class="header__nav-link" href="">勤怠</a>
+                        <a class="header__nav-link" href="">勤怠一覧</a>
+                        <a class="header__nav-link" href="">申請</a>
+                        <button class="logout__btn">ログアウト</button>
+                    </form>
+                @endauth
+                </div>
             </nav>
         </header>
 
@@ -40,5 +48,6 @@
 
     </div>
 
+<script src="{{ asset('js/hamburger_menu.js') }}"></script>
 </body>
 </html>
