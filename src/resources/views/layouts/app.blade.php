@@ -49,5 +49,7 @@
     </div>
 
 <script src="{{ asset('js/hamburger_menu.js') }}"></script>
+@yield('script')
+
 </body>
 </html>

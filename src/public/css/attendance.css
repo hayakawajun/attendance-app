@@ -1,0 +1,43 @@
+.attendance__wrapper {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.attendance__group {
+    width: 400px;
+    height: 400px;
+    text-align: center;
+    border: solid 1px black;
+    transform: translateY(-10%);
+}
+.attendance-status {
+    display: inline-block;
+    background-color: #c8c8c8;
+    font-size: 14px;
+    font-weight: bold;
+    color: #696969;
+    letter-spacing: 0.2em;
+    border-radius: 15px;
+    padding: 5px 15px;
+    margin-bottom: -10px;
+}
+
+.today {
+    font-size: 24px;
+    margin-bottom: -40px;
+}
+
+.clock {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.clock-separator {
+    display: inline-block;
+    transform: translateY(-0.2em);
+    margin: 0 0.05em;
+    vertical-align: middle;
+    font-size: 50px;
+    font-weight: bold;
+}
