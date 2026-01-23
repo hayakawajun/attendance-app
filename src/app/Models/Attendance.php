@@ -30,7 +30,7 @@ class Attendance extends Model
 // 現在の勤怠ステータスを判定するメソッド
     public function getStatusAttribute()
     {
-        if(!$this->exists){
+        if(!$this->exists || is_null($this->clock_in)){
             return '勤務外';
         }
         if($this->clock_out){
@@ -47,5 +47,13 @@ class Attendance extends Model
     public function getTodayDisplayAttribute()
     {
         return now()->isoFormat('YYYY年M月D日(ddd)');
+    }
+
+// 毎朝 05:00 を1日の勤務区切りとして勤怠を締める、日付判定の基準となる静的メソッド
+    public static function getWorkingDate()
+    {
+        $now = now();
+
+        return $now->hour < 5 ? $now->subDay()->toDateString() : $now->toDateString();
     }
 }
