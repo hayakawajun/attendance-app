@@ -15,11 +15,21 @@
 
     <div class="months">
         <div class="preview-month">
-            <p>←前月</p>
+            <a class="moving-month" href="{{ route('attendance.index', ['year' => $prevDate->year, 'month' => $prevDate->month]) }}">
+                <img src="{{ asset('image/left_arrow.png') }}" alt="<<">
+                前月
+            </a>
         </div>
-        <div class="target-month">📅2023/06</div>
+        <div class="target__select" id="month__picker--trigger">
+            <img src="{{ asset('image/calendar.png') }}" alt="calendar">
+            <span class="target-month">{{ $year }}/{{ sprintf('%02d',$month) }}</span>
+            <input type="month" id="month__picker" value="{{ $year }}-{{ sprintf('%02d',$month) }}">
+        </div>
         <div class="next-month">
-            <p>翌月→</p>
+            <a class="moving-month" href="{{ route('attendance.index', ['year' => $nextDate->year, 'month' => $nextDate->month]) }}">
+                翌月
+                <img src="{{ asset('image/right_arrow.png') }}" alt=">>">
+            </a>
         </div>
     </div>
 
@@ -27,7 +37,7 @@
         <table class="attendance__table">
             <colgroup>
                 <col class="col__left">
-                <col span="4">
+                <col class="col__center" span="4">
                 <col class="col__right">
             </colgroup>
             <thead>
@@ -71,4 +81,5 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('js/month_picker.js') }}">></script>
 @endsection

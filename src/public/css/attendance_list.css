@@ -1,6 +1,6 @@
 .wrapper {
     margin: 0 auto;
-    width: 800px;
+    width: 750px;
     padding-top: 50px;
     padding-bottom: 100px;
 }
@@ -23,29 +23,81 @@
     font-size: 22px;
 }
 
+/* 月の表示 */
 .months {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
     width: 100%;
     height: 45px;
     background-color: white;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     border-radius: 10px;
 }
 
-.preview-month p{
-    font-size: 14px;
+.preview-month {
+    display: flex;
+    align-items: center;
 }
 
-.next-month p {
-    font-size: 14px;
+.next-month {
+    display: flex;
+    align-items: center;
 }
 
-/* テーブル */
+.arrow__icon {
+    text-decoration: none;
+}
+
+.moving-month img{
+    width: 20px;
+    margin-top: -3px;
+}
+
+.moving-month {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #707070;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+}
+
+.target__select {
+    display: flex;
+    position: relative;
+    align-items: center;
+    cursor: pointer;
+}
+
+.target__select img {
+    width: 25px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.target__select input {
+    position: absolute;
+    top: 90%;
+    left: -40%;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.target-month {
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* 勤怠一覧 */
 .index {
     border-radius: 10px;
     overflow: hidden;
@@ -56,7 +108,7 @@
     table-layout: fixed;
     font-size: 14px;
     letter-spacing: 0.1em;
-    color: rgb(150, 150, 150);
+    color: #707070;
     border-collapse: collapse;
 }
 
@@ -72,6 +124,13 @@
     width: 100%;
     height: 40px;
     border-bottom: solid 2px #f0eff2;
+    background-color: white;
+}
+
+.attendance__table-row {
+    height: 45px;
+    font-weight: bold;
+    border-top: solid 1px #f0eff2;
     background-color: white;
 }
 
@@ -91,14 +150,120 @@
     white-space: nowrap;
 }
 
-.attendance__table-row {
-    height: 45px;
-    font-weight: bold;
-    border-top: solid 1px #f0eff2;
-    background-color: white;
-}
-
 .detail__link {
     color: black;
     text-decoration: none;
+}
+
+/* タブレット向けブレイクポイント */
+@media screen and (max-width: 768px) {
+    .wrapper {
+        margin: 0 auto;
+        width: 90%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .marker {
+        width: 6px;
+        height: 20px;
+        margin-left: -6px;
+        margin-right: 15px;
+    }
+    .content-title {
+        font-size: 18px;
+    }
+    .months {
+        padding-left: 25px;
+        padding-right: 25px;
+        height: 30px;
+        margin-top: 10px;
+        margin-bottom: 25px;
+    }
+    .moving-month img {
+        width: 18px;
+        margin-top: -3px;
+    }
+    .moving-month {
+        font-size: 12px;
+        letter-spacing: 0;
+    }
+    .target__select img {
+        width: 20px;
+    }
+    .target__select input {
+        left: -60%;
+    }
+    .target-month {
+        font-size: 15px;
+    }
+    .attendance__table {
+        font-size: 12px;
+        letter-spacing: 0;
+    }
+    .col__left {
+        width: 20%;
+    }
+    .col__center {
+        width: 15%;
+    }
+    .col__right {
+        width: 15%;
+    }
+    .attendance__table-header {
+        height: 30px;
+    }
+    .attendance__table-row {
+        height: 30px;
+    }
+    .date {
+        text-align: center;
+        padding-left: 10px;
+    }
+    .detail {
+        padding-right: 10px;
+    }
+}
+
+/* スマートフォン向けブレイクポイント */
+@media screen and (max-width: 480px) {
+    .wrapper {
+        padding-top: 5px;
+        padding-bottom: 15px;
+    }
+    .marker {
+        width: 4px;
+        height: 18px;
+        margin-left: -4px;
+        margin-right: 10px;
+    }
+    .content-title {
+        font-size: 15px;
+    }
+    .months {
+        padding-left: 15px;
+        padding-right: 15px;
+        height: 30px;
+        margin-top: 0px;
+        margin-bottom: 15px;
+    }
+    .moving-month img {
+        width: 15px;
+        margin-top: -3px;
+    }
+    .moving-month {
+        font-size: 10px;
+    }
+    .target__select img {
+        width: 18px;
+        margin-right: 5px;
+    }
+    .target__select input {
+        left: -90%;
+    }
+    .target-month {
+        font-size: 12px;
+    }
+    .attendance__table {
+        font-size: 10px;
+    }
 }

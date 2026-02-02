@@ -43,5 +43,5 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/current_time.js') }}">></script>
+<script src="{{ asset('js/current_time.js') }}">></script>
 @endsection
