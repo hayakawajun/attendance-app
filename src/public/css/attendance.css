@@ -5,11 +5,11 @@
 }
 
 .attendance__group {
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     text-align: center;
-    border: solid 1px black;
     transform: translateY(-10%);
+    margin-top: 100px;
 }
 .attendance-status {
     display: inline-block;
@@ -18,6 +18,7 @@
     font-weight: bold;
     color: #696969;
     letter-spacing: 0.2em;
+    text-indent: 0.2em;
     border-radius: 15px;
     padding: 5px 15px;
     margin-bottom: -10px;
@@ -40,4 +41,74 @@
     vertical-align: middle;
     font-size: 50px;
     font-weight: bold;
+}
+
+.attendance-register {
+    display: flex;
+    justify-content: center;
+    margin-top: -10px;
+}
+
+.attendance__submit-btn {
+    width: 170px;
+    height: 60px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-indent: 5px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin: auto 30px;
+}
+
+.work {
+    background-color: black;
+    color: white;
+}
+
+.work:hover {
+    opacity: 0.7;
+}
+
+.rest {
+    background-color: white;
+    color: black;
+}
+
+.rest:hover {
+    opacity: 0.7;
+    color: #696969;
+}
+
+.clock-out__message {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 5px;
+    text-indent: 25px;
+    margin-top: -20px;
+}
+
+/* タブレット向けブレイクポイント */
+@media screen and (max-width: 768px) {
+    .attendance__group {
+        margin-top: 80px;
+    }
+    .attendance-register {
+        flex-direction: column;
+        margin-top: -30px;
+    }
+    .attendance__submit-btn {
+        margin-bottom: 30px;
+    }
+}
+
+/* スマートフォン向けブレイクポイント */
+@media screen and (max-width: 480px) {
+    .attendance__group {
+    margin-top: 80px;
+    }
 }

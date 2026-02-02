@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Attendance extends Model
 {
@@ -27,7 +28,7 @@ class Attendance extends Model
         return $this->hasMany(Rest::class);
     }
 
-// 現在の勤怠ステータスを判定するメソッド
+    // 現在の勤怠ステータスを判定するアクセサ status
     public function getStatusAttribute()
     {
         if(!$this->exists || is_null($this->clock_in)){
@@ -43,17 +44,51 @@ class Attendance extends Model
         return '出勤中';
     }
 
-// 現在日時を取得するメソッド
+    // 現在日時を取得するアクセサ today_display
     public function getTodayDisplayAttribute()
     {
         return now()->isoFormat('YYYY年M月D日(ddd)');
     }
 
-// 毎朝 05:00 を1日の勤務区切りとして勤怠を締める、日付判定の基準となる静的メソッド
+    // 毎朝 05:00 を1日の勤務区切りとして勤怠を締める、日付判定の基準となる静的メソッド
     public static function getWorkingDate()
     {
         $now = now();
 
-        return $now->hour < 5 ? $now->subDay()->toDateString() : $now->toDateString();
+        return $now->hour < 5 ? $now->subDay() : $now;
+    }
+
+    // 休憩時間の合計を計算するアクセサ rest_minutes
+    public function getRestMinutesAttribute()
+    {
+        return $this->rests->sum(function($rest){
+            if(!$rest->start_time || !$rest->end_time) return 0;
+            $restStart = Carbon::parse($rest->start_time)->second(0);
+            $restEnd = Carbon::parse($rest->end_time)->second(0);
+
+            return $restStart->diffInMinutes($restEnd);
+        });
+    }
+
+    // 休憩時間の合計をH:iの出力形式で返すアクセサ total_rest_time
+    public function getTotalRestTimeAttribute()
+    {
+        $minutes = $this->rest_minutes;
+
+        return sprintf('%d:%02d',floor($minutes / 60),$minutes % 60);
+    }
+
+    // 勤務時間から休憩時間の合計を引いた、実働時間を計算してH:iの出力形式で返すアクセサ total_working_time
+    public function getTotalWorkingTimeAttribute()
+    {
+        if(!$this->clock_in || !$this->clock_out) return '';
+        $workStart = Carbon::parse($this->clock_in)->second(0);
+        $workEnd = Carbon::parse($this->clock_out)->second(0);
+        $totalMInutes = $workStart->diffInMinutes($workEnd);
+
+        $actualMinutes = $totalMInutes - $this->rest_minutes;
+        $actualMinutes = max(0,$actualMinutes);
+
+        return sprintf('%d:%02d',floor($actualMinutes / 60),$actualMinutes % 60);
     }
 }

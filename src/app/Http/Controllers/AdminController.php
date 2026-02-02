@@ -12,6 +12,6 @@ class AdminController extends Controller
     {
         $admin = Auth::user();
 
-        return view('admin.attendance_list',compact('admin'));
+        return view('admin.admin_attendance_list',compact('admin'));
     }
 }

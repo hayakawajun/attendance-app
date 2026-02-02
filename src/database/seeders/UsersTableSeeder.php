@@ -19,7 +19,9 @@ class UsersTableSeeder extends Seeder
             'name' => '偽山田　贋作',
             'email' => 'dummy@test.com',
             'email_verified_at' => '2026-01-01 00:00:01',
-            'password' => Hash::make('dummypass')
+            'password' => Hash::make('dummypass'),
+            'created_at' => now(),
+            'updated_at' => now()
         ];
 
         DB::table('users')->insert($param);

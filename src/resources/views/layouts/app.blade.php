@@ -34,8 +34,8 @@
                 @elseauth
                     <form class="header__nav-form" action="/logout" method="post">
                     @csrf
-                        <a class="header__nav-link" href="">勤怠</a>
-                        <a class="header__nav-link" href="">勤怠一覧</a>
+                        <a class="header__nav-link" href="{{ route('attendance.show') }}">勤怠</a>
+                        <a class="header__nav-link" href="{{ route('attendance.index')}}">勤怠一覧</a>
                         <a class="header__nav-link" href="">申請</a>
                         <button class="logout__btn">ログアウト</button>
                     </form>

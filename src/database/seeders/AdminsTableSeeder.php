@@ -19,7 +19,9 @@ class AdminsTableSeeder extends Seeder
             'name' => '管理者',
             'email' => 'admin@test.com',
             'email_verified_at' => '2026-01-01 00:00:01',
-            'password' => Hash::make('adminpass')
+            'password' => Hash::make('adminpass'),
+            'created_at' => now(),
+            'updated_at' => now()
         ];
 
         DB::table('admins')->insert($param);

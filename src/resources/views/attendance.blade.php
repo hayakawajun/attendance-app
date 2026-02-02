@@ -15,26 +15,26 @@
         <p class="clock" id="current-time"></p>
         <div class="attendance-register">
             @if($attendance->status === '勤務外')
-                <form class="attendance-register__form" action="" method="">
+                <form class="attendance-register__form" action="{{ route('attendance.clock_in') }}" method="post">
                 @csrf
                     <button class="attendance__submit-btn work">出勤</button>
                 </form>
             @elseif($attendance->status === '出勤中')
-                <form class="attendance-register__form" action="" method="">
+                <form class="attendance-register__form" action="{{ route('attendance.clock_out') }}" method="post">
                 @csrf
-                    <button class="attendance__submit-btn work">出勤</button>
+                    <button class="attendance__submit-btn work">退勤</button>
                 </form>
-                <form class="attendance-register__form" action="" method="">
+                <form class="attendance-register__form" action="{{ route('attendance.rest_start') }}" method="post">
                 @csrf
                     <button class="attendance__submit-btn rest">休憩入</button>
                 </form>
             @elseif($attendance->status === '休憩中')
-                <form class="attendance-register__form" action="" method="">
+                <form class="attendance-register__form" action="{{ route('attendance.rest_end') }}" method="post">
                 @csrf
                     <button class="attendance__submit-btn rest">休憩戻</button>
                 </form>
             @elseif($attendance->status === '退勤済')
-                <p>お疲れ様でした。</p>
+                <p class="clock-out__message">お疲れ様でした。</p>
             @endif
         </div>
     </div>
