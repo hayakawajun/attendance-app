@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceRequestController;
 
 //管理者用のログイン・ログアウトルーティング
 Route::get('/admin/login', function(){
@@ -36,4 +37,9 @@ Route::middleware(['auth','verified'])->group(function()
         ->name('attendance.clock_out');
     Route::get('attendance/list/{year?}/{month?}',[AttendanceController::class,'index'])
         ->name('attendance.index');
+
+    Route::get('attendance/detail/{id}',[AttendanceRequestController::class,'show'])
+        ->name('detail.show');
+    Route::post('attendance/request',[AttendanceRequestController::class,'store'])
+        ->name('attendance.request');
 });

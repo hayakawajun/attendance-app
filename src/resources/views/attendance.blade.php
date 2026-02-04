@@ -37,11 +37,21 @@
                 <p class="clock-out__message">お疲れ様でした。</p>
             @endif
         </div>
+        @if(session('success'))
+        <div class="session">
+            <p class="session-message success">{{ session('success') }}</p>
+        </div>
+        @endif
+        @if(session('error'))
+        <div class="session">
+            <p class="session-message error">{{ session('error') }}</p>
+        </div>
+        @endif
     </div>
 
 </div>
 @endsection
 
 @section('script')
-<script src="{{ asset('js/current_time.js') }}">></script>
+<script src="{{ asset('js/current_time.js') }}"></script>
 @endsection

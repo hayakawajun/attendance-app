@@ -28,6 +28,16 @@ class Attendance extends Model
         return $this->hasMany(Rest::class);
     }
 
+    public function attendanceRequests()
+    {
+        return $this->hasMany(AttendanceRequest::class);
+    }
+
+    public function attendanceRequestDetails()
+    {
+        return $this->morphMany(AttendanceRequestDetail::class,'original');
+    }
+
     // 現在の勤怠ステータスを判定するアクセサ status
     public function getStatusAttribute()
     {

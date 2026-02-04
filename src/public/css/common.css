@@ -43,6 +43,32 @@
     margin-left: -5px;
 }
 
+/* コンテンツ部分 */
+.wrapper {
+    margin: 0 auto;
+    width: 750px;
+    padding-top: 50px;
+    padding-bottom: 100px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.marker {
+    display: inline-block;
+    width: 6px;
+    height: 30px;
+    background-color: black;
+    margin-left: -6px;
+    margin-right: 20px;
+}
+
+.content-title {
+    font-size: 22px;
+}
+
 /* タブレット向けブレイクポイント */
 @media screen and (max-width: 768px) {
     .header {
@@ -58,6 +84,21 @@
     .logout__btn {
         font-size: 13px;
         margin-left: -8px;
+    }
+    .wrapper {
+        margin: 0 auto;
+        width: 90%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .marker {
+        width: 6px;
+        height: 20px;
+        margin-left: -6px;
+        margin-right: 15px;
+    }
+    .content-title {
+        font-size: 18px;
     }
 }
 
@@ -142,5 +183,18 @@
         margin-left: 0;
         font-size: 20px;
         background-color: transparent;
+    }
+    .wrapper {
+        padding-top: 5px;
+        padding-bottom: 15px;
+    }
+    .marker {
+        width: 4px;
+        height: 18px;
+        margin-left: -4px;
+        margin-right: 10px;
+    }
+    .content-title {
+        font-size: 15px;
     }
 }

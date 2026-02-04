@@ -25,4 +25,9 @@ class Rest extends Model
     {
         return $this->belongsTo(Attendance::class);
     }
+
+    public function attendanceRequestDetails()
+    {
+        return $this->morphMany(AttendanceRequestDetail::class,'original');
+    }
 }

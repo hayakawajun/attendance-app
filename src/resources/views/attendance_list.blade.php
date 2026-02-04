@@ -60,7 +60,7 @@
                             <td class="time">{{ $day['attendance']->total_rest_time }}</td>
                             <td class="time">{{ $day['attendance']->total_working_time }}</td>
                             <td class="detail">
-                                <a class="detail__link" href="">詳細</a>
+                                <a class="detail__link" href="{{ route('detail.show',['id' => $day['attendance']->id ]) }}">詳細</a>
                             </td>
                         @else
                             <td class="time"></td>
@@ -68,7 +68,7 @@
                             <td class="time"></td>
                             <td class="time"></td>
                             <td class="detail">
-                                <a class="detail__link" href="">詳細</a>
+                                <a class="detail__link" href="{{ route('detail.show', ['id' => 0, 'date' => $day['date']->format('Y-m-d')]) }}">詳細</a>
                             </td>
                         @endif
                     </tr>

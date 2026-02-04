@@ -92,6 +92,45 @@
     margin-top: -20px;
 }
 
+.session {
+    width: 100%;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.session-message {
+    font-size: 20px;
+    letter-spacing: 0.2em;
+    animation: fadeOut 4s ease-out 0s forwards;
+}
+
+.success {
+    color: rgb(0, 138, 201);
+}
+
+.error {
+    color: rgb(217, 65, 0);
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
 /* タブレット向けブレイクポイント */
 @media screen and (max-width: 768px) {
     .attendance__group {
@@ -103,6 +142,10 @@
     }
     .attendance__submit-btn {
         margin-bottom: 30px;
+    }
+    .session-message {
+        font-size: 16px;
+        margin-top: -40px;
     }
 }
 
