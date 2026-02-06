@@ -28,9 +28,9 @@ class ApplicationRequest extends FormRequest
         $timeRegex = 'regex:/^\d{1,2}:[0-5][0-9]$/';
 
         return [
-            'reason' => 'required| string| max:255',
-            'attendance_start_time' => ['nullable',$timeRegex,'required_with:attendance_end_time'],
-            'attendance_end_time' => ['nullable',$timeRegex,'required_with:attendance_start_time'],
+            'reason' => ['required','string','max:255'],
+            'attendance_start_time' => ['required',$timeRegex],
+            'attendance_end_time' => ['required',$timeRegex],
             'rests.*.start_time' => ['nullable',$timeRegex,'required_with:rests.*.end_time'],
             'rests.*.end_time' => ['nullable',$timeRegex,'required_with:rests.*.start_time'],
             'new_rests.*.start_time' => ['nullable',$timeRegex,'required_with:new_rests.*.end_time'],
@@ -44,6 +44,8 @@ class ApplicationRequest extends FormRequest
             'reason.required' => '備考を記入してください',
             'reason.string' => '備考は文字列で記入してください',
             'reason.max' => '備考は255文字以内で記入してください',
+            'attendance_start_time.required' => '出勤時間と退勤時間は必ず入力してください',
+            'attendance_end_time.required' => '出勤時間と退勤時間は必ず入力してください',
             '*.regex' => '時間は「00:00」の形式で入力してください',
             '*.required_with' => '開始時間と終了時間は両方入力してください'
         ];
@@ -51,9 +53,11 @@ class ApplicationRequest extends FormRequest
 
     public function withValidator($validator)
     {
-        if($validator->errors()->count() > 0) return;
-
         $validator->after(function ($validator) {
+            if ($this->input('request_type') === 'delete') {
+                return;
+            }
+
             $attendanceId = $this->input('attendance_id');
 
             if(!$attendanceId) return;
@@ -64,10 +68,18 @@ class ApplicationRequest extends FormRequest
             if(!$attendance) return;
 
             $start = $this->parseTime($baseDate, $this->input('attendance_start_time'));
-            $end = $this->parseTime($baseDate, $this->input('attendance_end_time'));
+            $end = $this->parseTime($baseDate, $this->input('attendance_end_time'), $start);
 
-            if($start && $end && $start->greaterThanOrEqualTo($end)) {
-                $validator->errors()->add('attendance_end_time','出勤時間もしくは退勤時間が不適切な値です');
+            $tempEnd = ($end === false)
+            ? $this->parseTime($baseDate, $this->input('attendance_end_time'))
+            : $end;
+
+            if($start && $tempEnd && $start->greaterThanOrEqualTo($tempEnd)) {
+                $validator->errors()->add('attendance_end_time', '出勤時間もしくは退勤時間が不適切な値です');
+            }
+
+            if($end === false) {
+                $validator->errors()->add('attendance_end_time','退勤時間は勤怠締め時刻「05:00」以前を入力してください');
             }
 
             $isChanged = false;
@@ -105,7 +117,7 @@ class ApplicationRequest extends FormRequest
             }
 
             if(!$isChanged) {
-                $validator->errors()->add('attendance_start_time','修正前と同一の内容のため申請できません');
+                $validator->errors()->add('data_inconsistency','修正前と同一の内容のため申請できません');
             }
 
             foreach($this->input('rests',[]) as $id => $times) {
@@ -120,8 +132,8 @@ class ApplicationRequest extends FormRequest
 
     private function checkRestTimes($validator, $baseDate, $times, $key, $workStart, $workEnd)
     {
-        $restStart = $this->parseTime($baseDate, $times['start_time']);
-        $restEnd = $this->parseTime($baseDate, $times['end_time']);
+        $restStart = $this->parseTime($baseDate, $times['start_time'], $workStart);
+        $restEnd = $this->parseTime($baseDate, $times['end_time'], $workStart);
 
         if(!$restStart || !$restEnd) return;
 
@@ -138,11 +150,26 @@ class ApplicationRequest extends FormRequest
         }
     }
 
-    private function parseTime($baseDate, $inputTime)
+    private function parseTime($baseDate, $inputTime, $startTime = null)
     {
-        if(empty($inputTime)) return null;
-        $dt = Carbon::parse($baseDate);
+        if(empty($inputTime) || !str_contains($inputTime, ':')) {
+            return null;
+        }
+
+        $dt = Carbon::parse($baseDate)->startOfDay();
         list($hour, $minute) = explode(':', $inputTime);
-        return $dt->startOfDay()->addHours((int)$hour)->addMinutes((int)$minute);
+        $time = $dt->copy()->addHours((int)$hour)->addMinutes((int)$minute);
+
+        if ($startTime && $time->lessThan($startTime)) {
+            $nextDayTime = $time->copy()->addDay();
+            $limit = $dt->copy()->addDay()->addHours(5);
+
+            if($nextDayTime->lessThan($limit)) {
+                return $nextDayTime;
+            }
+            return false;
+        }
+
+        return $time;
     }
 }
