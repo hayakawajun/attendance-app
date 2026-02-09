@@ -32,7 +32,7 @@
 
 .detail__table-row:last-of-type {
     border: none;
-    height: 120px;
+    min-height: 80px;
 }
 
 .label {
@@ -41,6 +41,10 @@
 }
 
 .user-name {
+    padding-left: 20px;
+}
+
+.reason-text {
     padding-left: 20px;
 }
 
@@ -89,7 +93,7 @@ input[type="text"]:focus::placeholder {
 }
 
 .success {
-    background-color: #64f080;
+    background-color: #1db4cb;
 }
 
 .error-list {
@@ -105,6 +109,15 @@ input[type="text"]:focus::placeholder {
     padding-left: 50px;
     padding-bottom: 10px;
     animation: fadeIn 1s ease-out 0s forwards;
+}
+
+.status {
+    color: #f06464;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
+    letter-spacing: 0.1em;
+    margin-top: 25px;
 }
 
 @keyframes fadeIn {
@@ -212,5 +225,9 @@ input[type="text"]:focus::placeholder {
         font-weight: bold;
         padding: 8px 25px;
         cursor: pointer;
+    }
+    .status {
+        font-size: 12px;
+        margin-top: 10px;
     }
 }

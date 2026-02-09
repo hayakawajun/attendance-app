@@ -46,7 +46,6 @@ class AttendancesTableSeeder extends Seeder
             if($weekNum % 2 !== 0){
                 $rests[] = [
                     'attendance_id' => $attendanceId,
-                    'rest_number' => 1,
                     'start_time' => $clockIn->copy()->addHours(4),
                     'end_time' => $clockIn->copy()->addHours(5),
                     'created_at' => now(),
@@ -55,7 +54,6 @@ class AttendancesTableSeeder extends Seeder
             }else{
                 $rests[] = [
                     'attendance_id' => $attendanceId,
-                    'rest_number' => 1,
                     'start_time' => $clockIn->copy()->addHours(2),
                     'end_time' => $clockIn->copy()->addHours(2)->addMinute(30),
                     'created_at' => now(),
@@ -63,7 +61,6 @@ class AttendancesTableSeeder extends Seeder
                 ];
                 $rests[] = [
                     'attendance_id' => $attendanceId,
-                    'rest_number' => 2,
                     'start_time' => $clockIn->copy()->addHours(5),
                     'end_time' => $clockIn->copy()->addHours(5)->addMinute(30),
                     'created_at' => now(),

@@ -20,36 +20,36 @@ class AttendanceRequestController extends Controller
         if($id == 0){
             $targetDate = $request->query('date');
             $date = Carbon::parse($targetDate);
-
+            $attendance = null;
             $pendingRequest = AttendanceRequest::with('details')
                 ->where('user_id',$user->id)
-                ->where('target_date')
+                ->whereDate('target_date', $date->format('Y-m-d'))
                 ->where('status',AttendanceRequest::STATUS_PENDING)
                 ->latest()
                 ->first();
+        }else{
+            $attendance = Attendance::with(['rests','attendanceRequests' => function($query){
+                $query->where('status', AttendanceRequest::STATUS_PENDING)
+                    ->with('details')->latest();
+            }])
+            ->where('user_id',$user->id)
+            ->findOrFail($id);
 
-            return view('attendance_detail',[
-                'name' => $user->name,
-                'attendance' => null,
-                'date' => $date,
-                'pendingRequest' => $pendingRequest
-            ]);
+            $date = $attendance->work_date;
+            $pendingRequest = $attendance->attendanceRequests->first();
         }
 
-        $attendance = Attendance::with(['rests','attendanceRequests' => function($query){
-            $query->where('status', AttendanceRequest::STATUS_PENDING)
-                ->with('details')->latest();
-        }])
-        ->where('user_id',$user->id)
-        ->findOrFail($id);
-
-        $pendingRequest = $attendance->attendanceRequests->first();
+        $requestDetails = null;
+        if($pendingRequest) {
+            $requestDetails = $pendingRequest->details->groupBy('type');
+        }
 
         return view('attendance_detail',[
             'name' => $user->name,
             'attendance' => $attendance,
-            'date' => $attendance->work_date,
-            'pendingRequest' => $pendingRequest
+            'date' => $date,
+            'pendingRequest' => $pendingRequest,
+            'requestDetails' => $requestDetails
         ]);
     }
 
@@ -66,13 +66,13 @@ class AttendanceRequestController extends Controller
             return back()->withErrors(['data_inconsistency' => 'この日付の申請は承認依頼済みです']);
         }
 
-        $currentWorkingDate = Attendance::getWorkingDate();
-        $inputDate = Carbon::parse($request->input('work_date'));
+        $currentWorkingDate = Attendance::getWorkingDate()->startOfDay();
+        $inputDate = Carbon::parse($workDate)->startOfDay();
 
-        if($inputDate->gte($currentWorkingDate)) {
+        if($inputDate->greaterThanOrEqualTo($currentWorkingDate)) {
             return back()->withErrors([
-                'data_inconsistency' => '当日分の勤怠および翌日以降の勤怠は修正申請できません'])
-                ->withInput();
+                'data_inconsistency' => '当日分の勤怠および翌日以降の勤怠は修正申請できません'
+            ])->withInput();
         }
 
         $attendanceId = $request->input('attendance_id') == 0

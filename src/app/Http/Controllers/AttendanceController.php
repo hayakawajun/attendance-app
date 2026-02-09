@@ -54,15 +54,12 @@ class AttendanceController extends Controller
         if(!$attendance){
             return redirect()->back()->with('error','出勤データが見つかりません');
         }
-        if($attendance->rests()->whereNull('end_time')->exists()){
-            return redirect()->back()->with('error','すでに休憩中です');
+
+        if(!$attendance->canStartRest($error)) {
+            return redirect()->back()->with('error',$error);
         }
 
-        $count = $attendance->rests()->count();
-        $attendance->rests()->create([
-            'rest_number' => $count + 1,
-            'start_time' => now()
-        ]);
+        $attendance->rests()->create(['start_time' => now()]);
 
         return redirect()->back()->with('success','休憩を開始しました');
     }
@@ -79,15 +76,11 @@ class AttendanceController extends Controller
             return redirect()->back()->with('error','出勤データが見つかりません');
         }
 
-        $latestRest = $attendance->rests()->whereNull('end_time')->latest()->first();
-
-        if(!$latestRest){
-            return redirect()->back()->with('error','休憩中ではないか、またはすでに休憩を終了しています');
+        if(!$attendance->canEndRest($error, $latestRest)) {
+            return redirect()->back()->with('error',$error);
         }
 
-        $latestRest->update([
-            'end_time' => now()
-        ]);
+        $latestRest->update(['end_time' => now()]);
 
         return redirect()->back()->with('success','休憩を終了しました');
     }
@@ -103,16 +96,12 @@ class AttendanceController extends Controller
         if(!$attendance){
             return redirect()->back()->with('error','出勤データが見つかりません');
         }
-        if($attendance->clock_out){
-            return redirect()->back()->with('error','すでに退勤済みです');
-        }
-        if($attendance->rests()->whereNull('end_time')->exists()){
-            return redirect()->back()->with('error','休憩を終了させてから退勤してください');
+
+        if(!$attendance->canClockOut($error)) {
+            return redirect()->back()->with('error',$error);
         }
 
-        $attendance->update([
-            'clock_out' => now()
-        ]);
+        $attendance->update(['clock_out' => now()]);
 
         return redirect()->back()->with('success','退勤しました');
     }

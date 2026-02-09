@@ -16,7 +16,8 @@ class CreateAttendanceRequestDetailsTable extends Migration
         Schema::create('attendance_request_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('attendance_request_id')->constrained()->cascadeOnDelete();
-            $table->morphs('original');
+            $table->nullableMorphs('original');
+            $table->string('type');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->timestamps();

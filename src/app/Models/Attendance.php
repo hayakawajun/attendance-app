@@ -101,4 +101,72 @@ class Attendance extends Model
 
         return sprintf('%d:%02d',floor($actualMinutes / 60),$actualMinutes % 60);
     }
+
+    // 休憩開始打刻が可能か、また時刻が正当か判定するメソッド canStartRest
+    public function canStartRest(&$error = null)
+    {
+        if ($this->rests()->whereNull('end_time')->exists()) {
+            $error = 'すでに休憩中です';
+            return false;
+        }
+
+        $clockIn = Carbon::parse($this->clock_in)->floorMinute();
+        if (now()->floorMinute()->lessThanOrEqualTo($clockIn)) {
+            $error = '出勤時刻と同時刻の休憩開始はできません';
+            return false;
+        }
+
+        return true;
+    }
+
+    // 休憩終了打刻が可能か、また時刻が正当か判定するメソッド canEndRest
+    public function canEndRest(&$error = null, &$latestRest = null)
+    {
+        $latestRest = $this->rests()->whereNull('end_time')->latest()->first();
+
+        if (!$latestRest) {
+            $error = '休憩中ではないか、またはすでに休憩を終了しています';
+            return false;
+        }
+
+        $restStart = Carbon::parse($latestRest->start_time)->floorMinute();
+        if (now()->floorMinute()->lessThanOrEqualTo($restStart)) {
+            $error = '休憩開始から1分未満での終了はできません';
+            return false;
+        }
+
+        return true;
+    }
+
+    // 退勤打刻が可能か、また時刻が正当か判定するメソッド canClockOut
+    public function canClockOut(&$error = null)
+    {
+        if ($this->clock_out) {
+            $error = 'すでに退勤済みです';
+            return false;
+        }
+
+        if ($this->rests()->whereNull('end_time')->exists()) {
+            $error = '休憩を終了させてから退勤してください';
+            return false;
+        }
+
+        $now = now()->floorMinute();
+        $clockIn = Carbon::parse($this->clock_in)->floorMinute();
+        if ($now->lessThanOrEqualTo($clockIn)) {
+            $error = '出勤時刻と同時刻の退勤はできません';
+            return false;
+        }
+
+        $latestRestEnd = $this->rests()->whereNotNull('end_time')->latest('end_time')->first();
+        if ($latestRestEnd) {
+            $restEnd = \Carbon\Carbon::parse($latestRestEnd->end_time)->floorMinute();
+            if ($now->lessThanOrEqualTo($restEnd)) {
+                $error = '休憩終了から1分未満での退勤はできません';
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

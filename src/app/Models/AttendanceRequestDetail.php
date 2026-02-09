@@ -13,6 +13,7 @@ class AttendanceRequestDetail extends Model
         'attendance_request_id',
         'original_id',
         'original_type',
+        'type',
         'start_time',
         'end_time'
     ];
