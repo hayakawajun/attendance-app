@@ -17,6 +17,7 @@ class CreateAttendanceRequestsTable extends Migration
             $table->id();
             $table->foreignId('attendance_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('admin_id')->nullable()->constrained()->cascadeOnDelete();
             $table->date('target_date');
             $table->string('status')->default('pending')->index()
                 ->comment('pending:承認待ち,approved:承認済み');

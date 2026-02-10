@@ -1,5 +1,5 @@
 /* 月の表示 */
-.months {
+.date-display {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -13,12 +13,12 @@
     border-radius: 10px;
 }
 
-.preview-month {
+.preview {
     display: flex;
     align-items: center;
 }
 
-.next-month {
+.next {
     display: flex;
     align-items: center;
 }
@@ -27,12 +27,12 @@
     text-decoration: none;
 }
 
-.moving-month img{
+.moving-date img{
     width: 20px;
     margin-top: -3px;
 }
 
-.moving-month {
+.moving-date {
     display: inline-block;
     font-size: 14px;
     font-weight: bold;
@@ -54,10 +54,8 @@
     margin-right: 10px;
 }
 
-.target__select input {
+.target__select--input {
     position: absolute;
-    top: 90%;
-    left: -40%;
     width: 1px;
     height: 1px;
     opacity: 0;
@@ -66,7 +64,17 @@
     z-index: 10;
 }
 
-.target-month {
+.month {
+    top: 90%;
+    left: -40%;
+}
+
+.day {
+    top: 90%;
+    left: -18%;
+}
+
+.target-date {
     font-size: 18px;
     font-weight: bold;
     display: inline-block;

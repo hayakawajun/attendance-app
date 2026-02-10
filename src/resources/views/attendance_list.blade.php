@@ -13,20 +13,20 @@
         <h1 class="content-title">勤怠一覧</h1>
     </div>
 
-    <div class="months">
-        <div class="preview-month">
-            <a class="moving-month" href="{{ route('attendance.index', ['year' => $prevDate->year, 'month' => $prevDate->month]) }}">
+    <div class="date-display">
+        <div class="preview">
+            <a class="moving-date" href="{{ route('attendance.index', ['year' => $prevDate->year, 'month' => $prevDate->month]) }}">
                 <img src="{{ asset('image/left_arrow.png') }}" alt="<<">
                 前月
             </a>
         </div>
         <div class="target__select" id="month__picker--trigger">
             <img src="{{ asset('image/calendar.png') }}" alt="calendar">
-            <span class="target-month">{{ $year }}/{{ sprintf('%02d',$month) }}</span>
-            <input type="month" id="month__picker" value="{{ $year }}-{{ sprintf('%02d',$month) }}">
+            <span class="target-date">{{ $year }}/{{ sprintf('%02d',$month) }}</span>
+            <input class="target__select--input month" type="month" id="month__picker" value="{{ $year }}-{{ sprintf('%02d',$month) }}">
         </div>
-        <div class="next-month">
-            <a class="moving-month" href="{{ route('attendance.index', ['year' => $nextDate->year, 'month' => $nextDate->month]) }}">
+        <div class="next">
+            <a class="moving-date" href="{{ route('attendance.index', ['year' => $nextDate->year, 'month' => $nextDate->month]) }}">
                 翌月
                 <img src="{{ asset('image/right_arrow.png') }}" alt=">>">
             </a>

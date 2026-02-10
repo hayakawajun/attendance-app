@@ -19,8 +19,8 @@ Route::post('/admin/logout',[AuthenticatedSessionController::class,'destroy'])
 //管理者用ページを開く際のミドルウェアグループ
 Route::middleware(['auth:admin'])->group(function()
 {
-    Route::get('/admin/attendance/list',[AdminController::class,'show'])
-        ->name('admin.show');
+    Route::get('/admin/attendance/list/{year?}/{month?}/{day?}',[AdminController::class,'dayIndex'])
+        ->name('admin.day_index');
 });
 
 //一般スタッフ用ページを開く際のミドルウェアグループ
