@@ -61,6 +61,9 @@
                             <td class="time">{{ $day['attendance']->total_working_time }}</td>
                             <td class="detail">
                                 <a class="detail__link" href="{{ route('detail.show',['id' => $day['attendance']->id ]) }}">詳細</a>
+                                @if($day['latestRequest']?->status === $statusPending)
+                                    <span class="pending">申請中</span>
+                                @endif
                             </td>
                         @else
                             <td class="time"></td>
@@ -69,6 +72,9 @@
                             <td class="time"></td>
                             <td class="detail">
                                 <a class="detail__link" href="{{ route('detail.show', ['id' => 0, 'date' => $day['date']->format('Y-m-d')]) }}">詳細</a>
+                                @if($day['latestRequest']?->status === $statusPending)
+                                    <span class="pending">申請中</span>
+                                @endif
                             </td>
                         @endif
                     </tr>

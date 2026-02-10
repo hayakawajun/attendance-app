@@ -23,6 +23,7 @@ class AttendanceRequest extends Model
     ];
 
     protected $casts = [
+        'target_date' => 'date',
         'requested_at' => 'datetime'
     ];
 

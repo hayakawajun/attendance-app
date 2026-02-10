@@ -121,6 +121,7 @@
 
 .detail {
     text-align: center;
+    align-items: center;
     padding-right: 50px;
     white-space: nowrap;
 }
@@ -128,6 +129,14 @@
 .detail__link {
     color: black;
     text-decoration: none;
+}
+
+.pending {
+    font-size: 12px;
+    color: #f06464;
+    border: solid 1px #f06464;
+    border-radius: 3px;
+    padding: 4px;
 }
 
 /* タブレット向けブレイクポイント */
@@ -182,6 +191,14 @@
     .detail {
         padding-right: 10px;
     }
+    .pending {
+        font-size: 10px;
+        font-weight: normal;
+        color: #f06464;
+        border: solid 1px #f06464;
+        border-radius: 3px;
+        padding: 3px;
+    }
 }
 
 /* スマートフォン向けブレイクポイント */
@@ -212,5 +229,10 @@
     }
     .attendance__table {
         font-size: 10px;
+    }
+    .pending {
+        font-size: 9px;
+        border: none;
+        padding: 0px;
     }
 }

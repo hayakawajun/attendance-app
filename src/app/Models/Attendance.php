@@ -33,6 +33,11 @@ class Attendance extends Model
         return $this->hasMany(AttendanceRequest::class);
     }
 
+    public function latestRequest()
+    {
+        return $this->hasOne(AttendanceRequest::class)->latestOfMany();
+    }
+
     public function attendanceRequestDetails()
     {
         return $this->morphMany(AttendanceRequestDetail::class,'original');

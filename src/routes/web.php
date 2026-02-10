@@ -5,6 +5,7 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceRequestController;
+use App\Http\Controllers\RequestListController;
 
 //管理者用のログイン・ログアウトルーティング
 Route::get('/admin/login', function(){
@@ -42,4 +43,7 @@ Route::middleware(['auth','verified'])->group(function()
         ->name('detail.show');
     Route::post('attendance/request',[AttendanceRequestController::class,'store'])
         ->name('attendance.request');
+
+    Route::get('/stamp_correction_request/list',[RequestListController::class,'index'])
+        ->name('request.list');
 });

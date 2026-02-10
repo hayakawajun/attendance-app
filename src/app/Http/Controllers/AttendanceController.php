@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use App\Models\Attendance;
+use App\Models\AttendanceRequest;
 
 class AttendanceController extends Controller
 {
@@ -123,14 +124,26 @@ class AttendanceController extends Controller
                 return Carbon::parse($item->work_date)->format('Y-m-d');
             });
 
+        $requests = AttendanceRequest::where('user_id', Auth::id())
+            ->whereBetween('target_date', [$startOfMonth, $endOfMonth])
+            ->get()
+            ->groupBy(function($item){
+                return Carbon::parse($item->target_date)->format('Y-m-d');
+            });
+
         $period = CarbonPeriod::create($startOfMonth,$endOfMonth);
 
         $calendar = [];
         foreach($period as $date){
             $dateStr = $date->format('Y-m-d');
+            $latestRequest = $requests->has($dateStr)
+                ? $requests->get($dateStr)->sortByDesc('created_at')->first()
+                : null;
+
             $calendar[] = [
                 'date' => $date,
-                'attendance' => $attendances->get($dateStr)
+                'attendance' => $attendances->get($dateStr),
+                'latestRequest' => $latestRequest
             ];
         }
 
@@ -143,6 +156,6 @@ class AttendanceController extends Controller
             'month',
             'prevDate',
             'nextDate'
-        ));
+        ))->with(['statusPending' => AttendanceRequest::STATUS_PENDING]);
     }
 }
