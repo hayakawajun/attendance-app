@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
 use App\Models\Attendance;
+use App\Models\AttendanceRequest;
+
 use Carbon\Carbon;
 
 class AdminController extends Controller
@@ -22,10 +24,12 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             $date = Carbon::today();
         }
-        $attendances = Attendance::with('user','rests')
+        $attendances = Attendance::with('user','rests','attendanceRequests')
             ->whereDate('work_date',$date->format('Y-m-d'))
             ->get();
 
-        return view('admin.admin_attendance_list',compact('attendances','date'));
+        $statusPending = AttendanceRequest::STATUS_PENDING;
+
+        return view('admin.admin_attendance_list',compact('attendances','date','statusPending'));
     }
 }

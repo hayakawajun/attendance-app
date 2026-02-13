@@ -117,10 +117,13 @@
     background-color: white;
 }
 
-.date {
+.date { /* 一般ユーザー用ページのth,tdのclass名 */
     text-align: left;
     padding-left: 50px;
-    white-space: nowrap;
+}
+
+.name { /* 管理者用ページのth,tdのclass名 */
+    text-align: center;
 }
 
 .time {
@@ -194,6 +197,9 @@
     }
     .date {
         text-align: center;
+        padding-left: 10px;
+    }
+    .name {
         padding-left: 10px;
     }
     .detail {

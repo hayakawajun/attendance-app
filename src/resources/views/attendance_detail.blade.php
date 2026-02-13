@@ -14,75 +14,8 @@
     </div>
 
     @if($pendingRequest)
-        <div class="pending-info">
-            <div class="content">
-                <table class="detail__table">
 
-                    <colgroup>
-                        <col class="col__left">
-                        <col class="col__center" span="3">
-                        <col class="col__right">
-                    </colgroup>
-
-                    @if(session('success'))
-                        <tr class="message__table-row success">
-                            <td class="message" colspan="5">{{ session('success') }}</td>
-                        </tr>
-                    @endif
-
-                    <tr class="detail__table-row">
-                        <td class="label">名前</td>
-                        <td class="user-name" colspan="3">{{ $name }}</td>
-                        <td></td>
-                    </tr>
-
-                    <tr class="detail__table-row">
-                        <td class="label">日付</td>
-                        <td class="parameter">{{ $date->year }}年</td>
-                        <td></td>
-                        <td class="parameter">{{ $date->month }}月{{ $date->day }}日</td>
-                        <td></td>
-                    </tr>
-
-                    @if(isset($requestDetails['attendance']))
-                        @php $att = $requestDetails['attendance']->first(); @endphp
-                        <tr class="detail__table-row">
-                            <td class="label">出勤・退勤</td>
-                            <td class="parameter">{{ $att->start_time->format('H:i') }}</td>
-                            <td class="parameter">〜</td>
-                            <td class="parameter">{{ $att->end_time->format('H:i') }}</td>
-                            <td></td>
-                        </tr>
-                    @endif
-
-                    @if(isset($requestDetails['rest']))
-                        @foreach($requestDetails['rest'] as $rest)
-                            <tr class="detail__table-row">
-                                <td class="label">{{ $loop->first ? '休憩' : '休憩'.$loop->iteration }}</td>
-                                <td class="parameter">{{ $rest->start_time->format('H:i') }}</td>
-                                <td class="parameter">〜</td>
-                                <td class="parameter">{{ $rest->end_time->format('H:i') }}</td>
-                                <td></td>
-                            </tr>
-                        @endforeach
-                    @endif
-
-                    <tr class="detail__table-row">
-                        <td class="label">備考</td>
-                        <td class="reason-text" colspan="3">{{ $pendingRequest->reason }}</td>
-                        <td></td>
-                    </tr>
-
-                </table>
-            </div>
-
-            @if($pendingRequest->is_deletion)
-                <p class="status">*削除承認待ちのため修正はできません。</p>
-            @else
-                <p class="status">*承認待ちのため修正はできません。</p>
-            @endif
-
-        </div>
+        @include('components.detail_pending_info')
 
     @else
         <form class="application__form" action="{{ route('attendance.request') }}" method="post">
@@ -154,6 +87,12 @@
                         </td>
                         <td></td>
                     </tr>
+
+                    @error('rests')
+                        <tr class="message__table-row error">
+                            <td class="message" colspan="5">{{ $message }}</td>
+                        </tr>
+                    @enderror
 
                     @if($attendance)
                         @foreach($attendance->rests as $rest)

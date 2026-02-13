@@ -68,6 +68,124 @@ class ApplicationRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+
+            // すでにエラーが発生している場合や、削除ボタンが押された場合
+            if($validator->errors()->any() || $this->input('request_type') === 'delete') return;
+
+            $start = $this->toMinutes($this->input('attendance_start_time'));
+            $end = $this->toMinutes($this->input('attendance_end_time'), $start);
+
+            // 出勤時間が退勤時間よりも後になっている場合
+            if($start >= $end) {
+                $validator->errors()->add('attendance_end_time','出勤時間もしくは退勤時間が不適切な値です');
+            }
+
+            // 勤怠締め時刻「翌AM5:00(前日の0:00から起算して計1740分)」を超える退勤時間の場合
+            if($end > 1740) {
+                $validator->errors()->add('attendance_end_time','退勤時間は勤怠締め時刻「05:00」以前を入力してください');
+            }
+
+            $allRests = [];
+            foreach(['rests', 'new_rests'] as $key) {
+                foreach($this->input($key, []) as $index => $times) {
+                    if(empty($times['start_time'])) continue;
+
+                    $restStart = $this->toMinutes($times['start_time'], $start);
+                    $restEnd = $this->toMinutes($times['end_time'], $start);
+
+                    // 休憩開始時間が出勤時間より前
+                    // 休憩終了時間が出勤時間より前
+                    // 休憩開始時間が退勤時間より後
+                    // 休憩開始時間が休憩終了時間より後
+                    if($restStart <= $start || $restEnd <= $start
+                        || $restStart >= $end || $restStart >= $restEnd) {
+                        $validator->errors()->add("{$key}.{$index}.start_time",'休憩時間が不適切な値です');
+                    }
+
+                    // 休憩終了時間が退勤時間より後
+                    if($restEnd >= $end) {
+                        $validator->errors()->add("{$key}.{$index}.end_time",'休憩時間もしくは退勤時間が不適切な値です');
+                    }
+
+                    $allRests[] = ['s' => $restStart, 'e' => $restEnd];
+                }
+            }
+
+            // 休憩Aと休憩Bの時間帯の一部が重なっている場合
+            $count = count($allRests);
+            for($i = 0; $i < $count; $i++) {
+                for($j = $i + 1; $j < $count; $j++) {
+                    if($allRests[$i]['s'] < $allRests[$j]['e'] && $allRests[$j]['s'] < $allRests[$i]['e']) {
+                        $validator->errors()->add('rests', '休憩時間が重なっています');
+                        break 2;
+                    }
+                }
+            }
+
+            // 入力値が既存値から変わっていなかった場合
+            $attendanceId = $this->input('attendance_id');
+            if($attendanceId) {
+                $attendance = Attendance::with('rests')->find($attendanceId);
+                if($attendance && !$this->checkIfChanged($attendance, $start, $end, $allRests)) {
+                    $validator->errors()->add('data_inconsistency','修正前と同一の内容のため申請できません');
+                }
+            }
+        });
+    }
+
+    // 入力時間を分に換算するメソッド
+    private function toMinutes($timeStr, $baseMinutes = null)
+    {
+        if(empty($timeStr) || !str_contains($timeStr, ':')) return null;
+
+        list($hour, $minute) = explode(':', $timeStr);
+        $minutes = (int)$hour * 60 +(int)$minute;
+
+        // 日またぎ勤務をした場合は、入力時間に1440分(24時間)を加える
+        if($baseMinutes !== null && $minutes < $baseMinutes) {
+            $minutes += 1440;
+        }
+        return $minutes;
+    }
+
+    // 入力値をデータベースの既存値と比較するメソッド
+    private function checkIfChanged($attendance, $start, $end, $allRests)
+    {
+        $dbStart = $this->toMinutes($attendance->clock_in
+            ? $attendance->clock_in->format('H:i') : null);
+        $dbEnd = $this->toMinutes($attendance->clock_out
+            ? $attendance->clock_out->format('H:i') : null, $dbStart);
+
+        if($start !== $dbStart || $end !== $dbEnd) return true;
+
+        if($attendance->rests->count() !== count($allRests)) return true;
+        $dbRests = $attendance->rests->map(fn($r) => [
+            's' => $this->toMinutes($r->start_time->format('H:i'), $dbStart),
+            'e' => $this->toMinutes($r->end_time->format('H:i'), $dbStart)
+        ])->sortBy('s')->values()->toArray();
+
+        usort($allRests, fn($a, $b) => $a['s'] <=> $b['s']);
+
+        for($i = 0; $i < count($allRests); $i++) {
+            if($allRests[$i]['s'] !== $dbRests[$i]['s'] || $allRests[$i]['e'] !== $dbRests[$i]['e']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+
+/*
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->any()) {
+                return;
+            }
+
             if ($this->input('request_type') === 'delete') {
                 return;
             }
@@ -98,7 +216,15 @@ class ApplicationRequest extends FormRequest
 
             $isChanged = false;
 
-            if(!$attendance->clock_in->eq($start) || !$attendance->clock_out->eq($end)) {
+            $startIsChanged = ($start instanceof Carbon)
+                ? (!$attendance->clock_in || !$attendance->clock_in->eq($start))
+                : (bool)$attendance->clock_in;
+
+            $endIsChanged = ($end instanceof Carbon)
+                ? (!$attendance->clock_out || !$attendance->clock_out->eq($end))
+                : (bool)$attendance->clock_out;
+
+            if ($startIsChanged || $endIsChanged || $end === false) {
                 $isChanged = true;
             }
 
@@ -116,7 +242,15 @@ class ApplicationRequest extends FormRequest
                     $newRestStart = $this->parseTime($baseDate, $newTimes['start_time']);
                     $newRestEnd = $this->parseTime($baseDate, $newTimes['end_time']);
 
-                    if(!$oldRest->start_time->eq($newRestStart) || !$oldRest->end_time->eq($newRestEnd)) {
+                    $restStartChanged = ($newRestStart instanceof Carbon)
+                        ? (!$oldRest->start_time || !$oldRest->start_time->eq($newRestStart))
+                        : (bool)$oldRest->start_time;
+
+                    $restEndChanged = ($newRestEnd instanceof Carbon)
+                        ? (!$oldRest->end_time || !$oldRest->end_time->eq($newRestEnd))
+                        : (bool)$oldRest->end_time;
+
+                    if($restStartChanged || $restEndChanged || $newRestStart === false || $newRestEnd === false) {
                         $isChanged = true;
                         break;
                     }
@@ -134,6 +268,43 @@ class ApplicationRequest extends FormRequest
                 $validator->errors()->add('data_inconsistency','修正前と同一の内容のため申請できません');
             }
 
+            $allRests = [];
+
+            foreach ($this->input('rests', []) as $times) {
+                if (!empty($times['start_time']) && !empty($times['end_time'])) {
+                    $allRests[] = [
+                        'start' => $this->parseTime($baseDate, $times['start_time'], $start),
+                        'end'   => $this->parseTime($baseDate, $times['end_time'], $start),
+                    ];
+                }
+            }
+
+            foreach ($this->input('new_rests', []) as $times) {
+                if (!empty($times['start_time']) && !empty($times['end_time'])) {
+                    $allRests[] = [
+                        'start' => $this->parseTime($baseDate, $times['start_time'], $start),
+                        'end'   => $this->parseTime($baseDate, $times['end_time'], $start),
+                    ];
+                }
+            }
+
+            $count = count($allRests);
+            for ($i = 0; $i < $count; $i++) {
+                for ($j = $i + 1; $j < $count; $j++) {
+                    $restA = $allRests[$i];
+                    $restB = $allRests[$j];
+
+                    if ($restA['start'] instanceof Carbon && $restA['end'] instanceof Carbon &&
+                        $restB['start'] instanceof Carbon && $restB['end'] instanceof Carbon) {
+
+                        if ($restA['start']->lessThan($restB['end']) && $restB['start']->lessThan($restA['end'])) {
+                            $validator->errors()->add('rests', '休憩時間が重なっています');
+                            break 2;
+                        }
+                    }
+                }
+            }
+
             foreach($this->input('rests',[]) as $id => $times) {
                 $this->checkRestTimes($validator, $baseDate, $times,"rests.{$id}", $start, $tempEnd);
             }
@@ -149,9 +320,6 @@ class ApplicationRequest extends FormRequest
     $restStart = $this->parseTime($baseDate, $times['start_time'], $workStart);
     $restEnd = $this->parseTime($baseDate, $times['end_time'], $workStart);
 
-    // --- 補正ロジックを修正 ---
-    // false（5時超え）だった場合、単純に当日戻すのではなく、
-    // 開始時間より数字が小さければ「翌日」として計算し直す
     $tempRestStart = $restStart;
     if ($restStart === false) {
         $tempRestStart = $this->parseTime($baseDate, $times['start_time']);
@@ -167,7 +335,6 @@ class ApplicationRequest extends FormRequest
             $tempRestEnd->addDay();
         }
     }
-    // -------------------------
 
     if(!$tempRestStart || !$tempRestEnd) return;
 
@@ -179,7 +346,6 @@ class ApplicationRequest extends FormRequest
         $validator->errors()->add("{$key}.start_time",'休憩時間が不適切な値です');
     }
 
-    // これで 翌日06:00 > 翌日04:00 という比較になり、正しくエラーが出ます
     if($workEnd && $tempRestEnd->greaterThan($workEnd)) {
         $validator->errors()->add("{$key}.end_time",'休憩時間もしくは退勤時間が不適切な値です');
     }
@@ -210,4 +376,8 @@ class ApplicationRequest extends FormRequest
 
         return $time;
     }
-}
+
+*/
+
+
+

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminApproveController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceRequestController;
 use App\Http\Controllers\RequestListController;
@@ -21,6 +22,8 @@ Route::middleware(['auth:admin'])->group(function()
 {
     Route::get('/admin/attendance/list/{year?}/{month?}/{day?}',[AdminController::class,'dayIndex'])
         ->name('admin.day_index');
+    Route::get('/admin/attendance/{id}',[AdminApproveController::class,'showDetail'])
+        ->name('admin.show_detail');
 });
 
 //一般スタッフ用ページを開く際のミドルウェアグループ

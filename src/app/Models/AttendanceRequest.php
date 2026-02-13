@@ -15,17 +15,21 @@ class AttendanceRequest extends Model
     protected $fillable = [
         'attendance_id',
         'user_id',
-        'admin_id',
         'target_date',
         'is_deletion',
         'status',
         'reason',
-        'requested_at'
+        'requested_at',
+        'admin_id',
+        'approved_by_name',
+        'approved_at'
+
     ];
 
     protected $casts = [
         'target_date' => 'date',
-        'requested_at' => 'datetime'
+        'requested_at' => 'datetime',
+        'approved_at' => 'datetime'
     ];
 
     public function details()

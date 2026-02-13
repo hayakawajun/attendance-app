@@ -46,7 +46,7 @@
                     <th class="time">出勤</th>
                     <th class="time">退勤</th>
                     <th class="time">休憩</th>
-                    <th class="time">勤務</th>
+                    <th class="time">合計</th>
                     <th class="detail">詳細</th>
                 </tr>
             </thead>

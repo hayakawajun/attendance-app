@@ -175,6 +175,50 @@ input[type="text"]:focus::placeholder {
     color: white;
 }
 
+/* タブ */
+.tab-panel {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.tab-label {
+    font-size: 14px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.original {
+    margin-left: 40px;
+}
+
+.pending {
+    margin-left: 80px;
+}
+
+input[name="tab__name"] {
+    display: none;
+}
+
+.border {
+    border-top: solid 1px black;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+.original-info,
+.pending-info {
+    display: none;
+}
+
+.original__tab-switch:checked~.original-info,
+.pending__tab-switch:checked~.pending-info {
+    display: block;
+}
+
+.tab-panel input:checked+.tab-label {
+    font-weight: bold;
+}
+
 /* タブレット向けブレイクポイント */
 @media screen and (max-width: 768px) {
     .col__left {
@@ -192,6 +236,19 @@ input[type="text"]:focus::placeholder {
     .user-name {
         padding-left: 0;
         text-align: center;
+    }
+    .tab-panel {
+        margin-top: 10px;
+    }
+    .original {
+        margin-left: 30px;
+    }
+    .pending {
+        margin-left: 50px;
+    }
+    .border {
+        margin-top: 10px;
+        margin-bottom: 20px;
     }
 }
 
@@ -229,5 +286,20 @@ input[type="text"]:focus::placeholder {
     .status {
         font-size: 12px;
         margin-top: 10px;
+    }
+    .tab-panel {
+        margin-top: 0;
+    }
+    .original {
+        font-size: 12px;
+        margin-left: 20px;
+    }
+    .pending {
+        font-size: 12px;
+        margin-left: 30px;
+    }
+    .border {
+        margin-top: 3px;
+        margin-bottom: 20px;
     }
 }

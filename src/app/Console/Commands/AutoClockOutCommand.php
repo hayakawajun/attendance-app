@@ -57,13 +57,12 @@ class AutoClockOutCommand extends Command
                     ->addDay()
                     ->startOfDay()
                     ->addHours(4)
-                    ->addMinutes(59)
-                    ->addSeconds(59);
+                    ->addMinutes(59);
 
                 $attendance->rests()
                     ->whereNull('end_time')
                     ->update([
-                        'end_time' => $limitTime->copy()->subSecond()
+                        'end_time' => $limitTime->copy()->subMinute()
                     ]);
 
                 $attendance->update([
@@ -72,6 +71,6 @@ class AutoClockOutCommand extends Command
             }
         });
 
-        $this->info($targetAttendances->count() . ' 件の勤怠データを自動補完しました。');
+        $this->info($targetAttendances->count().'件の勤怠データを自動補完しました。');
     }
 }

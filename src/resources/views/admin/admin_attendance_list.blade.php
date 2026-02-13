@@ -42,6 +42,44 @@
         </div>
     </div>
 
+    <div class="index">
+        <table class="attendance__table">
+            <colgroup>
+                <col class="col__left">
+                <col class="col__center" span="4">
+                <col class="col__right">
+            </colgroup>
+            <thead>
+                <tr class="attendance__table-header">
+                    <th class="name">名前</th>
+                    <th class="time">出勤</th>
+                    <th class="time">退勤</th>
+                    <th class="time">休憩</th>
+                    <th class="time">合計</th>
+                    <th class="detail">詳細</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($attendances as $attendance)
+                    <tr class="attendance__table-row">
+                        <td class="name">{{ $attendance->user->name }}</td>
+                        <td class="time">{{ $attendance->clock_in->format('H:i') }}</td>
+                        <td class="time">{{ $attendance->clock_out?->format('H:i') }}</td>
+                        <td class="time">{{ $attendance->total_rest_time }}</td>
+                        <td class="time">{{ $attendance->total_working_time }}</td>
+                        <td class="detail">
+                            <a class="detail__link" href="{{ route('detail.show',['id' => $attendance->id ]) }}">詳細</a>
+                            @if($attendance->attendanceRequests->where('status', $statusPending)->isNotEmpty())
+                                <span class="pending">申請中</span>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+
+        </table>
+    </div>
+
 </div>
 @endsection
 
