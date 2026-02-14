@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\DetailService;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -13,9 +14,14 @@ use App\Http\Requests\ApplicationRequest;
 
 class AttendanceRequestController extends Controller
 {
-    public function show(Request $request,$id)
+    public function showDetail(Request $request, $id, DetailService $service)
     {
-        $user = Auth::user();
+        $data = $service->getDetailData((int)$id, auth()->id(), $request->query('date'));
+
+        return view('attendance_detail', $data);
+
+
+        /**$user = Auth::user();
 
         if($id == 0){
             $targetDate = $request->query('date');
@@ -41,7 +47,7 @@ class AttendanceRequestController extends Controller
 
         $requestDetails = null;
         if($pendingRequest) {
-            $requestDetails = $pendingRequest->details->groupBy('type');
+            $requestDetails = $pendingRequest->details;
         }
 
         return view('attendance_detail',[
@@ -50,7 +56,7 @@ class AttendanceRequestController extends Controller
             'date' => $date,
             'pendingRequest' => $pendingRequest,
             'requestDetails' => $requestDetails
-        ]);
+        ]);**/
     }
 
     public function store(ApplicationRequest $request)
@@ -105,10 +111,6 @@ class AttendanceRequestController extends Controller
             ])->with('success','削除申請を送信しました');
         }
 
-        /* 毎日AM5:01に退勤・休憩終了の未打刻レコードを自動で埋めるよう設定していますが、
-         * ローカルではその時刻にLaravelが起動しておらず、自動処理が行われない場合が考えられるので、
-         * 下記のような退勤未打刻の勤怠に対して修正申請を受付けない記述を残しています。
-        */
         if($request->filled('attendance_id')) {
             $attendance = Attendance::find($request->attendance_id);
 

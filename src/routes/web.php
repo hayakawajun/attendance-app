@@ -42,7 +42,7 @@ Route::middleware(['auth','verified'])->group(function()
     Route::get('attendance/list/{year?}/{month?}',[AttendanceController::class,'index'])
         ->name('attendance.index');
 
-    Route::get('attendance/detail/{id}',[AttendanceRequestController::class,'show'])
+    Route::get('attendance/detail/{id}',[AttendanceRequestController::class,'showDetail'])
         ->name('detail.show');
     Route::post('attendance/request',[AttendanceRequestController::class,'store'])
         ->name('attendance.request');

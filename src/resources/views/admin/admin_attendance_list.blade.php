@@ -68,7 +68,7 @@
                         <td class="time">{{ $attendance->total_rest_time }}</td>
                         <td class="time">{{ $attendance->total_working_time }}</td>
                         <td class="detail">
-                            <a class="detail__link" href="{{ route('detail.show',['id' => $attendance->id ]) }}">詳細</a>
+                            <a class="detail__link" href="{{ route('admin.show_detail',['id' => $attendance->id ]) }}">詳細</a>
                             @if($attendance->attendanceRequests->where('status', $statusPending)->isNotEmpty())
                                 <span class="pending">申請中</span>
                             @endif

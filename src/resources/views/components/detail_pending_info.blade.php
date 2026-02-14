@@ -100,6 +100,14 @@
                     <td></td>
                 </tr>
 
+                @if($pendingRequest->is_deletion)
+                    <tr class="detail__table-row">
+                        <td class="label">勤怠</td>
+                        <td class="reason-text" colspan="3">勤怠情報を削除します</td>
+                        <td></td>
+                    </tr>
+                @endif
+
                 @if(isset($requestDetails['attendance']))
                     @php $att = $requestDetails['attendance']->first(); @endphp
                     <tr class="detail__table-row">
