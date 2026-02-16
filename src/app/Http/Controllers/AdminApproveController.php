@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\DetailService;
+use App\Services\AttendanceValidationService;
+use App\Services\AttendanceRequestService;
+use App\Services\AttendanceFinalizeService;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\AttendanceRequest;
@@ -60,8 +64,26 @@ class AdminApproveController extends Controller
         ]);**/
     }
 
-    public function updateOrCreate(ApplicationRequest $request)
-    {
+    public function directUpdate(
+        ApplicationRequest $request,
+        AttendanceValidationService $validationService,
+        AttendanceRequestService $requestService,
+        AttendanceFinalizeService $finalizeService
+    ){
+        $finalizeRequest = DB::transaction(function() use ($request, $validationService, $requestService, $finalizeService) {
+            $validationService->validate($request->all(), (int)$request->staff_id, true);
 
+            $attendanceRequest = $requestService->createRequest($request->all(),(int)$request->staff_id, true);
+
+            return $finalizeService->apply($attendanceRequest->id);
+        });
+
+        $targetDate = Carbon::parse($finalizeRequest->target_date);
+
+        return redirect()->route('admin.day_index',[
+            'year' => $targetDate->year,
+            'month' => $targetDate->month,
+            'day' => $targetDate->day
+        ])->with('success','修正を反映しました');
     }
 }

@@ -50,6 +50,11 @@
                 <col class="col__right">
             </colgroup>
             <thead>
+                @if(session('success'))
+                    <tr class="message__table-row success">
+                        <td class="message" colspan="6">{{ session('success') }}</td>
+                    </tr>
+                @endif
                 <tr class="attendance__table-header">
                     <th class="name">名前</th>
                     <th class="time">出勤</th>

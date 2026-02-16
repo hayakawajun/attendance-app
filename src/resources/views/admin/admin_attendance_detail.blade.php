@@ -18,13 +18,14 @@
         @include('components.detail_pending_info')
 
     @else
-        <form class="application__form" action="" method="">
+        <form class="application__form" action="{{ route('admin.direct_update') }}" method="post">
             @csrf
 
             @if($attendance)
                 <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
             @endif
             <input type="hidden" name="work_date" value="{{ $date }}">
+            <input type="hidden" name="staff_id" value="{{ $staff->id }}">
 
             <div class="content">
                 <table class="detail__table">
@@ -43,7 +44,7 @@
 
                     <tr class="detail__table-row">
                         <td class="label">名前</td>
-                        <td class="user-name" colspan="3">{{ $name }}</td>
+                        <td class="user-name" colspan="3">{{ $staff->name }}</td>
                         <td></td>
                     </tr>
 

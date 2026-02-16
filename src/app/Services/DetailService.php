@@ -38,11 +38,11 @@ class DetailService
         }
 
         return [
-            'name'           => $staff->name,
-            'attendance'     => $attendance,
-            'date'           => $date,
+            'staff' => $staff,
+            'attendance' => $attendance,
+            'date' => $date,
             'pendingRequest' => $pendingRequest,
-            'requestDetails' => $pendingRequest ? $pendingRequest->details : null,
+            'requestDetails' => $pendingRequest ? $pendingRequest->details->groupBy('type') : collect([])
         ];
     }
 }

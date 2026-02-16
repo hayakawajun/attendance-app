@@ -25,7 +25,7 @@
 
                 <tr class="detail__table-row">
                     <td class="label">名前</td>
-                    <td class="user-name" colspan="3">{{ $name }}</td>
+                    <td class="user-name" colspan="3">{{ $staff->name }}</td>
                     <td></td>
                 </tr>
 
@@ -88,7 +88,7 @@
 
                 <tr class="detail__table-row">
                     <td class="label">名前</td>
-                    <td class="user-name" colspan="3">{{ $name }}</td>
+                    <td class="user-name" colspan="3">{{ $staff->name }}</td>
                     <td></td>
                 </tr>
 

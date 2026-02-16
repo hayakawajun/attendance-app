@@ -150,6 +150,41 @@
     padding: 4px;
 }
 
+/* 管理者による勤怠の直接修正後に表示するメッセージ */
+.message__table-row {
+    width: 100%;
+}
+
+.success {
+    background-color: #1db4cb;
+}
+
+.message {
+    color: white;
+    font-weight: normal;
+    padding-top: 10px;
+    padding-left: 50px;
+    padding-bottom: 10px;
+    animation: fadeIn 1s ease-out 0s forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        padding-left: 100px;
+    }
+
+    20% {
+        opacity: 0.7;
+        padding-left: 55px;
+    }
+
+    25% {
+        opacity: 1;
+        padding-left: 50px;
+    }
+}
+
 /* タブレット向けブレイクポイント */
 @media screen and (max-width: 768px) {
     .months {

@@ -24,6 +24,8 @@ Route::middleware(['auth:admin'])->group(function()
         ->name('admin.day_index');
     Route::get('/admin/attendance/{id}',[AdminApproveController::class,'showDetail'])
         ->name('admin.show_detail');
+    Route::post('/admin/direct_update',[AdminApproveController::class,'directUpdate'])
+        ->name('admin.direct_update');
 });
 
 //一般スタッフ用ページを開く際のミドルウェアグループ

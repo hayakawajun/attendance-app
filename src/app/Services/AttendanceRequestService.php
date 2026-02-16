@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Attendance;
+use App\Models\Rest;
+use App\Models\AttendanceRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
+class AttendanceRequestService
+{
+    public function createRequest(array $input, int $userId, bool $isAdmin = false)
+    {
+        return DB::transaction(function () use ($input, $userId, $isAdmin) {
+            $attendanceId = ($input['attendance_id'] == 0) ? null : $input['attendance_id'];
+            $isDeletion = ($input['request_type'] ?? '') === 'delete';
+            $workDate = $input['work_date'];
+
+            // 1. 申請親レコード（attendance_requests）の作成
+            // 管理者の場合はステータスを最初から「承認済み」にし、承認者情報を記録する
+            $attendanceRequest = AttendanceRequest::create([
+                'attendance_id'    => $attendanceId,
+                'user_id'          => $userId,
+                'target_date'      => $workDate,
+                'status'           => $isAdmin ? AttendanceRequest::STATUS_APPROVED : AttendanceRequest::STATUS_PENDING,
+                'is_deletion'      => $isDeletion,
+                'reason'           => $input['reason'],
+                'requested_at'     => now(),
+                'admin_id'         => $isAdmin ? auth()->id() : null,
+                'approved_at'      => $isAdmin ? now() : null,
+                'approved_by_name' => $isAdmin ? auth()->user()->name : null
+            ]);
+
+            // 削除申請の場合は、書き換え内容（details）が存在しないためここで返却
+            if ($isDeletion) {
+                return $attendanceRequest;
+            }
+
+            // 2. 勤務時間の詳細レコード（attendance_request_details）作成
+            $attendanceRequest->details()->create([
+                'type'          => 'attendance',
+                'original_id'   => $attendanceId,
+                'original_type' => Attendance::class,
+                'start_time'    => $this->parseTime($workDate, $input['attendance_start_time']),
+                'end_time'      => $this->parseTime($workDate, $input['attendance_end_time'])
+            ]);
+
+            // 3. 休憩時間の詳細レコード作成（既存分と新規追加分）
+            $this->createRestDetails($attendanceRequest, $workDate, $input);
+
+            return $attendanceRequest;
+        });
+    }
+
+    // 休憩の詳細レコードを一括作成するメソッド
+    private function createRestDetails($attendanceRequest, $workDate, $input)
+    {
+        // 既存休憩の修正（rests[id][start_time] 形式を想定）
+        if (isset($input['rests']) && is_array($input['rests'])) {
+            foreach ($input['rests'] as $restId => $times) {
+                if (!empty($times['start_time']) && !empty($times['end_time'])) {
+                    $attendanceRequest->details()->create([
+                        'type'          => 'rest',
+                        'original_id'   => $restId,
+                        'original_type' => Rest::class,
+                        'start_time'    => $this->parseTime($workDate, $times['start_time']),
+                        'end_time'      => $this->parseTime($workDate, $times['end_time'])
+                    ]);
+                }
+            }
+        }
+
+        // 新規休憩の追加（new_rests[0][start_time] 形式を想定）
+        if (isset($input['new_rests']) && is_array($input['new_rests'])) {
+            foreach ($input['new_rests'] as $times) {
+                if (!empty($times['start_time']) && !empty($times['end_time'])) {
+                    $attendanceRequest->details()->create([
+                        'type'          => 'rest',
+                        'original_id'   => null,
+                        'original_type' => Rest::class,
+                        'start_time'    => $this->parseTime($workDate, $times['start_time']),
+                        'end_time'      => $this->parseTime($workDate, $times['end_time'])
+                    ]);
+                }
+            }
+        }
+    }
+
+    // 入力フォームからの文字列をDB用の保存形式に変換するメソッド
+    private function parseTime($baseDate, $inputTime)
+    {
+        if(empty($inputTime) || !str_contains($inputTime, ':')) {
+            return null;
+        }
+
+        $dt = Carbon::parse($baseDate);
+
+        $parts = explode(':', $inputTime);
+        if(count($parts) < 2) {
+            return null;
+        }
+        $hour = $parts[0];
+        $minute = $parts[1];
+
+        return $dt->startOfDay()->addHours((int)$hour)->addMinutes((int)$minute);
+    }
+}
