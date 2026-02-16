@@ -16,7 +16,7 @@ class AdminsTableSeeder extends Seeder
     public function run()
     {
         $param = [
-            'name' => '管野理',
+            'name' => '管理屋崎　省吾',
             'email' => 'admin@test.com',
             'email_verified_at' => '2026-01-01 00:00:01',
             'password' => Hash::make('adminpass'),

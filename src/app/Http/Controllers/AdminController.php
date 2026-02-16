@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
 use App\Models\Attendance;
 use App\Models\AttendanceRequest;
+use App\Models\User;
 
 use Carbon\Carbon;
 
@@ -31,5 +32,12 @@ class AdminController extends Controller
         $statusPending = AttendanceRequest::STATUS_PENDING;
 
         return view('admin.admin_attendance_list',compact('attendances','date','statusPending'));
+    }
+
+    public function staffIndex()
+    {
+        $staffs = User::all();
+
+        return view('admin.admin_staff_list',compact('staffs'));
     }
 }
