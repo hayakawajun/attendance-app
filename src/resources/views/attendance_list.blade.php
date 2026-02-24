@@ -87,5 +87,5 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('js/month_picker.js') }}">></script>
+<script src="{{ asset('js/month_picker.js') }}"></script>
 @endsection

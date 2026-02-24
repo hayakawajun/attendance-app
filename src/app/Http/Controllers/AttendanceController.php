@@ -108,7 +108,7 @@ class AttendanceController extends Controller
     }
 
     // 月次の勤怠一覧を取得するアクション
-    public function index($year = null,$month = null)
+    public function index($year = null, $month = null)
     {
         $year = $year ?? now()->year;
         $month = $month ?? now()->month;

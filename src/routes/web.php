@@ -28,6 +28,12 @@ Route::middleware(['auth:admin'])->group(function()
     Route::get('/admin/staff/list',
         [AdminController::class,'staffIndex'])
         ->name('admin.staff_index');
+    Route::get('/admin/attendance/staff/{id}/{year?}/{month?}',
+        [AdminController::class,'individualIndex'])
+        ->name('admin.individual_index');
+    Route::get('/admin/attendance/staff/export/{id}/{year}/{month}',
+        [AdminController::class,'exportCsv'])
+        ->name('admin.export_csv');
 
     Route::get('/admin/attendance/{id}',
         [AdminApproveController::class,'showDetail'])
@@ -63,7 +69,7 @@ Route::middleware(['auth','verified'])->group(function()
         [AttendanceRequestController::class,'showDetail'])
         ->name('detail.show');
     Route::post('attendance/request',
-        [AttendanceRequestController::class,'store'])
+        [AttendanceRequestController::class,'apply'])
         ->name('attendance.request');
 
     Route::get('/stamp_correction_request/list',

@@ -150,7 +150,28 @@
     padding: 4px;
 }
 
-/* 管理者による勤怠の直接修正後に表示するメッセージ */
+/* 管理者用[スタッフ別月次勤怠一覧ページ] CSV出力ボタン */
+.export__csv {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 35px;
+}
+
+.export__button {
+    display: block;
+    background-color: black;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    padding: 10px 35px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 管理者用[勤怠一覧ページ] 勤怠の直接修正後に表示するメッセージ */
 .message__table-row {
     width: 100%;
 }
@@ -248,6 +269,14 @@
         border-radius: 3px;
         padding: 3px;
     }
+    .export__csv {
+        margin-top: 30px;
+    }
+    .export__button {
+        font-size: 14px;
+        padding: 8px 25px;
+        cursor: pointer;
+    }
 }
 
 /* スマートフォン向けブレイクポイント */
@@ -283,5 +312,14 @@
         font-size: 9px;
         border: none;
         padding: 0px;
+    }
+    .export__csv {
+        margin-top: 25px;
+        justify-content: center;
+    }
+    .export__button {
+        font-size: 14px;
+        padding: 8px 25px;
+        cursor: pointer;
     }
 }

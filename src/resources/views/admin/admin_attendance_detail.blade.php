@@ -21,7 +21,9 @@
         <form class="application__form" action="{{ route('admin.direct_update') }}" method="post">
             @csrf
 
-            @if($attendance)
+            @if(!$attendance)
+                <input type="hidden" name="attendance_id" value="0">
+            @else
                 <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
             @endif
             <input type="hidden" name="work_date" value="{{ $date }}">

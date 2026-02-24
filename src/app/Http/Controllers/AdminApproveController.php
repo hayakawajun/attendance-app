@@ -20,7 +20,7 @@ class AdminApproveController extends Controller
     {
         $data = $service->getDetailData(
             (int)$id,
-            $id == 0 ? $request->query('user_id') : null,
+            $request->query('user_id'),
             $request->query('date')
         );
 

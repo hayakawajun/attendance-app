@@ -10,8 +10,9 @@ trigger.addEventListener('click', () => {
 });
 
 picker.addEventListener('change', (e) => {
+    const baseUrl = e.target.dataset.url;
     const val = e.target.value;
-    if (!val) return;
+    if (!val || !baseUrl) return;
     const [year, month] = val.split('-');
-    window.location.href = `/attendance/list/${year}/${month}`;
+    window.location.href = `${baseUrl}/${year}/${month}`;
 });

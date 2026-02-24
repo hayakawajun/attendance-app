@@ -34,7 +34,7 @@
                         <td class="name">{{ $staff->name }}</td>
                         <td class="email">{{ $staff->email }}</td>
                         <td class="detail">
-                            <a class="detail__link" href="">詳細</a>
+                            <a class="detail__link" href="{{ route('admin.individual_index',['id' => $staff->id ]) }}">詳細</a>
                         </td>
                     </tr>
                 @endforeach

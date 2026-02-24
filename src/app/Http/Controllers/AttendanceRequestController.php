@@ -61,7 +61,30 @@ class AttendanceRequestController extends Controller
         ]);**/
     }
 
-    public function store(ApplicationRequest $request)
+    public function apply(
+        ApplicationRequest $request,
+        AttendanceValidationService $validationService,
+        AttendanceRequestService $requestService
+    ){
+        $data = DB::transaction(function() use ($request, $validationService, $requestService) {
+            $validationService->validate($request->all(), (int)$request->staff_id, true);
+
+            $attendanceRequest = $requestService->createRequest($request->all(),(int)$request->staff_id, false);
+
+            return $attendanceRequest;
+        });
+
+        $targetDate = Carbon::parse($data->target_date);
+
+        return redirect()->route('detail.show',[
+            'id' => $data->attendance_id ?? 0,
+            'date' => $targetDate->format('Y-m-d')
+        ])->with('success','修正申請を送信しました');
+    }
+
+
+// 使わなくなった申請アクション
+/*    public function store(ApplicationRequest $request)
     {
         $workDate = $request->input('work_date');
 
@@ -190,5 +213,5 @@ class AttendanceRequestController extends Controller
         $minute = $parts[1];
 
         return $dt->startOfDay()->addHours((int)$hour)->addMinutes((int)$minute);
-    }
+    }*/
 }
