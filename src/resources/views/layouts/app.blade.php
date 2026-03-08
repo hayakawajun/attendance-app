@@ -28,7 +28,7 @@
                     @csrf
                         <a class="header__nav-link" href="{{ route('admin.day_index') }}">勤怠一覧</a>
                         <a class="header__nav-link" href="{{ route('admin.staff_index') }}">スタッフ一覧</a>
-                        <a class="header__nav-link" href="">申請一覧</a>
+                        <a class="header__nav-link" href="{{ route('request.list') }}">申請一覧</a>
                         <button class="logout__btn">ログアウト</button>
                     </form>
                 @elseauth

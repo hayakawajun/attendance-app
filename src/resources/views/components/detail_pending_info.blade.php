@@ -103,7 +103,7 @@
                 @if($pendingRequest->is_deletion)
                     <tr class="detail__table-row">
                         <td class="label">勤怠</td>
-                        <td class="reason-text" colspan="3">勤怠情報を削除します</td>
+                        <td class="reason-text" colspan="3"><span>勤怠情報の削除申請です</span></td>
                         <td></td>
                     </tr>
                 @endif

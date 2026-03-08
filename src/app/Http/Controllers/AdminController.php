@@ -35,7 +35,6 @@ class AdminController extends Controller
         return view('admin.admin_attendance_list',compact('attendances','date','statusPending'));
     }
 
-
     // スタッフ一覧を取得するアクション
     public function staffIndex()
     {

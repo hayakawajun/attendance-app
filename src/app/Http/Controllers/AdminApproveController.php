@@ -10,12 +10,14 @@ use App\Services\AttendanceFinalizeService;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Attendance;
+use App\Models\Rest;
 use App\Models\AttendanceRequest;
 use Carbon\Carbon;
 use App\Http\Requests\ApplicationRequest;
 
 class AdminApproveController extends Controller
 {
+    // 勤怠詳細の表示
     public function showDetail(Request $request, $id, DetailService $service)
     {
         $data = $service->getDetailData(
@@ -64,6 +66,7 @@ class AdminApproveController extends Controller
         ]);**/
     }
 
+    // スタッフの勤怠を直接修正するアクション
     public function directUpdate(
         ApplicationRequest $request,
         AttendanceValidationService $validationService,
@@ -85,5 +88,26 @@ class AdminApproveController extends Controller
             'month' => $targetDate->month,
             'day' => $targetDate->day
         ])->with('success','修正を反映しました');
+    }
+
+    // 修正申請の詳細を表示
+    public function showRequest(int $attendanceCorrectRequestId)
+    {
+        $attendanceRequest = AttendanceRequest::with(['user','details.original'])
+            ->findOrFail($attendanceCorrectRequestId);
+
+        $attendanceDetail = $attendanceRequest->details->first(function ($detail) {
+            return $detail->original_type === Attendance::class;
+        });
+
+        $restDetails = $attendanceRequest->details->filter(function ($detail) {
+            return $detail->original_type === Rest::class;
+        });
+
+        return view('admin.admin_attendance_approving',[
+            'attendanceRequest' => $attendanceRequest,
+            'attendanceDetail' => $attendanceDetail,
+            'restDetails' => $restDetails
+        ]);
     }
 }

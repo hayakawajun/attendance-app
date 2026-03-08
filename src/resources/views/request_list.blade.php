@@ -50,7 +50,7 @@
                         @foreach($pendingRequests as $request)
                             <tr class="request-list__table-row">
                                 <td class="status">承認<br class="smart-phone__br">待ち</td>
-                                <td class="name">{{ $name }}</td>
+                                <td class="name">{{ $request->user->name }}</td>
                                 <td class="date">{{ $request->target_date->format('Y') }}
                                     <span class="smart-phone__year--slash">/</span>
                                     <span class="smart-phone__year--chinese">年</span>
@@ -61,7 +61,11 @@
                                     <span class="smart-phone__year--chinese">年</span>
                                     <br class="smart-phone__br">{{ $request->requested_at->format('m/d') }}</td>
                                 <td class="detail">
-                                    <a class="detail__link" href="{{ route('detail.show',['id' => $request->attendance_id ?? 0,'date' => $request->target_date->format('Y-m-d') ]) }}">詳細</a>
+                                    @auth('admin')
+                                        <a class="detail__link" href="{{ route('admin.show_request',['attendance_correct_request_id' => $request->id ]) }}">詳細</a>
+                                    @elseauth
+                                        <a class="detail__link" href="{{ route('detail.show',['id' => $request->attendance_id ?? 0,'date' => $request->target_date->format('Y-m-d') ]) }}">詳細</a>
+                                    @endauth
                                 </td>
                             </tr>
                         @endforeach
@@ -77,8 +81,4 @@
 
     </div>
 </div>
-@endsection
-
-@section('script')
-<script src="{{ asset('js/month_picker.js') }}">></script>
 @endsection

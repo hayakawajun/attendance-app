@@ -48,6 +48,10 @@
     padding-left: 20px;
 }
 
+.reason-text span {
+    color: #f06464;
+}
+
 .parameter {
     text-align: center;
 }
@@ -175,6 +179,27 @@ input[type="text"]:focus::placeholder {
     color: white;
 }
 
+.delete__request {
+    display: inline-block;
+    color: #f06464;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
+    letter-spacing: 0.1em;
+}
+
+.already__approved {
+    display: inline-block;
+    background-color: rgb(55, 55, 55);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    padding: 10px 35px;
+}
+
 /* タブ */
 .tab-panel {
     width: 100%;
@@ -234,6 +259,10 @@ input[name="tab__name"] {
         padding-left: 30px;
     }
     .user-name {
+        padding-left: 0;
+        text-align: center;
+    }
+    .reason-text {
         padding-left: 0;
         text-align: center;
     }

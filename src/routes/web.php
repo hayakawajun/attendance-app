@@ -8,7 +8,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceRequestController;
 use App\Http\Controllers\RequestListController;
 
-//管理者用のログイン・ログアウトルーティング
+// 管理者用のログイン・ログアウトルーティング
 Route::get('/admin/login', function(){
     return view('auth.admin_login');})
     ->name('admin.login');
@@ -19,7 +19,7 @@ Route::post('/admin/logout',
     [AuthenticatedSessionController::class,'destroy'])
     ->name('admin.logout');
 
-//管理者用ページを開く際のミドルウェアグループ
+// 管理者用ページを開く際のミドルウェアグループ
 Route::middleware(['auth:admin'])->group(function()
 {
     Route::get('/admin/attendance/list/{year?}/{month?}/{day?}',
@@ -41,9 +41,12 @@ Route::middleware(['auth:admin'])->group(function()
     Route::post('/admin/direct_update',
         [AdminApproveController::class,'directUpdate'])
         ->name('admin.direct_update');
+    Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}',
+        [AdminApproveController::class,'showRequest'])
+        ->name('admin.show_request');
 });
 
-//一般スタッフ用ページを開く際のミドルウェアグループ
+// 一般スタッフ用ページを開く際のミドルウェアグループ
 Route::middleware(['auth','verified'])->group(function()
 {
     Route::get('/attendance',
@@ -71,8 +74,10 @@ Route::middleware(['auth','verified'])->group(function()
     Route::post('attendance/request',
         [AttendanceRequestController::class,'apply'])
         ->name('attendance.request');
-
-    Route::get('/stamp_correction_request/list',
-        [RequestListController::class,'index'])
-        ->name('request.list');
 });
+
+// 申請一覧画面のルーティング。通過している認証ミドルウェアによって呼び出すアクションを振り分け。
+Route::get('/stamp_correction_request/list',
+    [RequestListController::class,'index'])
+    ->middleware(['auth:admin,web','verified','switch.controller'])
+    ->name('request.list');
