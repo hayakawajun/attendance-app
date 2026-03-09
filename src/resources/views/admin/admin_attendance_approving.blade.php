@@ -13,9 +13,13 @@
         <h1 class="content-title">勤怠詳細</h1>
     </div>
 
-    <form class="application__form" action="" method="post">
-        @csrf
-        <input type="hidden" name="attendance_id" value="{{ $attendanceRequest->id }}">
+    @if($attendanceRequest->status === 'pending')
+        <form class="application__form" action="{{ route('admin.approve',['attendance_correct_request_id' => $attendanceRequest->id ]) }}" method="post">
+            @csrf
+            <input type="hidden" name="attendance_id" value="{{ $attendanceRequest->id }}">
+    @elseif($attendanceRequest->status === 'approved')
+        <div class="application__form">
+    @endif
 
         <div class="content">
             <table class="detail__table">
@@ -108,6 +112,10 @@
             @endif
         </div>
 
-    </form>
+    @if($attendanceRequest->status === 'pending')
+        </form>
+    @elseif($attendanceRequest->status === 'approved')
+        </div>
+    @endif
 </div>
 @endsection

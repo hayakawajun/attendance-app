@@ -110,4 +110,14 @@ class AdminApproveController extends Controller
             'restDetails' => $restDetails
         ]);
     }
+
+    // 修正申請の承認を行うアクション
+    public function approve(int $attendanceCorrectRequestId, AttendanceFinalizeService $finalizeService)
+    {
+        $finalizeService->apply($attendanceCorrectRequestId);
+
+        return redirect()
+            ->route('admin.show_request',['attendance_correct_request_id' => $attendanceCorrectRequestId])
+            ->with('success','修正申請を承認しました');
+    }
 }

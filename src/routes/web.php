@@ -44,6 +44,9 @@ Route::middleware(['auth:admin'])->group(function()
     Route::get('/stamp_correction_request/approve/{attendance_correct_request_id}',
         [AdminApproveController::class,'showRequest'])
         ->name('admin.show_request');
+    Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}',
+        [AdminApproveController::class,'approve'])
+        ->name('admin.approve');
 });
 
 // 一般スタッフ用ページを開く際のミドルウェアグループ
