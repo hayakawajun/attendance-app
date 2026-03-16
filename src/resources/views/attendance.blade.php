@@ -12,7 +12,9 @@
     <div class="attendance__group">
         <p class="attendance-status">{{ $attendance->status }}</p>
         <p class="today">{{ $attendance->today_display }}</p>
-        <p class="clock" id="current-time"></p>
+        <p class="clock" id="current-time">
+            {{ now()->format('H') }}<span class="clock-separator">:</span>{{ now()->format('i') }}
+        </p>
         <div class="attendance-register">
             @if($attendance->status === '勤務外')
                 <form class="attendance-register__form" action="{{ route('attendance.clock_in') }}" method="post">

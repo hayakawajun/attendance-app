@@ -64,7 +64,7 @@ class Attendance extends Model
         return '出勤中';
     }
 
-    // 現在日時を取得するアクセサ today_display
+    // 現在の日付を取得するアクセサ today_display
     public function getTodayDisplayAttribute()
     {
         return now()->isoFormat('YYYY年M月D日(ddd)');
