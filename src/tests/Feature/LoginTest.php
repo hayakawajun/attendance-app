@@ -22,12 +22,12 @@ class LoginTest extends TestCase
 
     public function test_login_email_validation()
     {
-        User::create([
+        $user = User::create([
             'name' => 'テストネーム',
             'email' => 'test@example.com',
-            'email_verified_at' => now(),
             'password' => Hash::make('dummypass')
         ]);
+        $user->markEmailAsVerified();
 
         $response = $this->get('/login');
         $response->assertStatus(200);
@@ -49,12 +49,12 @@ class LoginTest extends TestCase
 
     public function test_login_password_validation()
     {
-        User::create([
+        $user = User::create([
             'name' => 'テストネーム',
             'email' => 'test@example.com',
-            'email_verified_at' => now(),
             'password' => Hash::make('dummypass')
         ]);
+        $user->markEmailAsVerified();
 
         $response = $this->get('/login');
         $response->assertStatus(200);
@@ -76,12 +76,12 @@ class LoginTest extends TestCase
 
     public function test_login_match_validation()
     {
-        User::create([
+        $user = User::create([
             'name' => 'テストネーム',
             'email' => 'test@example.com',
-            'email_verified_at' => now(),
             'password' => Hash::make('dummypass')
         ]);
+        $user->markEmailAsVerified();
 
         $response = $this->get('/login');
         $response->assertStatus(200);

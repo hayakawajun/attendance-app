@@ -88,7 +88,7 @@ class ClockOutTest extends TestCase
         $year = $knownDate->year;
         $month = $knownDate->format('m');
 
-        $response = $this->get("attendance/list/$year/$month");
+        $response = $this->get("/attendance/list/$year/$month");
         $response->assertStatus(200);
 
         $response->assertViewHas('calendar', function($calendar){

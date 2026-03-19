@@ -38,11 +38,6 @@ class Attendance extends Model
         return $this->hasMany(AttendanceRequest::class);
     }
 
-/* なくても大丈夫そう   public function latestRequest()
-    {
-        return $this->hasOne(AttendanceRequest::class)->latestOfMany();
-    } */
-
     public function attendanceRequestDetails()
     {
         return $this->morphMany(AttendanceRequestDetail::class,'original');
@@ -83,10 +78,8 @@ class Attendance extends Model
     {
         return $this->rests->sum(function($rest){
             if(!$rest->start_time || !$rest->end_time) return 0;
-            $restStart = Carbon::parse($rest->start_time)->second(0);
-            $restEnd = Carbon::parse($rest->end_time)->second(0);
 
-            return $restStart->diffInMinutes($restEnd);
+            return $rest->start_time->second(0)->diffInMinutes($rest->end_time->second(0));
         });
     }
 
@@ -102,12 +95,10 @@ class Attendance extends Model
     public function getTotalWorkingTimeAttribute()
     {
         if(!$this->clock_in || !$this->clock_out) return '';
-        $workStart = Carbon::parse($this->clock_in)->second(0);
-        $workEnd = Carbon::parse($this->clock_out)->second(0);
-        $totalMInutes = $workStart->diffInMinutes($workEnd);
 
-        $actualMinutes = $totalMInutes - $this->rest_minutes;
-        $actualMinutes = max(0,$actualMinutes);
+        $totalMinutes = $this->clock_in->diffInMinutes($this->clock_out);
+
+        $actualMinutes = max(0,$totalMinutes - $this->rest_minutes);
 
         return sprintf('%d:%02d',floor($actualMinutes / 60),$actualMinutes % 60);
     }

@@ -18,8 +18,8 @@ class CreateAttendanceRequestDetailsTable extends Migration
             $table->foreignId('attendance_request_id')->constrained()->cascadeOnDelete();
             $table->nullableMorphs('original');
             $table->string('type');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('end_time')->nullable();
             $table->timestamps();
         });
     }

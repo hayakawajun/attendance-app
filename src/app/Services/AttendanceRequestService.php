@@ -42,8 +42,8 @@ class AttendanceRequestService
                 'type'          => 'attendance',
                 'original_id'   => $attendanceId,
                 'original_type' => Attendance::class,
-                'start_time'    => $this->parseTime($workDate, $input['attendance_start_time']),
-                'end_time'      => $this->parseTime($workDate, $input['attendance_end_time'])
+                'start_time'    => $this->parseTimeWithNextDay($workDate, $input['attendance_start_time']),
+                'end_time'      => $this->parseTimeWithNextDay($workDate, $input['attendance_end_time'])
             ]);
 
             // 3. 休憩時間の詳細レコード作成（既存分と新規追加分）
@@ -59,13 +59,21 @@ class AttendanceRequestService
         // 既存休憩の修正（rests[id][start_time] 形式を想定）
         if (isset($input['rests']) && is_array($input['rests'])) {
             foreach ($input['rests'] as $restId => $times) {
-                if (!empty($times['start_time']) && !empty($times['end_time'])) {
+                if (empty($times['start_time']) && empty($times['end_time'])) {
                     $attendanceRequest->details()->create([
                         'type'          => 'rest',
                         'original_id'   => $restId,
                         'original_type' => Rest::class,
-                        'start_time'    => $this->parseTime($workDate, $times['start_time']),
-                        'end_time'      => $this->parseTime($workDate, $times['end_time'])
+                        'start_time'    => null,
+                        'end_time'      => null
+                    ]);
+                }else{
+                    $attendanceRequest->details()->create([
+                        'type'          => 'rest',
+                        'original_id'   => $restId,
+                        'original_type' => Rest::class,
+                        'start_time'    => $this->parseTimeWithNextDay($workDate, $times['start_time']),
+                        'end_time'      => $this->parseTimeWithNextDay($workDate, $times['end_time'])
                     ]);
                 }
             }
@@ -79,30 +87,29 @@ class AttendanceRequestService
                         'type'          => 'rest',
                         'original_id'   => null,
                         'original_type' => Rest::class,
-                        'start_time'    => $this->parseTime($workDate, $times['start_time']),
-                        'end_time'      => $this->parseTime($workDate, $times['end_time'])
+                        'start_time'    => $this->parseTimeWithNextDay($workDate, $times['start_time']),
+                        'end_time'      => $this->parseTimeWithNextDay($workDate, $times['end_time'])
                     ]);
                 }
             }
         }
     }
 
-    // 入力フォームからの文字列をDB用の保存形式に変換するメソッド
-    private function parseTime($baseDate, $inputTime)
+    // 入力フォームからの時刻文字列をDB用の保存形式に変換するメソッド
+    // 5:00未満なら翌日で処理
+    private function parseTimeWithNextDay($workDate, $timeStr)
     {
-        if(empty($inputTime) || !str_contains($inputTime, ':')) {
-            return null;
+        if(!$timeStr) return null;
+
+        $dt = Carbon::parse($workDate);
+        list($hour, $minute) = explode(':', $timeStr);
+
+        $dt->hour((int)$hour)->minute((int)$minute)->second(0);
+
+        if((int)$hour < 5) {
+            $dt->addDay();
         }
 
-        $dt = Carbon::parse($baseDate);
-
-        $parts = explode(':', $inputTime);
-        if(count($parts) < 2) {
-            return null;
-        }
-        $hour = $parts[0];
-        $minute = $parts[1];
-
-        return $dt->startOfDay()->addHours((int)$hour)->addMinutes((int)$minute);
+        return $dt;
     }
 }

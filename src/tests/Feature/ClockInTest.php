@@ -41,8 +41,10 @@ class ClockInTest extends TestCase
         $response = $this->post('/clock_in');
         $response->assertStatus(302);
 
-        /* テストケース一覧の期待挙動には「勤務中」とありますが、
-           参考UIに従い「出勤中」で検証しています。 */
+        /**
+         * テストケース一覧の期待挙動には「勤務中」とありますが、
+         * 参考UIに従い「出勤中」で検証しています。
+         */
         $this->followRedirects($response)->assertSee('出勤中');
 
         $this->assertDatabaseHas('attendances',[
@@ -100,7 +102,7 @@ class ClockInTest extends TestCase
         $year = $knownDate->year;
         $month = $knownDate->format('m');
 
-        $response = $this->get("attendance/list/$year/$month");
+        $response = $this->get("/attendance/list/$year/$month");
         $response->assertStatus(200);
 
         $response->assertViewHas('calendar', function($calendar){

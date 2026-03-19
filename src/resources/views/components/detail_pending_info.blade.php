@@ -123,9 +123,17 @@
                     @foreach($requestDetails['rest'] as $rest)
                         <tr class="detail__table-row">
                             <td class="label">{{ $loop->first ? '休憩' : '休憩'.$loop->iteration }}</td>
-                            <td class="parameter">{{ $rest->start_time->format('H:i') }}</td>
-                            <td class="parameter">〜</td>
-                            <td class="parameter">{{ $rest->end_time->format('H:i') }}</td>
+                            @if(!$rest->start_time && !$rest->end_time)
+                                <td class="reason-text" colspan="3"><span>休憩を取消します</span></td>
+                            @else
+                                <td class="parameter">
+                                    {{ $rest->start_time->format('H:i') }}
+                                </td>
+                                <td class="parameter">〜</td>
+                                <td class="parameter">
+                                    {{ $rest->end_time->format('H:i') }}
+                                </td>
+                            @endif
                             <td></td>
                         </tr>
                     @endforeach

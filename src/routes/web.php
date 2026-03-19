@@ -71,10 +71,10 @@ Route::middleware(['auth','verified'])->group(function()
         [AttendanceController::class,'index'])
         ->name('attendance.index');
 
-    Route::get('attendance/detail/{id}',
+    Route::get('/attendance/detail/{id}',
         [AttendanceRequestController::class,'showDetail'])
         ->name('detail.show');
-    Route::post('attendance/request',
+    Route::post('/attendance/request',
         [AttendanceRequestController::class,'apply'])
         ->name('attendance.request');
 });

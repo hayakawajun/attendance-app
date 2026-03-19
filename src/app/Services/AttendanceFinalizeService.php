@@ -61,11 +61,16 @@ class AttendanceFinalizeService
             $restDetails = $attendanceRequest->details->where('type', 'rest');
             foreach($restDetails as $detail) {
                 if($detail->original_id) {
-                    // 既存休憩の更新
-                    Rest::where('id', $detail->original_id)->update([
-                        'start_time' => $detail->start_time,
-                        'end_time'   => $detail->end_time,
-                    ]);
+                    if(is_null($detail->start_time) && is_null($detail->end_time)) {
+                        Rest::where('id', $detail->original_id)->delete();
+                    }else{
+                        // 既存休憩の更新
+                        Rest::where('id', $detail->original_id)->update([
+                            'start_time' => $detail->start_time,
+                            'end_time'   => $detail->end_time,
+                        ]);
+                    }
+
                 }else{
                     // 申請で新しく追加された休憩の作成
                     Rest::create([

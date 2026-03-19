@@ -74,11 +74,11 @@
                             <tr class="detail__table-row">
                                 <td class="label">{{ $loop->first ? '休憩' : '休憩'.$loop->iteration }}</td>
                                 <td class="parameter">
-                                    {{ $restDetail->start_time->format('H:i') }}
+                                    {{ $restDetail->start_time ? $restDetail->start_time->format('H:i') : ''}}
                                 </td>
                                 <td class="parameter">〜</td>
                                 <td class="parameter">
-                                    {{ $restDetail->end_time->format('H:i') }}
+                                    {{ $restDetail->end_time ? $restDetail->end_time->format('H:i') : '' }}
                                 </td>
                                 <td></td>
                             </tr>

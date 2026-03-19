@@ -20,12 +20,11 @@ class AdminsLoginTest extends TestCase
 
     // メールアドレスが未入力の場合、バリデーションメッセージが表示される。
 
-    public function test_login_email_validation()
+    public function test_admins_login_email_validation()
     {
         Admin::create([
             'name' => '管理者テストネーム',
             'email' => 'admin-test@example.com',
-            'email_verified_at' => now(),
             'password' => Hash::make('adminpass')
         ]);
 
@@ -47,12 +46,11 @@ class AdminsLoginTest extends TestCase
 
     // パスワードが未入力の場合、バリデーションメッセージが表示される。
 
-    public function test_login_password_validation()
+    public function test_admins_login_password_validation()
     {
         Admin::create([
             'name' => '管理者テストネーム',
             'email' => 'admin-test@example.com',
-            'email_verified_at' => now(),
             'password' => Hash::make('adminpass')
         ]);
 
@@ -74,12 +72,11 @@ class AdminsLoginTest extends TestCase
 
     // 登録内容と一致しない場合、バリデーションメッセージが表示される。
 
-    public function test_login_match_validation()
+    public function test_admins_login_match_validation()
     {
         Admin::create([
             'name' => '管理者テストネーム',
             'email' => 'admin-test@example.com',
-            'email_verified_at' => now(),
             'password' => Hash::make('adminpass')
         ]);
 
