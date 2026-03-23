@@ -86,7 +86,7 @@ class ApplicationRequest extends FormRequest
             if($start >= $end) {
                 $validator->errors()->add('attendance_end_time','出勤時間もしくは退勤時間が不適切な値です');
             }elseif($end >= 1740) {
-                $validator->errors()->add('attendance_end_time','退勤時間は勤怠締め時刻「05:00」より前で入力してください');
+                $validator->errors()->add('attendance_end_time','RequestS');
             }
 
             $allRests = [];

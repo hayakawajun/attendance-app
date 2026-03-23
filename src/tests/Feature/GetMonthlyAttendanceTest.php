@@ -278,9 +278,7 @@ class GetMonthlyAttendanceTest extends TestCase
         $response = $this->get("/attendance/list/$year/$month");
         $response->assertStatus(200);
 
-        $detailUrl = route('detail.show',[
-            'id' => $attendance->id
-        ]);
+        $detailUrl = route('detail.show',['id' => $attendance->id ]);
 
         $response->assertSeeInOrder([
             '<span class="target-date">',
@@ -302,14 +300,9 @@ class GetMonthlyAttendanceTest extends TestCase
 
         $response->assertSeeInOrder([
             '勤怠詳細',
-            '2026年',
-            '1月1日',
-            '出勤・退勤',
-            '08:00',
-            '17:00',
-            '休憩',
-            '12:00',
-            '13:00'
+            '2026年','1月1日',
+            '出勤・退勤','08:00','〜','17:00',
+            '休憩','12:00','〜','13:00'
         ]);
     }
 }
