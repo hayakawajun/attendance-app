@@ -35,12 +35,6 @@ class AttendanceCorrectionRequestTest extends TestCase
             'clock_out' => '2026-01-01 17:00'
         ]);
 
-        $rest = Rest::create([
-            'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
-        ]);
-
         $this->actingAs($user);
 
         $response = $this->get("/attendance/detail/$attendance->id");
@@ -52,12 +46,6 @@ class AttendanceCorrectionRequestTest extends TestCase
             'staff_id' => $user->id,
             'attendance_start_time' => '18:00',
             'attendance_end_time' => '17:00',
-            'rests' => [
-                $rest->id => [
-                    'start_time' => '12:00',
-                    'end_time' => '13:00'
-                ]
-            ],
             'reason' => '打刻ミスの為'
         ];
 
@@ -69,7 +57,7 @@ class AttendanceCorrectionRequestTest extends TestCase
          *「出勤時間が不適切な値です」とありますが、
          * 機能要件一覧の機能詳細に従い
          *「出勤時間もしくは退勤時間が不適切な値です」の
-         * バリデーションメッセージで検証しています。
+         * エラーメッセージで検証しています。
          */
         $response->assertSessionHasErrors([
             'attendance_end_time' => '出勤時間もしくは退勤時間が不適切な値です'
@@ -183,12 +171,6 @@ class AttendanceCorrectionRequestTest extends TestCase
             'clock_out' => '2026-01-01 17:00'
         ]);
 
-        $rest = Rest::create([
-            'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
-        ]);
-
         $this->actingAs($user);
 
         $response = $this->get("/attendance/detail/$attendance->id");
@@ -200,12 +182,6 @@ class AttendanceCorrectionRequestTest extends TestCase
             'staff_id' => $user->id,
             'attendance_start_time' => '10:00',
             'attendance_end_time' => '20:00',
-            'rests' => [
-                $rest->id => [
-                    'start_time' => '12:00',
-                    'end_time' => '13:00'
-                ]
-            ],
             'reason' => null
         ];
 

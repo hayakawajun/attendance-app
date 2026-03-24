@@ -75,21 +75,13 @@ class GetMonthlyAttendanceTest extends TestCase
         });
 
         $response->assertSeeInOrder([
-            '<span class="target-date">',
-            '2026/01',
-            '</span>',
+            '<span class="target-date">','2026/01','</span>',
             '<td class="date">',
             '01/01(木)',
-            '08:00',
-            '17:00',
-            '1:00',
-            '8:00',
+            '08:00','17:00','1:00','8:00',
             '<td class="date">',
             '01/02(金)',
-            '17:00',
-            '02:00',
-            '1:00',
-            '8:00'
+            '17:00','02:00','1:00','8:00'
         ], false);
     }
 
@@ -109,9 +101,7 @@ class GetMonthlyAttendanceTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
-            '<span class="target-date">',
-            '2026/01',
-            '</span>'
+            '<span class="target-date">','2026/01','</span>'
         ], false);
     }
 
@@ -152,10 +142,7 @@ class GetMonthlyAttendanceTest extends TestCase
         ]);
 
         $response->assertSeeInOrder([
-            '<a class="moving-date"',
-            $prevUrl,
-            '前月',
-            '</a>'
+            '<a class="moving-date"',$prevUrl,'前月','</a>'
         ], false);
 
         $response = $this->get($prevUrl);
@@ -171,15 +158,10 @@ class GetMonthlyAttendanceTest extends TestCase
         });
 
         $response->assertSeeInOrder([
-            '<span class="target-date">',
-            '2025/12',
-            '</span>',
+            '<span class="target-date">','2025/12','</span>',
             '<td class="date">',
             '12/01(月)',
-            '08:00',
-            '17:00',
-            '1:00',
-            '8:00'
+            '08:00','17:00','1:00','8:00'
         ], false);
     }
 
@@ -220,10 +202,7 @@ class GetMonthlyAttendanceTest extends TestCase
         ]);
 
         $response->assertSeeInOrder([
-            '<a class="moving-date"',
-            $nextUrl,
-            '翌月',
-            '</a>'
+            '<a class="moving-date"',$nextUrl,'翌月','</a>'
         ], false);
 
         $response = $this->get($nextUrl);
@@ -239,15 +218,10 @@ class GetMonthlyAttendanceTest extends TestCase
         });
 
         $response->assertSeeInOrder([
-            '<span class="target-date">',
-            '2026/02',
-            '</span>',
+            '<span class="target-date">','2026/02','</span>',
             '<td class="date">',
             '02/01(日)',
-            '08:00',
-            '17:00',
-            '1:00',
-            '8:00'
+            '08:00','17:00','1:00','8:00'
         ], false);
     }
 
@@ -281,19 +255,11 @@ class GetMonthlyAttendanceTest extends TestCase
         $detailUrl = route('detail.show',['id' => $attendance->id ]);
 
         $response->assertSeeInOrder([
-            '<span class="target-date">',
-            '2026/01',
-            '</span>',
+            '<span class="target-date">','2026/01','</span>',
             '<td class="date">',
             '01/01(木)',
-            '08:00',
-            '17:00',
-            '1:00',
-            '8:00',
-            '<a class="detail__link"',
-            $detailUrl,
-            '詳細',
-            '</a>'
+            '08:00','17:00','1:00','8:00',
+            '<a class="detail__link"',$detailUrl,'詳細','</a>'
         ], false);
 
         $response = $this->get($detailUrl);

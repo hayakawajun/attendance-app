@@ -14,7 +14,7 @@
     </div>
 
     <div class="date-display">
-        <div class="preview">
+        <div class="previous">
             <a class="moving-date" href="{{ route('admin.individual_index', ['id' => $staff->id, 'year' => $prevDate->year, 'month' => $prevDate->month]) }}">
                 <img src="{{ asset('image/left_arrow.png') }}" alt="<<">
                 前月

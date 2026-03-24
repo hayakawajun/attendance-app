@@ -50,8 +50,8 @@ class GetDetailTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
-            '<td class="label">名前</td>',
-            'テストネーム'
+            '勤怠詳細',
+            '<td class="label">名前</td>','テストネーム'
         ], false);
     }
 
@@ -85,9 +85,8 @@ class GetDetailTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
-            '<td class="label">日付</td>',
-            '2026年',
-            '1月1日'
+            '勤怠詳細',
+            '<td class="label">日付</td>','2026年','1月1日'
         ], false);
     }
 
@@ -121,9 +120,8 @@ class GetDetailTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
-            '<td class="label">出勤・退勤</td>',
-            '08:00',
-            '17:00'
+            '勤怠詳細',
+            '<td class="label">出勤・退勤</td>','08:00','〜','17:00'
         ], false);
     }
 
@@ -157,9 +155,8 @@ class GetDetailTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
-            '<td class="label">休憩</td>',
-            '12:00',
-            '13:00'
+            '勤怠詳細',
+            '<td class="label">休憩</td>','12:00','〜','13:00'
         ], false);
     }
 }

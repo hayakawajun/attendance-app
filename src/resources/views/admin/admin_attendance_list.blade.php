@@ -15,7 +15,7 @@
     </div>
 
     <div class="date-display">
-        <div class="preview">
+        <div class="previous">
             <a class="moving-date" href="{{ route('admin.day_index', [
                 'year' => $date->copy()->subDay()->year,
                 'month' => $date->copy()->subDay()->month,
