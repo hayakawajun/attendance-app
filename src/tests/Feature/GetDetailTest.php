@@ -46,7 +46,7 @@ class GetDetailTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get("/attendance/detail/$attendance->id");
+        $response = $this->get("/attendance/detail/{$attendance->id}");
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
@@ -81,7 +81,7 @@ class GetDetailTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get("/attendance/detail/$attendance->id");
+        $response = $this->get("/attendance/detail/{$attendance->id}");
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
@@ -116,7 +116,7 @@ class GetDetailTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get("/attendance/detail/$attendance->id");
+        $response = $this->get("/attendance/detail/{$attendance->id}");
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([
@@ -151,7 +151,7 @@ class GetDetailTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get("/attendance/detail/$attendance->id");
+        $response = $this->get("/attendance/detail/{$attendance->id}");
         $response->assertStatus(200);
 
         $response->assertSeeInOrder([

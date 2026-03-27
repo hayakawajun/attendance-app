@@ -67,7 +67,7 @@ class AttendanceFinalizeService
                         // 既存休憩の更新
                         Rest::where('id', $detail->original_id)->update([
                             'start_time' => $detail->start_time,
-                            'end_time'   => $detail->end_time,
+                            'end_time' => $detail->end_time,
                         ]);
                     }
 
@@ -75,8 +75,8 @@ class AttendanceFinalizeService
                     // 申請で新しく追加された休憩の作成
                     Rest::create([
                         'attendance_id' => $targetAttendanceId, // 採番されたIDを確実に紐付け
-                        'start_time'    => $detail->start_time,
-                        'end_time'      => $detail->end_time
+                        'start_time' => $detail->start_time,
+                        'end_time' => $detail->end_time
                     ]);
                 }
             }
@@ -91,8 +91,9 @@ class AttendanceFinalizeService
     private function finalizeStatus($attendanceRequest)
     {
         $attendanceRequest->update([
-            'status'           => AttendanceRequest::STATUS_APPROVED,
-            'approved_at'      => now(),
+            'status' => AttendanceRequest::STATUS_APPROVED,
+            'admin_id' => auth()->user()->id,
+            'approved_at' => now(),
             'approved_by_name' => auth()->user()->name,
         ]);
 

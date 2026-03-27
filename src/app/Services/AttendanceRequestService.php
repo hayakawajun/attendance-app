@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class AttendanceRequestService
 {
-    public function createRequest(array $input, int $userId, bool $isAdmin = false)
+    public function createRequest(array $input, int $userId)
     {
-        return DB::transaction(function () use ($input, $userId, $isAdmin) {
+        return DB::transaction(function () use ($input, $userId) {
             $attendanceId = ($input['attendance_id'] == 0) ? null : $input['attendance_id'];
             $isDeletion = ($input['request_type'] ?? '') === 'delete';
             $workDate = $input['work_date'];
@@ -23,13 +23,13 @@ class AttendanceRequestService
                 'attendance_id'    => $attendanceId,
                 'user_id'          => $userId,
                 'target_date'      => $workDate,
-                'status'           => $isAdmin ? AttendanceRequest::STATUS_APPROVED : AttendanceRequest::STATUS_PENDING,
+                'status'           => AttendanceRequest::STATUS_PENDING,
                 'is_deletion'      => $isDeletion,
                 'reason'           => $input['reason'],
                 'requested_at'     => now(),
-                'admin_id'         => $isAdmin ? auth()->id() : null,
-                'approved_at'      => $isAdmin ? now() : null,
-                'approved_by_name' => $isAdmin ? auth()->user()->name : null
+                'admin_id'         => null,
+                'approved_at'      => null,
+                'approved_by_name' => null
             ]);
 
             // 削除申請の場合は、書き換え内容（details）が存在しないためここで返却

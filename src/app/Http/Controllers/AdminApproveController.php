@@ -74,9 +74,9 @@ class AdminApproveController extends Controller
         AttendanceFinalizeService $finalizeService
     ){
         $finalizeRequest = DB::transaction(function() use ($request, $validationService, $requestService, $finalizeService) {
-            $validationService->validate($request->all(), (int)$request->staff_id, true);
+            $validationService->validate($request->all(), (int)$request->staff_id);
 
-            $attendanceRequest = $requestService->createRequest($request->all(),(int)$request->staff_id, true);
+            $attendanceRequest = $requestService->createRequest($request->all(),(int)$request->staff_id);
 
             return $finalizeService->apply($attendanceRequest->id);
         });
