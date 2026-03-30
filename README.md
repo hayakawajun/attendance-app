@@ -113,7 +113,7 @@ is_deletion カラムは削除フラグです。値が「true（1）」の場合
 | status | varchar(255) |  |  | ◯ |  |
 | is_deletion | boolean |  |  | ◯ |  |
 | reason | varchar(255) |  |  | ◯ |  |
-| requested_at | datetime |  |  |  |  |
+| requested_at | datetime |  |  | ◯ |  |
 | admin_id | unsigned bigint |  |  |  | ◯ |
 | approved_by_name | varchar(255) |  |  |  |  |
 | approved_at | datetime |  |  |  |  |
