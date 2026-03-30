@@ -39,7 +39,6 @@ class AttendanceRequestService
 
             // 2. 勤務時間の詳細レコード（attendance_request_details）作成
             $attendanceRequest->details()->create([
-                'type'          => 'attendance',
                 'original_id'   => $attendanceId,
                 'original_type' => Attendance::class,
                 'start_time'    => $this->parseTimeWithNextDay($workDate, $input['attendance_start_time']),
@@ -61,7 +60,6 @@ class AttendanceRequestService
             foreach ($input['rests'] as $restId => $times) {
                 if (empty($times['start_time']) && empty($times['end_time'])) {
                     $attendanceRequest->details()->create([
-                        'type'          => 'rest',
                         'original_id'   => $restId,
                         'original_type' => Rest::class,
                         'start_time'    => null,
@@ -69,7 +67,6 @@ class AttendanceRequestService
                     ]);
                 }else{
                     $attendanceRequest->details()->create([
-                        'type'          => 'rest',
                         'original_id'   => $restId,
                         'original_type' => Rest::class,
                         'start_time'    => $this->parseTimeWithNextDay($workDate, $times['start_time']),
@@ -84,7 +81,6 @@ class AttendanceRequestService
             foreach ($input['new_rests'] as $times) {
                 if (!empty($times['start_time']) && !empty($times['end_time'])) {
                     $attendanceRequest->details()->create([
-                        'type'          => 'rest',
                         'original_id'   => null,
                         'original_type' => Rest::class,
                         'start_time'    => $this->parseTimeWithNextDay($workDate, $times['start_time']),

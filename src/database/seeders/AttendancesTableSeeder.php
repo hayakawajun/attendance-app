@@ -18,8 +18,8 @@ class AttendancesTableSeeder extends Seeder
         $userId = 1;
         $rests = [];
 
-        $startDate = Carbon::now()->subMonth()->startOfMonth();
-        $endDate = Carbon::now()->subMonth()->endOfMonth();
+        $startDate = Carbon::now()->subMonthNoOverflow()->startOfMonth();
+        $endDate = Carbon::now()->subMonthNoOverflow()->endOfMonth();
 
         for($date = $startDate->copy(); $date <= $endDate; $date->addDay()){
             if($date->isWeekend()) continue;

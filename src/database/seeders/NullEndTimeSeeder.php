@@ -15,7 +15,7 @@ class NullEndTimeSeeder extends Seeder
      */
     public function run()
     {
-        $date = Carbon::now()->subMonth(2)->startOfMonth();
+        $date = Carbon::now()->subMonthNoOverflow(2)->startOfMonth();
 
         $attendanceId = DB::table('attendances')->insertGetId([
             'user_id' => 1,
