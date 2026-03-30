@@ -36,7 +36,7 @@ pass : adminpass
 シーディングを行った日を基準に、前月分の勤怠情報が作成されます。  
 土日を除いた月〜金曜日に出勤しており、  
 　奇数週は 08:00出勤ー17:00退勤、60分休憩１回、実働８時間  
-　偶数週は、17:00出勤ー翌02:00退勤、30分休憩を2回、実働８時間  
+　偶数週は、17:00出勤ー翌02:00退勤、30分休憩を２回、実働８時間  
 で作成されます。  
 
 - 勤怠データ (前々月分)  
@@ -131,3 +131,100 @@ is_deletion カラムは削除フラグです。値が「true（1）」の場合
 | end_time | datetime |  |  |  |  |
 | created_at | timestamp |  |  |  |  |
 | updated_at | timestamp |  |  |  |  |
+
+## PHPUnit を利用したテストについて
+### テスト用データベースの作成
+
+``` bash
+// MySQLコンテナに入ります。
+docker-compose exec mysql bash
+
+// ユーザーを指定します。
+mysql -u root -p
+
+// パスワードは「root」と入力してMySQLにログインしてください。
+
+// テスト用データベースを作成します。
+CREATE DATABASE demo_test;
+```
+### テスト用の環境設定ファイルを作成
+
+``` bash
+// PHPコンテナに入ります。
+docker-compose exec php bash
+
+// 「.env.example」ファイルをコピーして「.env.testing」ファイルを作成してください。
+cp .env.example .env.testing
+```
+### 環境変数の修正
+
+作成した「.env.testing」ファイルの環境変数を以下に修正してください。
+- アプリに関する設定
+``` text
+APP_NAME=Laravel
+APP_ENV=test
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+```
+- データベースに関する設定
+``` text
+DB_CONNECTION=mysql_test
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=demo_test
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+- mailhogによるメール認証テストに関する設定
+``` text
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=test@example.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+### テスト用アプリケーションキーの生成とテーブル作成
+``` bash
+// PHPコンテナに入ります。
+docker-compose exec php bash
+
+// テスト用のアプリケーションキーを生成します。
+php artisan key:generate —-env=testing
+
+// 最新の「.env.testing」ファイルの設定を有効にするためキャッシュをクリアします。
+php artisan config:clear
+
+// テスト用のテーブルを作成します。
+php artisan migrate —-env=testing
+```
+### テストファイルについて
+tests/Feature ディレクトリ以下にテストファイルを配置しています。  
+スプレッドシートのテストケース一覧に対応させ、１ファイルに１テスト項目をまとめており、全部で 16 のテストファイルが存在します。ファイルによっては記述量がコーディング規約の200行を超えていますが、テスト細目の整理目的ですのでご容赦ください。  
+またそれぞれのファイル内に、テスト内容をタイトルとしてコメントアウトしていますのでご参照ください。
+
+## 使用技術(実行環境)について
+
+- PHP 8.2.30
+- Laravel 8.83.29
+- MySQL 8.0.26
+- nginx 1.21.1
+
+## 使用技術(フロントエンド)
+
+- HTML/CSS
+- JavaScript (一部ビューファイルで使用しています。)
+
+## ER図
+
+![alt](ER_graph.png)
+
+## 開発環境(URL)
+- 一般ユーザー登録：http://localhost/register
+- 一般ユーザーログインページ：http://localhost/login
+- 管理者ユーザーログインページ：http://localhost/admin/login
+- phpMyAdmin：http://localhost:8080/
+- mailhog：http://localhost:8025/
