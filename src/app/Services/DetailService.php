@@ -42,7 +42,7 @@ class DetailService
             'attendance' => $attendance,
             'date' => $date,
             'pendingRequest' => $pendingRequest,
-            'requestDetails' => $pendingRequest ? $pendingRequest->details->groupBy('type') : collect([])
+            'requestDetails' => $pendingRequest ? $pendingRequest->details->groupBy('original_type') : collect([])
         ];
     }
 }

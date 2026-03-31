@@ -108,8 +108,8 @@
                     </tr>
                 @endif
 
-                @if(isset($requestDetails['attendance']))
-                    @php $att = $requestDetails['attendance']->first(); @endphp
+                @if(isset($requestDetails['App\Models\Attendance']))
+                    @php $att = $requestDetails['App\Models\Attendance']->first(); @endphp
                     <tr class="detail__table-row">
                         <td class="label">出勤・退勤</td>
                         <td class="parameter">{{ $att->start_time->format('H:i') }}</td>
@@ -119,8 +119,8 @@
                     </tr>
                 @endif
 
-                @if(isset($requestDetails['rest']))
-                    @foreach($requestDetails['rest'] as $rest)
+                @if(isset($requestDetails['App\Models\Rest']))
+                    @foreach($requestDetails['App\Models\Rest'] as $rest)
                         <tr class="detail__table-row">
                             <td class="label">{{ $loop->first ? '休憩' : '休憩'.$loop->iteration }}</td>
                             @if(!$rest->start_time && !$rest->end_time)

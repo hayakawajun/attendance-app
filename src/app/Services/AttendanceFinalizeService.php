@@ -58,7 +58,7 @@ class AttendanceFinalizeService
             }
 
             // b) 次に Rest（休憩）を処理
-            $restDetails = $attendanceRequest->details->where('type', 'rest');
+            $restDetails = $attendanceRequest->details->where('original_type', 'App\Models\Rest');
             foreach($restDetails as $detail) {
                 if($detail->original_id) {
                     if(is_null($detail->start_time) && is_null($detail->end_time)) {

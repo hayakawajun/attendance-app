@@ -168,6 +168,7 @@ input[type="text"]:focus::placeholder {
     background-color: #f0eff2;
     border: solid 1px #f06464;
     color: #f06464;
+    text-decoration: none;
 }
 
 .update:hover {
@@ -245,6 +246,85 @@ input[name="tab__name"] {
     font-weight: bold;
 }
 
+/* 削除用モーダル */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.modal:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(72, 72, 72, 0.5);
+}
+
+.modal__inner {
+    position: absolute;
+    top: 180px;
+    left: 50%;
+    width: 400px;
+    height: 180px;
+    border: 2px solid #a7a7a7;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 4px 4px 4px rgba(72, 72, 72, 0.25);
+    transform: translate(-50%, -50%);
+}
+
+.modal__content {
+    position: relative;
+    padding: 30px 30px 50px 30px;
+    display: grid;
+    justify-items: center;
+}
+
+.modal__announce {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.modal__delete-button {
+    display: block;
+    margin: 0 auto;
+    background-color: white;
+    border: solid 1px #f06464;
+    color: #f06464;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    padding: 10px 35px;
+    cursor: pointer;
+}
+
+.modal__delete-button:hover {
+    background-color: #f06464;
+    color: white;
+}
+
+.modal__close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 18px;
+    color: #a7a7a7;
+    text-decoration: none;
+}
 /* タブレット向けブレイクポイント */
 @media screen and (max-width: 768px) {
     .col__left {
@@ -279,6 +359,38 @@ input[name="tab__name"] {
     .border {
         margin-top: 10px;
         margin-bottom: 20px;
+    }
+    .message {
+        padding-left: 30px;
+    }
+    .modal__inner {
+        top: 150px;
+        width: 350px;
+        height: 150px;
+    }
+    .modal__announce {
+        font-size: 14px;
+        margin-top: 0px;
+    }
+    .modal__delete-button {
+        font-size: 15px;
+    }
+    .modal__close-button span{
+        display: none;
+    }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            padding-left: 80px;
+        }
+        20% {
+            opacity: 0.7;
+            padding-left: 35px;
+        }
+        25% {
+            opacity: 1;
+            padding-left: 30px;
+        }
     }
 }
 
@@ -318,7 +430,6 @@ input[name="tab__name"] {
         font-weight: bold;
         padding: 8px 25px;
     }
-
     .status {
         font-size: 12px;
         margin-top: 10px;
@@ -337,5 +448,40 @@ input[name="tab__name"] {
     .border {
         margin-top: 3px;
         margin-bottom: 20px;
+    }
+    .message {
+        font-size: 10px;
+        padding-left: 20px;
+    }
+    .modal__inner {
+        top: 85px;
+        width: 270px;
+        height: 100px;
+    }
+    .modal__announce {
+        margin-top: -15px;
+        font-size: 11px;
+    }
+    .modal__delete-button {
+        font-size: 14px;
+        padding: 5px 20px;
+    }
+    .modal__close-button {
+        top: 0px;
+        right: 10px;
+    }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            padding-left: 70px;
+        }
+        20% {
+            opacity: 0.7;
+            padding-left: 25px;
+        }
+        25% {
+            opacity: 1;
+            padding-left: 20px;
+        }
     }
 }

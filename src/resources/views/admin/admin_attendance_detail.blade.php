@@ -186,9 +186,21 @@
             <div class="form-buttons">
                 <button class="submit__button update" type="submit" name="request_type" value="update">修正</button>
                 @if($attendance)
-                    <button class="submit__button delete" type="submit" name="request_type" value="delete" >削除</button>
+                    <a class="submit__button delete" href="#deletion">削除</a>
                 @endif
             </div>
+
+            <div class="modal" id="deletion">
+                <a class="modal-overlay" href="#!"></a>
+                <div class="modal__inner">
+                    <div class="modal__content">
+                        <p class="modal__announce">この勤怠を削除しますか？</p>
+                        <button class="modal__delete-button" type="submit" name="request_type" value="delete">削除する</button>
+                    </div>
+                    <a class="modal__close-button" href="#">×<span> close</span></a>
+                </div>
+            </div>
+
         </form>
     @endif
 </div>
