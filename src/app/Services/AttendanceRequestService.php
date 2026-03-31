@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
 use App\Models\Rest;
 use App\Models\AttendanceRequest;
@@ -12,6 +13,13 @@ class AttendanceRequestService
 {
     public function createRequest(array $input, int $userId)
     {
+        if(Auth::guard('admin')->check()) {
+            $attendance = Attendance::find($input['attendance_id']);
+            if(!$attendance && ($input['request_type'] === 'delete')) {
+                return null;
+            }
+        }
+
         return DB::transaction(function () use ($input, $userId) {
             $attendanceId = ($input['attendance_id'] == 0) ? null : $input['attendance_id'];
             $isDeletion = ($input['request_type'] ?? '') === 'delete';

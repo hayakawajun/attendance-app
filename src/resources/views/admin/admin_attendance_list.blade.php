@@ -54,6 +54,10 @@
                     <tr class="message__table-row success">
                         <td class="message" colspan="6">{{ session('success') }}</td>
                     </tr>
+                @elseif(session('error'))
+                    <tr class="message__table-row error">
+                        <td class="message" colspan="6">{{ session('error') }}</td>
+                    </tr>
                 @endif
                 <tr class="attendance__table-header">
                     <th class="name">名前</th>

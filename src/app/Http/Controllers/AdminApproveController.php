@@ -66,8 +66,8 @@ class AdminApproveController extends Controller
         ]);**/
     }
 
-    // スタッフの勤怠を直接修正するアクション
-    public function directUpdate(
+    // スタッフの勤怠を直接修正するアクション（修正前）
+/** public function directUpdate(
         ApplicationRequest $request,
         AttendanceValidationService $validationService,
         AttendanceRequestService $requestService,
@@ -89,6 +89,42 @@ class AdminApproveController extends Controller
             'day' => $targetDate->day
         ])->with('success','修正を反映しました');
     }
+*/
+
+    // スタッフの勤怠を直接修正するアクション
+    public function directUpdate(
+        ApplicationRequest $request,
+        AttendanceValidationService $validationService,
+        AttendanceRequestService $requestService,
+        AttendanceFinalizeService $finalizeService
+    ){
+        $validationService->validate($request->all(), (int)$request->staff_id);
+
+        $attendanceRequest = $requestService->createRequest($request->all(),(int)$request->staff_id);
+
+        if(is_null($attendanceRequest)) {
+            $workDate = Carbon::parse($request->work_date);
+
+            return redirect()->route('admin.day_index',[
+                    'year' => $workDate->year,
+                    'month' => $workDate->month,
+                    'day' => $workDate->day
+            ])->with('error','この勤怠データは既に削除されているか、存在しません');
+        }
+
+        $finalizeRequest = DB::transaction(function() use ($attendanceRequest, $finalizeService) {
+            return $finalizeService->apply($attendanceRequest->id);
+        });
+
+        $targetDate = Carbon::parse($finalizeRequest->target_date);
+
+        return redirect()->route('admin.day_index',[
+            'year' => $targetDate->year,
+            'month' => $targetDate->month,
+            'day' => $targetDate->day
+        ])->with('success','修正を反映しました');
+    }
+
 
     // 修正申請の詳細を表示
     public function showRequest(int $attendanceCorrectRequestId)

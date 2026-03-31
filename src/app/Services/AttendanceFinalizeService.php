@@ -31,7 +31,7 @@ class AttendanceFinalizeService
             // --- 2. 修正・新規申請 (is_deletion = false) の場合 ---
 
             // a) まず Attendance（勤怠本体）を処理
-            $attendanceDetail = $attendanceRequest->details->where('type', 'attendance')->first();
+            $attendanceDetail = $attendanceRequest->details->where('original_type', 'App\Models\Attendance')->first();
             $targetAttendanceId = $attendanceRequest->attendance_id;
 
             if($attendanceDetail) {
@@ -41,6 +41,7 @@ class AttendanceFinalizeService
                         'clock_in'  => $attendanceDetail->start_time,
                         'clock_out' => $attendanceDetail->end_time
                     ]);
+                    $targetAttendanceId = $attendanceDetail->original_id;
                 }else{
                     // 全く新しい日の勤怠を作成
                     $newAttendance = Attendance::create([

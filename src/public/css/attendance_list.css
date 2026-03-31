@@ -180,6 +180,10 @@
     background-color: #1db4cb;
 }
 
+.error {
+    background-color: #f06464;
+}
+
 .message {
     color: white;
     font-weight: normal;
