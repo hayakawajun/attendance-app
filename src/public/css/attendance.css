@@ -43,6 +43,11 @@
     font-weight: bold;
 }
 
+.digit-one {
+    display: inline-block;
+    letter-spacing: -0.1em;
+}
+
 .attendance-register {
     display: flex;
     justify-content: center;
