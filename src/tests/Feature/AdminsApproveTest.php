@@ -30,16 +30,16 @@ class AdminsApproveTest extends TestCase
         $this->travelTo($knownDate);
 
         $firstStaff = User::create([
-            'name' => '労働者壱号',
-            'email' => 'test1@example.com',
+            'name'     => '労働者壱号',
+            'email'    => 'test1@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $firstStaff->markEmailAsVerified();
 
         $firstStaffAttendance = Attendance::create([
-            'user_id' => $firstStaff->id,
+            'user_id'   => $firstStaff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
@@ -47,12 +47,12 @@ class AdminsApproveTest extends TestCase
             ->get("/attendance/detail/{$firstStaffAttendance->id}");
 
         $inputData = [
-            'attendance_id' => $firstStaffAttendance->id,
-            'work_date' => $firstStaffAttendance->work_date,
-            'staff_id' => $firstStaff->id,
+            'attendance_id'         => $firstStaffAttendance->id,
+            'work_date'             => $firstStaffAttendance->work_date,
+            'staff_id'              => $firstStaff->id,
             'attendance_start_time' => '11:11',
-            'attendance_end_time' => '22:22',
-            'reason' => '申請その1'
+            'attendance_end_time'   => '22:22',
+            'reason'                => '申請その1'
         ];
 
         $response = $this->post('/attendance/request', $inputData);
@@ -60,16 +60,16 @@ class AdminsApproveTest extends TestCase
         $this->travelTo($knownDate->addMonth(1));
 
         $secondStaff = User::create([
-            'name' => '労働者弐号',
-            'email' => 'test2@example.com',
+            'name'     => '労働者弐号',
+            'email'    => 'test2@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $secondStaff->markEmailAsVerified();
 
         $secondStaffAttendance = Attendance::create([
-            'user_id' => $secondStaff->id,
+            'user_id'   => $secondStaff->id,
             'work_date' => '2026-02-01',
-            'clock_in' => '2026-02-01 08:00',
+            'clock_in'  => '2026-02-01 08:00',
             'clock_out' => '2026-02-01 17:00'
         ]);
 
@@ -77,12 +77,12 @@ class AdminsApproveTest extends TestCase
             ->get("/attendance/detail/{$secondStaffAttendance->id}");
 
         $inputData = [
-            'attendance_id' => $secondStaffAttendance->id,
-            'work_date' => $secondStaffAttendance->work_date,
-            'staff_id' => $secondStaff->id,
+            'attendance_id'         => $secondStaffAttendance->id,
+            'work_date'             => $secondStaffAttendance->work_date,
+            'staff_id'              => $secondStaff->id,
             'attendance_start_time' => '11:11',
-            'attendance_end_time' => '22:22',
-            'reason' => '申請その2'
+            'attendance_end_time'   => '22:22',
+            'reason'                => '申請その2'
         ];
 
         $response = $this->post('/attendance/request', $inputData);
@@ -108,16 +108,16 @@ class AdminsApproveTest extends TestCase
         $this->travelTo($knownDate);
 
         $firstStaff = User::create([
-            'name' => '労働者壱号',
-            'email' => 'test1@example.com',
+            'name'     => '労働者壱号',
+            'email'    => 'test1@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $firstStaff->markEmailAsVerified();
 
         $firstStaffAttendance = Attendance::create([
-            'user_id' => $firstStaff->id,
+            'user_id'   => $firstStaff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
@@ -125,12 +125,12 @@ class AdminsApproveTest extends TestCase
             ->get("/attendance/detail/{$firstStaffAttendance->id}");
 
         $inputData = [
-            'attendance_id' => $firstStaffAttendance->id,
-            'work_date' => $firstStaffAttendance->work_date,
-            'staff_id' => $firstStaff->id,
+            'attendance_id'         => $firstStaffAttendance->id,
+            'work_date'             => $firstStaffAttendance->work_date,
+            'staff_id'              => $firstStaff->id,
             'attendance_start_time' => '11:11',
-            'attendance_end_time' => '22:22',
-            'reason' => '申請その1'
+            'attendance_end_time'   => '22:22',
+            'reason'                => '申請その1'
         ];
 
         $response = $this->post('/attendance/request', $inputData);
@@ -138,16 +138,16 @@ class AdminsApproveTest extends TestCase
         $this->travelTo($knownDate->addMonth(1));
 
         $secondStaff = User::create([
-            'name' => '労働者弐号',
-            'email' => 'test2@example.com',
+            'name'     => '労働者弐号',
+            'email'    => 'test2@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $secondStaff->markEmailAsVerified();
 
         $secondStaffAttendance = Attendance::create([
-            'user_id' => $secondStaff->id,
+            'user_id'   => $secondStaff->id,
             'work_date' => '2026-02-01',
-            'clock_in' => '2026-02-01 08:00',
+            'clock_in'  => '2026-02-01 08:00',
             'clock_out' => '2026-02-01 17:00'
         ]);
 
@@ -155,12 +155,12 @@ class AdminsApproveTest extends TestCase
             ->get("/attendance/detail/{$secondStaffAttendance->id}");
 
         $inputData = [
-            'attendance_id' => $secondStaffAttendance->id,
-            'work_date' => $secondStaffAttendance->work_date,
-            'staff_id' => $secondStaff->id,
+            'attendance_id'         => $secondStaffAttendance->id,
+            'work_date'             => $secondStaffAttendance->work_date,
+            'staff_id'              => $secondStaff->id,
             'attendance_start_time' => '11:11',
-            'attendance_end_time' => '22:22',
-            'reason' => '申請その2'
+            'attendance_end_time'   => '22:22',
+            'reason'                => '申請その2'
         ];
 
         $response = $this->post('/attendance/request', $inputData);
@@ -207,38 +207,38 @@ class AdminsApproveTest extends TestCase
         $this->travelTo($knownDate);
 
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $response = $this->actingAs($staff)
             ->get("/attendance/detail/{$attendance->id}");
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $staff->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $staff->id,
             'attendance_start_time' => '08:08',
-            'attendance_end_time' => '17:17',
+            'attendance_end_time'   => '17:17',
             'rests' => [
                 $rest->id => [
                     'start_time' => '12:12',
-                    'end_time' => '13:13'
+                    'end_time'   => '13:13'
                 ]
             ],
             'reason' => '申請テスト'
@@ -284,38 +284,38 @@ class AdminsApproveTest extends TestCase
         $this->travelTo($knownDate);
 
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $response = $this->actingAs($staff)
             ->get("/attendance/detail/{$attendance->id}");
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $staff->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $staff->id,
             'attendance_start_time' => '08:08',
-            'attendance_end_time' => '17:17',
+            'attendance_end_time'   => '17:17',
             'rests' => [
                 $rest->id => [
                     'start_time' => '12:12',
-                    'end_time' => '13:13'
+                    'end_time'   => '13:13'
                 ]
             ],
             'reason' => '申請テスト'
@@ -327,31 +327,31 @@ class AdminsApproveTest extends TestCase
             ->first();
 
         $this->assertDatabaseHas('attendance_requests',[
-            'id' => $attendanceRequest->id,
-            'attendance_id' => $attendance->id,
-            'user_id' => $staff->id,
-            'target_date' => '2026-01-01',
-            'status' => 'pending',
-            'reason' => '申請テスト',
-            'requested_at' => '2026-02-22 10:00:00',
-            'admin_id' => null,
+            'id'               => $attendanceRequest->id,
+            'attendance_id'    => $attendance->id,
+            'user_id'          => $staff->id,
+            'target_date'      => '2026-01-01',
+            'status'           => 'pending',
+            'reason'           => '申請テスト',
+            'requested_at'     => '2026-02-22 10:00:00',
+            'admin_id'         => null,
             'approved_by_name' => null,
-            'approved_at' => null
+            'approved_at'      => null
         ]);
 
         $this->assertDatabaseHas('attendances',[
-            'id' => $attendance->id,
-            'user_id' => $staff->id,
+            'id'        => $attendance->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $this->assertDatabaseHas('rests',[
-            'id' => $rest->id,
+            'id'            => $rest->id,
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->travelTo($knownDate->addMonth(1));
@@ -390,31 +390,31 @@ class AdminsApproveTest extends TestCase
         ], false);
 
         $this->assertDatabaseHas('attendance_requests',[
-            'id' => $attendanceRequest->id,
-            'attendance_id' => $attendance->id,
-            'user_id' => $staff->id,
-            'target_date' => '2026-01-01',
-            'status' => 'approved',
-            'reason' => '申請テスト',
-            'requested_at' => '2026-02-22 10:00:00',
-            'admin_id' => $admin->id,
+            'id'               => $attendanceRequest->id,
+            'attendance_id'    => $attendance->id,
+            'user_id'          => $staff->id,
+            'target_date'      => '2026-01-01',
+            'status'           => 'approved',
+            'reason'           => '申請テスト',
+            'requested_at'     => '2026-02-22 10:00:00',
+            'admin_id'         => $admin->id,
             'approved_by_name' => $admin->name,
-            'approved_at' => '2026-03-22 10:00:00'
+            'approved_at'      => '2026-03-22 10:00:00'
         ]);
 
         $this->assertDatabaseHas('attendances',[
-            'id' => $attendance->id,
-            'user_id' => $staff->id,
+            'id'        => $attendance->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:08',
+            'clock_in'  => '2026-01-01 08:08',
             'clock_out' => '2026-01-01 17:17'
         ]);
 
         $this->assertDatabaseHas('rests',[
-            'id' => $rest->id,
+            'id'            => $rest->id,
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:12',
-            'end_time' => '2026-01-01 13:13'
+            'start_time'    => '2026-01-01 12:12',
+            'end_time'      => '2026-01-01 13:13'
         ]);
     }
 }

@@ -40,10 +40,10 @@ class CheckStatusTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $working = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => null,
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => null,
             'created_at' => $knownDate,
             'updated_at' => $knownDate
         ]);
@@ -64,20 +64,20 @@ class CheckStatusTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $working = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => null,
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => null,
             'created_at' => $knownDate,
             'updated_at' => $knownDate
         ]);
 
         $breaking = Rest::create([
             'attendance_id' => $working->id,
-            'start_time' => $knownDate->copy()->addMinute(1),
-            'end_time' => null,
-            'created_at' => $knownDate->copy()->addMinute(1),
-            'updated_at' => $knownDate->copy()->addMinute(1)
+            'start_time'    => $knownDate->copy()->addMinute(1),
+            'end_time'      => null,
+            'created_at'    => $knownDate->copy()->addMinute(1),
+            'updated_at'    => $knownDate->copy()->addMinute(1)
         ]);
 
         $response = $this->actingAs($user)->get('/attendance');
@@ -96,10 +96,10 @@ class CheckStatusTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $finished = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => $knownDate->copy()->addMinute(1),
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => $knownDate->copy()->addMinute(1),
             'created_at' => $knownDate,
             'updated_at' => $knownDate->copy()->addMinute(1)
         ]);

@@ -29,41 +29,41 @@ class AdminsAttendanceListTest extends TestCase
         $this->travelTo($knownDate);
 
         $firstStaff = User::create([
-            'name' => '労働者壱号',
-            'email' => 'test1@example.com',
+            'name'     => '労働者壱号',
+            'email'    => 'test1@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $firstStaff->markEmailAsVerified();
 
         $firstStaffAttendance = Attendance::create([
-            'user_id' => $firstStaff->id,
+            'user_id'   => $firstStaff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
         $firstStaffRest = Rest::create([
             'attendance_id' => $firstStaffAttendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $secondStaff = User::create([
-            'name' => '労働者弐号',
-            'email' => 'test2@example.com',
+            'name'     => '労働者弐号',
+            'email'    => 'test2@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $secondStaff->markEmailAsVerified();
 
         $secondStaffAttendance = Attendance::create([
-            'user_id' => $secondStaff->id,
+            'user_id'   => $secondStaff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 12:00',
+            'clock_in'  => '2026-01-01 12:00',
             'clock_out' => '2026-01-01 21:00'
         ]);
         $secondStaffRest = Rest::create([
             'attendance_id' => $secondStaffAttendance->id,
-            'start_time' => '2026-01-01 16:00',
-            'end_time' => '2026-01-01 16:30'
+            'start_time'    => '2026-01-01 16:00',
+            'end_time'      => '2026-01-01 16:30'
         ]);
 
         $admin = Admin::factory()->create();
@@ -112,22 +112,22 @@ class AdminsAttendanceListTest extends TestCase
         $this->travelTo($knownDate);
 
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2025-12-24',
-            'clock_in' => '2025-12-24 08:00',
+            'clock_in'  => '2025-12-24 08:00',
             'clock_out' => '2025-12-24 17:00'
         ]);
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2025-12-24 12:00',
-            'end_time' => '2025-12-24 13:00'
+            'start_time'    => '2025-12-24 12:00',
+            'end_time'      => '2025-12-24 13:00'
         ]);
 
         $admin = Admin::factory()->create();
@@ -144,9 +144,9 @@ class AdminsAttendanceListTest extends TestCase
         $response->assertSee('2025年12月25日の勤怠');
 
         $previousUrl = route('admin.day_index',[
-            'year' => $knownDate->copy()->subDay()->year,
+            'year'  => $knownDate->copy()->subDay()->year,
             'month' => $knownDate->copy()->subDay()->month,
-            'day' => $knownDate->copy()->subDay()->day
+            'day'   => $knownDate->copy()->subDay()->day
             ]);
 
         $response->assertSeeInOrder([
@@ -171,22 +171,22 @@ class AdminsAttendanceListTest extends TestCase
         $this->travelTo($knownDate);
 
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2025-12-26',
-            'clock_in' => '2025-12-26 08:00',
+            'clock_in'  => '2025-12-26 08:00',
             'clock_out' => '2025-12-26 17:00'
         ]);
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2025-12-26 12:00',
-            'end_time' => '2025-12-26 13:00'
+            'start_time'    => '2025-12-26 12:00',
+            'end_time'      => '2025-12-26 13:00'
         ]);
 
         $admin = Admin::factory()->create();
@@ -203,9 +203,9 @@ class AdminsAttendanceListTest extends TestCase
         $response->assertSee('2025年12月25日の勤怠');
 
         $nextUrl = route('admin.day_index',[
-            'year' => $knownDate->copy()->addDay()->year,
+            'year'  => $knownDate->copy()->addDay()->year,
             'month' => $knownDate->copy()->addDay()->month,
-            'day' => $knownDate->copy()->addDay()->day
+            'day'   => $knownDate->copy()->addDay()->day
             ]);
 
         $response->assertSeeInOrder([

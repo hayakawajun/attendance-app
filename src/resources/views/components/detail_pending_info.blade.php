@@ -1,4 +1,5 @@
 <div class="tab-panel">
+
     <input class="original__tab-switch" type="radio" name="tab__name" id="tab__original" checked>
     <label class="tab-label original" for="tab__original">申請前</label>
 
@@ -123,6 +124,7 @@
                     @foreach($requestDetails['App\Models\Rest'] as $rest)
                         <tr class="detail__table-row">
                             <td class="label">{{ $loop->first ? '休憩' : '休憩'.$loop->iteration }}</td>
+
                             @if(!$rest->start_time && !$rest->end_time)
                                 <td class="reason-text" colspan="3"><span>休憩を取消します</span></td>
                             @else
@@ -134,6 +136,7 @@
                                     {{ $rest->end_time->format('H:i') }}
                                 </td>
                             @endif
+
                             <td></td>
                         </tr>
                     @endforeach
@@ -155,4 +158,5 @@
         @endif
 
     </div>
+
 </div>

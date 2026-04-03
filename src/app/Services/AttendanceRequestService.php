@@ -25,8 +25,6 @@ class AttendanceRequestService
             $isDeletion = ($input['request_type'] ?? '') === 'delete';
             $workDate = $input['work_date'];
 
-            // 1. 申請親レコード（attendance_requests）の作成
-            // 管理者の場合はステータスを最初から「承認済み」にし、承認者情報を記録する
             $attendanceRequest = AttendanceRequest::create([
                 'attendance_id'    => $attendanceId,
                 'user_id'          => $userId,
@@ -40,12 +38,10 @@ class AttendanceRequestService
                 'approved_by_name' => null
             ]);
 
-            // 削除申請の場合は、書き換え内容（details）が存在しないためここで返却
             if ($isDeletion) {
                 return $attendanceRequest;
             }
 
-            // 2. 勤務時間の詳細レコード（attendance_request_details）作成
             $attendanceRequest->details()->create([
                 'original_id'   => $attendanceId,
                 'original_type' => Attendance::class,
@@ -53,7 +49,6 @@ class AttendanceRequestService
                 'end_time'      => $this->parseTimeWithNextDay($workDate, $input['attendance_end_time'])
             ]);
 
-            // 3. 休憩時間の詳細レコード作成（既存分と新規追加分）
             $this->createRestDetails($attendanceRequest, $workDate, $input);
 
             return $attendanceRequest;
@@ -63,7 +58,6 @@ class AttendanceRequestService
     // 休憩の詳細レコードを一括作成するメソッド
     private function createRestDetails($attendanceRequest, $workDate, $input)
     {
-        // 既存休憩の修正（rests[id][start_time] 形式を想定）
         if (isset($input['rests']) && is_array($input['rests'])) {
             foreach ($input['rests'] as $restId => $times) {
                 if (empty($times['start_time']) && empty($times['end_time'])) {
@@ -84,7 +78,6 @@ class AttendanceRequestService
             }
         }
 
-        // 新規休憩の追加（new_rests[0][start_time] 形式を想定）
         if (isset($input['new_rests']) && is_array($input['new_rests'])) {
             foreach ($input['new_rests'] as $times) {
                 if (!empty($times['start_time']) && !empty($times['end_time'])) {
@@ -100,7 +93,7 @@ class AttendanceRequestService
     }
 
     // 入力フォームからの時刻文字列をDB用の保存形式に変換するメソッド
-    // 5:00未満なら翌日で処理
+    // 5:00より前なら翌日で処理して、勤怠一覧画面で正しく計算できるようにする
     private function parseTimeWithNextDay($workDate, $timeStr)
     {
         if(!$timeStr) return null;

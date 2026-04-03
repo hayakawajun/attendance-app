@@ -1,3 +1,8 @@
+/* Safariのデフォルトフォントをサンセリフ体に変更するために調整 */
+* {
+    font-family: sans-serif;
+}
+
 /* コンテンツ全体の背景 */
 .app {
     background-color: #f0eff2;

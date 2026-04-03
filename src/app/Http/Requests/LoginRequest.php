@@ -45,7 +45,7 @@ class LoginRequest extends FortifyLoginRequest
                 'string',
                 'min:8',
                 'max:255',
-                function($attribute,$value,$fail){
+                function($attribute, $value, $fail){
                     $guard = ($this->is('admin/*') || $this->is('admin/login'))
                     ? 'admin' : 'web';
                     $model = ($guard === 'admin')
@@ -65,14 +65,14 @@ class LoginRequest extends FortifyLoginRequest
     public function messages()
     {
         return [
-            'email.required' => 'メールアドレスを入力してください',
-            'email.string' => 'メールアドレスは文字列で入力してください',
-            'email.email' => 'メールアドレスの形式で入力してください',
-            'email.max' => 'メールアドレスは255文字以内で入力してください',
+            'email.required'    => 'メールアドレスを入力してください',
+            'email.string'      => 'メールアドレスは文字列で入力してください',
+            'email.email'       => 'メールアドレスの形式で入力してください',
+            'email.max'         => 'メールアドレスは255文字以内で入力してください',
             'password.required' => 'パスワードを入力してください',
-            'password.string' => 'パスワードは文字列で入力してください',
-            'password.min' => 'パスワードは8文字以上で入力してください',
-            'password.max' => 'パスワードは255文字以内で入力してください',
+            'password.string'   => 'パスワードは文字列で入力してください',
+            'password.min'      => 'パスワードは8文字以上で入力してください',
+            'password.max'      => 'パスワードは255文字以内で入力してください',
         ];
     }
 }

@@ -26,23 +26,23 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
     public function test_details_view_display_selected_attendance()
     {
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $admin = Admin::factory()->create();
@@ -83,9 +83,9 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
         $staff = User::factory()->create(['email_verified_at' => now()]);
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
@@ -96,12 +96,12 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $staff->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $staff->id,
             'attendance_start_time' => '18:00',
-            'attendance_end_time' => '17:00',
-            'reason' => '打刻ミスの為'
+            'attendance_end_time'   => '17:00',
+            'reason'                => '打刻ミスの為'
         ];
 
         $response = $this->post('/admin/direct_update', $inputData);
@@ -119,16 +119,16 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
         $staff = User::factory()->create(['email_verified_at' => now()]);
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $admin = Admin::factory()->create();
@@ -138,15 +138,15 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $staff->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $staff->id,
             'attendance_start_time' => '08:00',
-            'attendance_end_time' => '17:00',
+            'attendance_end_time'   => '17:00',
             'rests' => [
                 $rest->id => [
                     'start_time' => '18:00',
-                    'end_time' => '13:00'
+                    'end_time'   => '13:00'
                 ]
             ],
             'reason' => '打刻ミスの為'
@@ -167,16 +167,16 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
         $staff = User::factory()->create(['email_verified_at' => now()]);
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $admin = Admin::factory()->create();
@@ -186,15 +186,15 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $staff->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $staff->id,
             'attendance_start_time' => '08:00',
-            'attendance_end_time' => '17:00',
+            'attendance_end_time'   => '17:00',
             'rests' => [
                 $rest->id => [
                     'start_time' => '12:00',
-                    'end_time' => '18:00'
+                    'end_time'   => '18:00'
                 ]
             ],
             'reason' => '打刻ミスの為'
@@ -215,9 +215,9 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
         $staff = User::factory()->create(['email_verified_at' => now()]);
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
@@ -228,12 +228,12 @@ class AdminsGetDetailAndDirectUpdateTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $staff->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $staff->id,
             'attendance_start_time' => '10:00',
-            'attendance_end_time' => '20:00',
-            'reason' => null
+            'attendance_end_time'   => '20:00',
+            'reason'                => null
         ];
 
         $response = $this->post('/admin/direct_update', $inputData);

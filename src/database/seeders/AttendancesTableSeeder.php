@@ -35,10 +35,10 @@ class AttendancesTableSeeder extends Seeder
             }
 
             $attendanceId = DB::table('attendances')->insertGetId([
-                'user_id' => $userId,
-                'work_date' => $date->toDateString(),
-                'clock_in' => $clockIn,
-                'clock_out' => $clockOut,
+                'user_id'    => $userId,
+                'work_date'  => $date->toDateString(),
+                'clock_in'   => $clockIn,
+                'clock_out'  => $clockOut,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
@@ -46,25 +46,25 @@ class AttendancesTableSeeder extends Seeder
             if($weekNum % 2 !== 0){
                 $rests[] = [
                     'attendance_id' => $attendanceId,
-                    'start_time' => $clockIn->copy()->addHours(4),
-                    'end_time' => $clockIn->copy()->addHours(5),
-                    'created_at' => now(),
-                    'updated_at' => now()
+                    'start_time'    => $clockIn->copy()->addHours(4),
+                    'end_time'      => $clockIn->copy()->addHours(5),
+                    'created_at'    => now(),
+                    'updated_at'    => now()
                 ];
             }else{
                 $rests[] = [
                     'attendance_id' => $attendanceId,
-                    'start_time' => $clockIn->copy()->addHours(2),
-                    'end_time' => $clockIn->copy()->addHours(2)->addMinute(30),
-                    'created_at' => now(),
-                    'updated_at' => now()
+                    'start_time'    => $clockIn->copy()->addHours(2),
+                    'end_time'      => $clockIn->copy()->addHours(2)->addMinute(30),
+                    'created_at'    => now(),
+                    'updated_at'    => now()
                 ];
                 $rests[] = [
                     'attendance_id' => $attendanceId,
-                    'start_time' => $clockIn->copy()->addHours(5),
-                    'end_time' => $clockIn->copy()->addHours(5)->addMinute(30),
-                    'created_at' => now(),
-                    'updated_at' => now()
+                    'start_time'    => $clockIn->copy()->addHours(5),
+                    'end_time'      => $clockIn->copy()->addHours(5)->addMinute(30),
+                    'created_at'    => now(),
+                    'updated_at'    => now()
                 ];
             }
         }

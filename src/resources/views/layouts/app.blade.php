@@ -23,6 +23,7 @@
                 </div>
 
                 <div class="header__nav-inner" id="js-nav-menu">
+
                 @auth('admin')
                     <form class="header__nav-form" action="/admin/logout" method="post">
                     @csrf
@@ -40,7 +41,9 @@
                         <button class="logout__btn">ログアウト</button>
                     </form>
                 @endauth
+
                 </div>
+
             </nav>
         </header>
 
@@ -48,8 +51,9 @@
 
     </div>
 
-<script src="{{ asset('js/hamburger_menu.js') }}"></script>
-@yield('script')
+    <script src="{{ asset('js/hamburger_menu.js') }}"></script>
+    @yield('script')
 
 </body>
+
 </html>

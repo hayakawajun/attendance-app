@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -57,7 +56,7 @@ class AttendanceController extends Controller
         }
 
         if(!$attendance->canStartRest($error)) {
-            return redirect()->back()->with('error',$error);
+            return redirect()->back()->with('error', $error);
         }
 
         $attendance->rests()->create(['start_time' => now()]);
@@ -78,7 +77,7 @@ class AttendanceController extends Controller
         }
 
         if(!$attendance->canEndRest($error, $latestRest)) {
-            return redirect()->back()->with('error',$error);
+            return redirect()->back()->with('error', $error);
         }
 
         $latestRest->update(['end_time' => now()]);
@@ -99,7 +98,7 @@ class AttendanceController extends Controller
         }
 
         if(!$attendance->canClockOut($error)) {
-            return redirect()->back()->with('error',$error);
+            return redirect()->back()->with('error', $error);
         }
 
         $attendance->update(['clock_out' => now()]);
@@ -112,12 +111,12 @@ class AttendanceController extends Controller
     {
         $year = $year ?? now()->year;
         $month = $month ?? now()->month;
-        $startOfMonth = Carbon::create($year,$month,1)->startOfMonth();
+        $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth();
         $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $attendances = Attendance::where('user_id',Auth::id())
-            ->whereYear('work_date',$year)
-            ->whereMonth('work_date',$month)
+            ->whereYear('work_date', $year)
+            ->whereMonth('work_date', $month)
             ->with('rests')
             ->get()
             ->keyBy(function($item){
@@ -125,13 +124,13 @@ class AttendanceController extends Controller
             });
 
         $requests = AttendanceRequest::where('user_id', Auth::id())
-            ->whereBetween('target_date', [$startOfMonth, $endOfMonth])
+            ->whereBetween('target_date',[$startOfMonth, $endOfMonth])
             ->get()
             ->groupBy(function($item){
                 return Carbon::parse($item->target_date)->format('Y-m-d');
             });
 
-        $period = CarbonPeriod::create($startOfMonth,$endOfMonth);
+        $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
 
         $calendar = [];
         foreach($period as $date){
@@ -141,8 +140,8 @@ class AttendanceController extends Controller
                 : null;
 
             $calendar[] = [
-                'date' => $date,
-                'attendance' => $attendances->get($dateStr),
+                'date'          => $date,
+                'attendance'    => $attendances->get($dateStr),
                 'latestRequest' => $latestRequest
             ];
         }
@@ -150,7 +149,7 @@ class AttendanceController extends Controller
         $prevDate = $startOfMonth->copy()->subMonth();
         $nextDate = $startOfMonth->copy()->addMonth();
 
-        return view('attendance_list',compact(
+        return view('attendance_list', compact(
             'calendar',
             'year',
             'month',

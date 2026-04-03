@@ -34,6 +34,7 @@
     font-weight: bold;
 }
 
+/* コロンの高さ調整span */
 .clock-separator {
     display: inline-block;
     transform: translateY(-0.2em);
@@ -43,9 +44,12 @@
     font-weight: bold;
 }
 
+/*「1」の字詰め調整span */
 .digit-one {
     display: inline-block;
-    letter-spacing: -0.1em;
+    width: 0.55em;
+    text-align: center;
+    margin-left: -5px;
 }
 
 .attendance-register {

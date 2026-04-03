@@ -21,20 +21,20 @@ class AttendanceValidationService
             ->exists();
 
         if ($existingRequest) {
-            $this->throwError('data_inconsistency', 'この日付の申請は承認依頼済み、または処理待ちです');
+            $this->throwError('data_inconsistency','この日付の申請は承認依頼済み、または処理待ちです');
         }
 
         $currentWorkingDate = Attendance::getWorkingDate()->startOfDay();
         $inputDate = Carbon::parse($workDate)->startOfDay();
 
         if ($inputDate->greaterThanOrEqualTo($currentWorkingDate)) {
-            $this->throwError('data_inconsistency', '当日分および翌日以降の勤怠は操作できません');
+            $this->throwError('data_inconsistency','当日分および翌日以降の勤怠は操作できません');
         }
 
         if (!$isDeletion && $attendanceId != 0) {
             $attendance = Attendance::find($attendanceId);
             if ($attendance && !$attendance->clock_out && empty($input['attendance_end_time'])) {
-                $this->throwError('attendance_end_time', '退勤打刻が完了していない勤怠は修正できません');
+                $this->throwError('attendance_end_time','退勤打刻が完了していない勤怠は修正できません');
             }
         }
     }

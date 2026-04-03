@@ -28,10 +28,10 @@ class ClockOutTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $working = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => null,
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => null,
             'created_at' => $knownDate,
             'updated_at' => $knownDate
         ]);
@@ -55,8 +55,8 @@ class ClockOutTest extends TestCase
         $this->followRedirects($response)->assertSee('退勤済');
 
         $this->assertDatabaseHas('attendances',[
-            'user_id' => $user->id,
-            'clock_in' => '2026-01-01 10:00:00',
+            'user_id'   => $user->id,
+            'clock_in'  => '2026-01-01 10:00:00',
             'clock_out' => '2026-01-01 11:00:00'
         ]);
     }
@@ -93,7 +93,7 @@ class ClockOutTest extends TestCase
 
         $response->assertViewHas('calendar', function($calendar){
             $day = $calendar[0];
-            return $day['date']->isoFormat('MM/DD(ddd)') === '01/01(木)'
+            return $day['date']->isoFormat('MM/DD(ddd)')        === '01/01(木)'
                 && $day['attendance']->clock_out->format('H:i') === '11:00';
         });
 

@@ -11,14 +11,13 @@ class Rest extends Model
 
     protected $fillable = [
         'attendance_id',
-        'rest_number',
         'start_time',
         'end_time'
     ];
 
     protected $casts = [
         'start_time' => 'datetime',
-        'end_time' => 'datetime'
+        'end_time'   => 'datetime'
     ];
 
     public function attendance()

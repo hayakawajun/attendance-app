@@ -25,23 +25,23 @@ class GetDetailTest extends TestCase
     public function test_details_view_display_users_name()
     {
         $user = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $user->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->actingAs($user);
@@ -60,23 +60,23 @@ class GetDetailTest extends TestCase
     public function test_details_view_display_target_date()
     {
         $user = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $user->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->actingAs($user);
@@ -95,23 +95,23 @@ class GetDetailTest extends TestCase
     public function test_details_view_display_clock_in_and_out()
     {
         $user = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $user->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->actingAs($user);
@@ -130,23 +130,23 @@ class GetDetailTest extends TestCase
     public function test_details_view_display_rest_time()
     {
         $user = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $user->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->actingAs($user);

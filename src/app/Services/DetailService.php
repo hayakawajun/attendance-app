@@ -38,9 +38,9 @@ class DetailService
         }
 
         return [
-            'staff' => $staff,
-            'attendance' => $attendance,
-            'date' => $date,
+            'staff'          => $staff,
+            'attendance'     => $attendance,
+            'date'           => $date,
             'pendingRequest' => $pendingRequest,
             'requestDetails' => $pendingRequest ? $pendingRequest->details->groupBy('original_type') : collect([])
         ];

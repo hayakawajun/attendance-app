@@ -7,41 +7,43 @@
 @endsection
 
 @section('content')
-<div class="wrapper">
-    <div class="title">
-        <div class="marker"></div>
-        <h1 class="content-title">スタッフ一覧</h1>
-    </div>
+    <div class="wrapper">
 
-    <div class="index">
+        <div class="title">
+            <div class="marker"></div>
+            <h1 class="content-title">スタッフ一覧</h1>
+        </div>
 
-        <table class="staff-list__table">
-            <colgroup>
-                <col class="col__name">
-                <col class="col__email">
-                <col class="col__detail">
-            </colgroup>
-            <thead>
-                <tr class="staff-list__table-header">
-                    <th class="title__name">名前</th>
-                    <th class="title__email">メールアドレス</th>
-                    <th class="title__detail">月次勤怠</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($staffs as $staff)
-                    <tr class="staff-list__table-row">
-                        <td class="name">{{ $staff->name }}</td>
-                        <td class="email">{{ $staff->email }}</td>
-                        <td class="detail">
-                            <a class="detail__link" href="{{ route('admin.individual_index',['id' => $staff->id ]) }}">詳細</a>
-                        </td>
+        <div class="index">
+
+            <table class="staff-list__table">
+                <colgroup>
+                    <col class="col__name">
+                    <col class="col__email">
+                    <col class="col__detail">
+                </colgroup>
+                <thead>
+                    <tr class="staff-list__table-header">
+                        <th class="title__name">名前</th>
+                        <th class="title__email">メールアドレス</th>
+                        <th class="title__detail">月次勤怠</th>
                     </tr>
-                @endforeach
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach($staffs as $staff)
+                        <tr class="staff-list__table-row">
+                            <td class="name">{{ $staff->name }}</td>
+                            <td class="email">{{ $staff->email }}</td>
+                            <td class="detail">
+                                <a class="detail__link" href="{{ route('admin.individual_index',['id' => $staff->id ]) }}">詳細</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
 
-        </table>
+            </table>
+
+        </div>
 
     </div>
-</div>
 @endsection

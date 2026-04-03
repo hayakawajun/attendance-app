@@ -32,15 +32,15 @@ class AdminsGetStaffListTest extends TestCase
     public function test_get_all_staff_data()
     {
         $firstStaff = User::create([
-            'name' => '労働者壱号',
-            'email' => 'first_worker@example.com',
+            'name'     => '労働者壱号',
+            'email'    => 'first_worker@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $firstStaff->markEmailAsVerified();
 
         $secondStaff = User::create([
-            'name' => '労働者弐号',
-            'email' => 'second_worker@example.com',
+            'name'     => '労働者弐号',
+            'email'    => 'second_worker@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $secondStaff->markEmailAsVerified();
@@ -53,13 +53,13 @@ class AdminsGetStaffListTest extends TestCase
 
         $response->assertViewHas('staffs', function($staffs){
             $staff = $staffs[0];
-            return $staff->name === '労働者壱号'
+            return $staff->name  === '労働者壱号'
                 && $staff->email === 'first_worker@example.com';
         });
 
         $response->assertViewHas('staffs', function($staffs){
             $staff = $staffs[1];
-            return $staff->name === '労働者弐号'
+            return $staff->name  === '労働者弐号'
                 && $staff->email === 'second_worker@example.com';
         });
 
@@ -80,23 +80,23 @@ class AdminsGetStaffListTest extends TestCase
         $this->travelTo($knownDate);
 
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $admin = Admin::factory()->create();
@@ -118,11 +118,11 @@ class AdminsGetStaffListTest extends TestCase
 
         $response->assertViewHas('calendar', function($calendar){
             $day = $calendar[0];
-            return $day['date']->isoFormat('MM/DD(ddd)') === '01/01(木)'
-                && $day['attendance']->clock_in->format('H:i') === '08:00'
+            return $day['date']->isoFormat('MM/DD(ddd)')        === '01/01(木)'
+                && $day['attendance']->clock_in->format('H:i')  === '08:00'
                 && $day['attendance']->clock_out->format('H:i') === '17:00'
-                && $day['attendance']->total_rest_time === '1:00'
-                && $day['attendance']->total_working_time === '8:00';
+                && $day['attendance']->total_rest_time          === '1:00'
+                && $day['attendance']->total_working_time       === '8:00';
         });
 
         $response->assertSeeInOrder([
@@ -139,23 +139,23 @@ class AdminsGetStaffListTest extends TestCase
     public function test_display_previous_month()
     {
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $pastAttendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2025-12-01',
-            'clock_in' => '2025-12-01 08:00',
+            'clock_in'  => '2025-12-01 08:00',
             'clock_out' => '2025-12-01 17:00'
         ]);
 
         $pastRest = Rest::create([
             'attendance_id' => $pastAttendance->id,
-            'start_time' => '2025-12-01 12:00',
-            'end_time' => '2025-12-01 13:00'
+            'start_time'    => '2025-12-01 12:00',
+            'end_time'      => '2025-12-01 13:00'
         ]);
 
         $admin = Admin::factory()->create();
@@ -171,8 +171,8 @@ class AdminsGetStaffListTest extends TestCase
 
         $prevDate = $currentDate->copy()->subMonth();
         $prevUrl = route('admin.individual_index',[
-            'id' => $staff->id,
-            'year' => $prevDate->year,
+            'id'    => $staff->id,
+            'year'  => $prevDate->year,
             'month' => $prevDate->month
         ]);
 
@@ -185,11 +185,11 @@ class AdminsGetStaffListTest extends TestCase
 
         $response->assertViewHas('calendar', function($calendar){
             $day = $calendar[0];
-            return $day['date']->isoFormat('MM/DD(ddd)') === '12/01(月)'
-                && $day['attendance']->clock_in->format('H:i') === '08:00'
+            return $day['date']->isoFormat('MM/DD(ddd)')        === '12/01(月)'
+                && $day['attendance']->clock_in->format('H:i')  === '08:00'
                 && $day['attendance']->clock_out->format('H:i') === '17:00'
-                && $day['attendance']->total_rest_time === '1:00'
-                && $day['attendance']->total_working_time === '8:00';
+                && $day['attendance']->total_rest_time          === '1:00'
+                && $day['attendance']->total_working_time       === '8:00';
         });
 
         $response->assertSeeInOrder([
@@ -206,23 +206,23 @@ class AdminsGetStaffListTest extends TestCase
     public function test_display_next_month()
     {
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $futureAttendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-02-01',
-            'clock_in' => '2026-02-01 08:00',
+            'clock_in'  => '2026-02-01 08:00',
             'clock_out' => '2026-02-01 17:00'
         ]);
 
         $futureRest = Rest::create([
             'attendance_id' => $futureAttendance->id,
-            'start_time' => '2026-02-01 12:00',
-            'end_time' => '2026-02-01 13:00'
+            'start_time'    => '2026-02-01 12:00',
+            'end_time'      => '2026-02-01 13:00'
         ]);
 
         $admin = Admin::factory()->create();
@@ -238,8 +238,8 @@ class AdminsGetStaffListTest extends TestCase
 
         $nextDate = $currentDate->copy()->addMonth();
         $nextUrl = route('admin.individual_index',[
-            'id' => $staff->id,
-            'year' => $nextDate->year,
+            'id'    => $staff->id,
+            'year'  => $nextDate->year,
             'month' => $nextDate->month
         ]);
 
@@ -252,11 +252,11 @@ class AdminsGetStaffListTest extends TestCase
 
         $response->assertViewHas('calendar', function($calendar){
             $day = $calendar[0];
-            return $day['date']->isoFormat('MM/DD(ddd)') === '02/01(日)'
-                && $day['attendance']->clock_in->format('H:i') === '08:00'
+            return $day['date']->isoFormat('MM/DD(ddd)')        === '02/01(日)'
+                && $day['attendance']->clock_in->format('H:i')  === '08:00'
                 && $day['attendance']->clock_out->format('H:i') === '17:00'
-                && $day['attendance']->total_rest_time === '1:00'
-                && $day['attendance']->total_working_time === '8:00';
+                && $day['attendance']->total_rest_time          === '1:00'
+                && $day['attendance']->total_working_time       === '8:00';
         });
 
         $response->assertSeeInOrder([
@@ -276,23 +276,23 @@ class AdminsGetStaffListTest extends TestCase
         $this->travelTo($knownDate);
 
         $staff = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $staff->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $staff->id,
+            'user_id'   => $staff->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
             'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'end_time'   => '2026-01-01 13:00'
         ]);
 
         $admin = Admin::factory()->create();

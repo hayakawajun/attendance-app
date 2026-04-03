@@ -28,10 +28,10 @@ class RestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $working = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => null,
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => null,
             'created_at' => $knownDate,
             'updated_at' => $knownDate
         ]);
@@ -56,7 +56,7 @@ class RestTest extends TestCase
 
         $this->assertDatabaseHas('rests',[
             'attendance_id' => $working->id,
-            'start_time' => '2026-01-01 12:00:00'
+            'start_time'    => '2026-01-01 12:00:00'
         ]);
     }
 
@@ -70,10 +70,10 @@ class RestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $working = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => null,
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => null,
             'created_at' => $knownDate,
             'updated_at' => $knownDate
         ]);
@@ -126,10 +126,10 @@ class RestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $working = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => null,
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => null,
             'created_at' => $knownDate,
             'updated_at' => $knownDate
         ]);
@@ -153,8 +153,8 @@ class RestTest extends TestCase
 
         $this->assertDatabaseHas('rests',[
             'attendance_id' => $working->id,
-            'start_time' => '2026-01-01 12:00:00',
-            'end_time' => '2026-01-01 13:00:00'
+            'start_time'    => '2026-01-01 12:00:00',
+            'end_time'      => '2026-01-01 13:00:00'
         ]);
     }
 
@@ -168,10 +168,10 @@ class RestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $working = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => null,
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => null,
             'created_at' => $knownDate,
             'updated_at' => $knownDate
         ]);
@@ -208,13 +208,13 @@ class RestTest extends TestCase
 
         $this->assertDatabaseHas('rests',[
             'attendance_id' => $working->id,
-            'start_time' => '2026-01-01 12:00:00',
-            'end_time' => '2026-01-01 13:00:00'
+            'start_time'    => '2026-01-01 12:00:00',
+            'end_time'      => '2026-01-01 13:00:00'
         ]);
         $this->assertDatabaseHas('rests',[
             'attendance_id' => $working->id,
-            'start_time' => '2026-01-01 15:00:00',
-            'end_time' => null
+            'start_time'    => '2026-01-01 15:00:00',
+            'end_time'      => null
         ]);
     }
 
@@ -228,10 +228,10 @@ class RestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $working = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => null,
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => null,
             'created_at' => $knownDate,
             'updated_at' => $knownDate
         ]);
@@ -258,7 +258,7 @@ class RestTest extends TestCase
         $response->assertViewHas('calendar', function($calendar){
             $day = $calendar[0];
             return $day['date']->isoFormat('MM/DD(ddd)') === '01/01(木)'
-                && $day['attendance']->total_rest_time === '1:00';
+                && $day['attendance']->total_rest_time   === '1:00';
         });
 
         $response->assertSeeInOrder([

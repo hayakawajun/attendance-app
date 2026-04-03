@@ -48,7 +48,7 @@ class ClockInTest extends TestCase
         $this->followRedirects($response)->assertSee('出勤中');
 
         $this->assertDatabaseHas('attendances',[
-            'user_id' => $user->id,
+            'user_id'  => $user->id,
             'clock_in' => '2026-01-01 10:00:00'
         ]);
     }
@@ -63,10 +63,10 @@ class ClockInTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $finished = Attendance::create([
-            'user_id' => $user->id,
-            'work_date' => $knownDate->format('Y-m-d'),
-            'clock_in' => $knownDate,
-            'clock_out' => $knownDate->copy()->addMinute(1),
+            'user_id'    => $user->id,
+            'work_date'  => $knownDate->format('Y-m-d'),
+            'clock_in'   => $knownDate,
+            'clock_out'  => $knownDate->copy()->addMinute(1),
             'created_at' => $knownDate,
             'updated_at' => $knownDate->copy()->addMinute(1)
         ]);
@@ -107,7 +107,7 @@ class ClockInTest extends TestCase
 
         $response->assertViewHas('calendar', function($calendar){
             $day = $calendar[0];
-            return $day['date']->isoFormat('MM/DD(ddd)') === '01/01(木)'
+            return $day['date']->isoFormat('MM/DD(ddd)')       === '01/01(木)'
                 && $day['attendance']->clock_in->format('H:i') === '10:00';
         });
 

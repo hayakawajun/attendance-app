@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 
 class VerifyEmailTest extends TestCase
@@ -37,23 +36,20 @@ class VerifyEmailTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
-            'password' => 'dummypass',
+            'name'                  => 'テストネーム',
+            'email'                 => 'test@example.com',
+            'password'              => 'dummypass',
             'password_confirmation' => 'dummypass'
         ];
 
-        $response = $this->post('/register',$inputData);
+        $response = $this->post('/register', $inputData);
         $response->assertStatus(302);
         $response->assertRedirect('http://localhost/email/verify');
 
         $user = User::where('email','test@example.com')->first();
         $this->assertNotNull($user);
 
-        Notification::assertSentTo(
-            $user,
-            VerifyEmail::class,
-        );
+        Notification::assertSentTo($user, VerifyEmail::class);
     }
 
     // メール認証誘導画面で「認証はこちらから」ボタンを押下するとメール認証サイトに遷移する。
@@ -66,23 +62,20 @@ class VerifyEmailTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => 'テスト',
-            'email' => 'test@example.com',
-            'password' => 'dummypass',
+            'name'                  => 'テスト',
+            'email'                 => 'test@example.com',
+            'password'              => 'dummypass',
             'password_confirmation' => 'dummypass'
         ];
 
-        $response = $this->post('/register',$inputData);
+        $response = $this->post('/register', $inputData);
         $response->assertStatus(302);
         $response->assertRedirect('http://localhost/email/verify');
 
         $user = User::where('email','test@example.com')->first();
         $this->assertNotNull($user);
 
-        Notification::assertSentTo(
-            $user,
-            VerifyEmail::class,
-        );
+        Notification::assertSentTo($user, VerifyEmail::class);
 
         $response = $this->get('/email/verify');
         $response->assertStatus(200);
@@ -124,9 +117,9 @@ class VerifyEmailTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => 'テスト',
-            'email' => 'test@example.com',
-            'password' => 'dummypass',
+            'name'                  => 'テスト',
+            'email'                 => 'test@example.com',
+            'password'              => 'dummypass',
             'password_confirmation' => 'dummypass'
         ];
 
@@ -144,7 +137,7 @@ class VerifyEmailTest extends TestCase
             'verification.verify',
             now()->addMinutes(60),
             [
-                'id' => $user->getKey(),
+                'id'   => $user->getKey(),
                 'hash' => sha1($user->getEmailForVerification()),
             ]
         );

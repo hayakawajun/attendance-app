@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Admin;
 use App\Models\Attendance;
 use App\Models\AttendanceRequest;
 use App\Models\User;
@@ -26,13 +23,14 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             $date = Carbon::today();
         }
+
         $attendances = Attendance::with('user','rests','attendanceRequests')
-            ->whereDate('work_date',$date->format('Y-m-d'))
+            ->whereDate('work_date', $date->format('Y-m-d'))
             ->get();
 
         $statusPending = AttendanceRequest::STATUS_PENDING;
 
-        return view('admin.admin_attendance_list',compact('attendances','date','statusPending'));
+        return view('admin.admin_attendance_list', compact('attendances','date','statusPending'));
     }
 
     // スタッフ一覧を取得するアクション
@@ -40,7 +38,7 @@ class AdminController extends Controller
     {
         $staffs = User::all();
 
-        return view('admin.admin_staff_list',compact('staffs'));
+        return view('admin.admin_staff_list', compact('staffs'));
     }
 
     // スタッフ別の月次勤怠一覧を取得するアクション
@@ -49,12 +47,12 @@ class AdminController extends Controller
         $staff = $id;
         $year = $year ?? now()->year;
         $month = $month ?? now()->month;
-        $startOfMonth = Carbon::create($year,$month,1)->startOfMonth();
+        $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth();
         $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
         $attendances = Attendance::where('user_id', $staff->id)
-            ->whereYear('work_date',$year)
-            ->whereMonth('work_date',$month)
+            ->whereYear('work_date', $year)
+            ->whereMonth('work_date', $month)
             ->with('rests')
             ->get()
             ->keyBy(function($item){
@@ -62,13 +60,13 @@ class AdminController extends Controller
             });
 
         $requests = AttendanceRequest::where('user_id', $staff->id)
-            ->whereBetween('target_date', [$startOfMonth, $endOfMonth])
+            ->whereBetween('target_date',[$startOfMonth, $endOfMonth])
             ->get()
             ->groupBy(function($item){
                 return Carbon::parse($item->target_date)->format('Y-m-d');
             });
 
-        $period = CarbonPeriod::create($startOfMonth,$endOfMonth);
+        $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
 
         $calendar = [];
         foreach($period as $date){
@@ -78,8 +76,8 @@ class AdminController extends Controller
                 : null;
 
             $calendar[] = [
-                'date' => $date,
-                'attendance' => $attendances->get($dateStr),
+                'date'          => $date,
+                'attendance'    => $attendances->get($dateStr),
                 'latestRequest' => $latestRequest
             ];
         }
@@ -87,7 +85,7 @@ class AdminController extends Controller
         $prevDate = $startOfMonth->copy()->subMonth();
         $nextDate = $startOfMonth->copy()->addMonth();
 
-        return view('admin.admin_individual_list',compact(
+        return view('admin.admin_individual_list', compact(
             'staff',
             'calendar',
             'year',
@@ -114,8 +112,8 @@ class AdminController extends Controller
         $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
 
         return response()->streamDownload(function () use ($staff, $attendances, $period) {
-            $file = fopen('php://output', 'w');
-            stream_filter_append($file, 'convert.iconv.utf-8/cp932//TRANSLIT');
+            $file = fopen('php://output','w');
+            stream_filter_append($file,'convert.iconv.utf-8/cp932//TRANSLIT');
             fputcsv($file,['氏名','日付','出勤','退勤','休憩','合計']);
 
             $isFirst = true;

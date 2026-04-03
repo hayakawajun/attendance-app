@@ -1,3 +1,8 @@
+/* Safariのデフォルトフォントをサンセリフ体に変更するために調整 */
+* {
+    font-family: sans-serif;
+}
+
 /* ヘッダー部分 */
 .header {
     background-color: black;

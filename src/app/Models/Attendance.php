@@ -19,7 +19,7 @@ class Attendance extends Model
 
     protected $casts = [
         'work_date' => 'date',
-        'clock_in' => 'datetime',
+        'clock_in'  => 'datetime',
         'clock_out' => 'datetime'
     ];
 
@@ -43,7 +43,7 @@ class Attendance extends Model
         return $this->morphMany(AttendanceRequestDetail::class,'original');
     }
 
-    // 現在の勤怠ステータスを判定するアクセサ status
+    // 現在の勤怠ステータスを判定するアクセサ「status」
     public function getStatusAttribute()
     {
         if(!$this->exists || is_null($this->clock_in)){
@@ -59,7 +59,7 @@ class Attendance extends Model
         return '出勤中';
     }
 
-    // 現在の日付を取得するアクセサ today_display
+    // 現在の日付を取得するアクセサ「today_display」
     public function getTodayDisplayAttribute()
     {
         return now()->isoFormat('YYYY年M月D日(ddd)');
@@ -73,7 +73,7 @@ class Attendance extends Model
         return $now->hour < 5 ? $now->subDay() : $now;
     }
 
-    // 休憩時間の合計を計算するアクセサ rest_minutes
+    // 休憩時間の合計を計算するアクセサ「rest_minutes」
     public function getRestMinutesAttribute()
     {
         return $this->rests->sum(function($rest){
@@ -83,27 +83,27 @@ class Attendance extends Model
         });
     }
 
-    // 休憩時間の合計をH:iの出力形式で返すアクセサ total_rest_time
+    // 休憩時間の合計を H:i の出力形式で返すアクセサ「total_rest_time」
     public function getTotalRestTimeAttribute()
     {
         $minutes = $this->rest_minutes;
 
-        return sprintf('%d:%02d',floor($minutes / 60),$minutes % 60);
+        return sprintf('%d:%02d', floor($minutes / 60), $minutes % 60);
     }
 
-    // 勤務時間から休憩時間の合計を引いた、実働時間を計算してH:iの出力形式で返すアクセサ total_working_time
+    // 勤務時間ー合計休憩時間＝実労働時間を計算して H:i の出力形式で返すアクセサ「total_working_time」
     public function getTotalWorkingTimeAttribute()
     {
         if(!$this->clock_in || !$this->clock_out) return '';
 
-        $totalMinutes = $this->clock_in->diffInMinutes($this->clock_out);
+        $totalMinutes = $this->clock_in->copy()->second(0)->diffInMinutes($this->clock_out->copy()->second(0));
 
         $actualMinutes = max(0,$totalMinutes - $this->rest_minutes);
 
-        return sprintf('%d:%02d',floor($actualMinutes / 60),$actualMinutes % 60);
+        return sprintf('%d:%02d', floor($actualMinutes / 60), $actualMinutes % 60);
     }
 
-    // 休憩開始打刻が可能か、また時刻が正当か判定するメソッド canStartRest
+    // 休憩開始打刻が可能か、また時刻が正当か判定するメソッド「canStartRest」
     public function canStartRest(&$error = null)
     {
         if ($this->rests()->whereNull('end_time')->exists()) {
@@ -120,7 +120,7 @@ class Attendance extends Model
         return true;
     }
 
-    // 休憩終了打刻が可能か、また時刻が正当か判定するメソッド canEndRest
+    // 休憩終了打刻が可能か、また時刻が正当か判定するメソッド「canEndRest」
     public function canEndRest(&$error = null, &$latestRest = null)
     {
         $latestRest = $this->rests()->whereNull('end_time')->latest()->first();
@@ -139,7 +139,7 @@ class Attendance extends Model
         return true;
     }
 
-    // 退勤打刻が可能か、また時刻が正当か判定するメソッド canClockOut
+    // 退勤打刻が可能か、また時刻が正当か判定するメソッド「canClockOut」
     public function canClockOut(&$error = null)
     {
         if ($this->clock_out) {

@@ -26,9 +26,9 @@ class RegisterTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => '',
-            'email' => 'test@example.com',
-            'password' => 'dummypass',
+            'name'                  => '',
+            'email'                 => 'test@example.com',
+            'password'              => 'dummypass',
             'password_confirmation' => 'dummypass'
         ];
 
@@ -48,9 +48,9 @@ class RegisterTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => 'テストネーム',
-            'email' => '',
-            'password' => 'dummypass',
+            'name'                  => 'テストネーム',
+            'email'                 => '',
+            'password'              => 'dummypass',
             'password_confirmation' => 'dummypass'
         ];
 
@@ -70,9 +70,9 @@ class RegisterTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
-            'password' => '1234567',
+            'name'                  => 'テストネーム',
+            'email'                 => 'test@example.com',
+            'password'              => '1234567',
             'password_confirmation' => '1234567'
         ];
 
@@ -92,9 +92,9 @@ class RegisterTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
-            'password' => 'dummypass',
+            'name'                  => 'テストネーム',
+            'email'                 => 'test@example.com',
+            'password'              => 'dummypass',
             'password_confirmation' => 'fakepass'
         ];
 
@@ -114,9 +114,9 @@ class RegisterTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
-            'password' => '',
+            'name'                  => 'テストネーム',
+            'email'                 => 'test@example.com',
+            'password'              => '',
             'password_confirmation' => 'dummypass'
         ];
 
@@ -136,16 +136,16 @@ class RegisterTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
-            'password' => 'dummypass',
+            'name'                  => 'テストネーム',
+            'email'                 => 'test@example.com',
+            'password'              => 'dummypass',
             'password_confirmation' => 'dummypass'
         ];
 
         $response = $this->post('/register', $inputData);
 
         $this->assertDatabaseHas('users',[
-            'name' => 'テストネーム',
+            'name'  => 'テストネーム',
             'email' => 'test@example.com'
         ]);
 

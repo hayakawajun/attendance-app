@@ -27,69 +27,7 @@ class AdminApproveController extends Controller
         );
 
         return view('admin.admin_attendance_detail', $data);
-
-        /**if($id == 0){
-            $userId = $request->query('user_id');
-            $targetDate = $request->query('date');
-            $staff = User::findOrFail($userId);
-            $date = Carbon::parse($targetDate);
-            $attendance = null;
-            $pendingRequest = AttendanceRequest::with('details')
-                ->where('user_id', $staff->id)
-                ->whereDate('target_date', $date->format('Y-m-d'))
-                ->where('status',AttendanceRequest::STATUS_PENDING)
-                ->latest()
-                ->first();
-        }else{
-            $attendance = Attendance::with(['rests','attendanceRequests' => function($query){
-                $query->where('status', AttendanceRequest::STATUS_PENDING)
-                    ->with('details')->latest();
-            }])
-            ->findOrFail($id);
-
-            $staff = $attendance->user;
-            $date = $attendance->work_date;
-            $pendingRequest = $attendance->attendanceRequests->first();
-        }
-
-        $requestDetails = null;
-        if($pendingRequest) {
-            $requestDetails = $pendingRequest->details;
-        }
-
-        return view('admin.admin_attendance_detail',[
-            'name' => $staff->name,
-            'attendance' => $attendance,
-            'date' => $date,
-            'pendingRequest' => $pendingRequest,
-            'requestDetails' => $requestDetails
-        ]);**/
     }
-
-    // スタッフの勤怠を直接修正するアクション（修正前）
-/** public function directUpdate(
-        ApplicationRequest $request,
-        AttendanceValidationService $validationService,
-        AttendanceRequestService $requestService,
-        AttendanceFinalizeService $finalizeService
-    ){
-        $finalizeRequest = DB::transaction(function() use ($request, $validationService, $requestService, $finalizeService) {
-            $validationService->validate($request->all(), (int)$request->staff_id);
-
-            $attendanceRequest = $requestService->createRequest($request->all(),(int)$request->staff_id);
-
-            return $finalizeService->apply($attendanceRequest->id);
-        });
-
-        $targetDate = Carbon::parse($finalizeRequest->target_date);
-
-        return redirect()->route('admin.day_index',[
-            'year' => $targetDate->year,
-            'month' => $targetDate->month,
-            'day' => $targetDate->day
-        ])->with('success','修正を反映しました');
-    }
-*/
 
     // スタッフの勤怠を直接修正するアクション
     public function directUpdate(
@@ -100,15 +38,15 @@ class AdminApproveController extends Controller
     ){
         $validationService->validate($request->all(), (int)$request->staff_id);
 
-        $attendanceRequest = $requestService->createRequest($request->all(),(int)$request->staff_id);
+        $attendanceRequest = $requestService->createRequest($request->all(), (int)$request->staff_id);
 
         if(is_null($attendanceRequest)) {
             $workDate = Carbon::parse($request->work_date);
 
             return redirect()->route('admin.day_index',[
-                    'year' => $workDate->year,
+                    'year'  => $workDate->year,
                     'month' => $workDate->month,
-                    'day' => $workDate->day
+                    'day'   => $workDate->day
             ])->with('error','この勤怠データは既に削除されているか、存在しません');
         }
 
@@ -119,14 +57,13 @@ class AdminApproveController extends Controller
         $targetDate = Carbon::parse($finalizeRequest->target_date);
 
         return redirect()->route('admin.day_index',[
-            'year' => $targetDate->year,
+            'year'  => $targetDate->year,
             'month' => $targetDate->month,
-            'day' => $targetDate->day
+            'day'   => $targetDate->day
         ])->with('success','修正を反映しました');
     }
 
-
-    // 修正申請の詳細を表示
+    // 修正申請の詳細を表示するアクション
     public function showRequest(int $attendanceCorrectRequestId)
     {
         $attendanceRequest = AttendanceRequest::with(['user','details.original'])
@@ -142,8 +79,8 @@ class AdminApproveController extends Controller
 
         return view('admin.admin_attendance_approving',[
             'attendanceRequest' => $attendanceRequest,
-            'attendanceDetail' => $attendanceDetail,
-            'restDetails' => $restDetails
+            'attendanceDetail'  => $attendanceDetail,
+            'restDetails'       => $restDetails
         ]);
     }
 
@@ -152,8 +89,8 @@ class AdminApproveController extends Controller
     {
         $finalizeService->apply($attendanceCorrectRequestId);
 
-        return redirect()
-            ->route('admin.show_request',['attendance_correct_request_id' => $attendanceCorrectRequestId])
-            ->with('success','修正申請を承認しました');
+        return redirect()->route('admin.show_request',[
+            'attendance_correct_request_id' => $attendanceCorrectRequestId
+            ])->with('success','修正申請を承認しました');
     }
 }

@@ -27,9 +27,9 @@ class AttendanceRequest extends Model
     ];
 
     protected $casts = [
-        'target_date' => 'date',
+        'target_date'  => 'date',
         'requested_at' => 'datetime',
-        'approved_at' => 'datetime'
+        'approved_at'  => 'datetime'
     ];
 
     public function details()

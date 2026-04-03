@@ -21,7 +21,7 @@ class RoleBasedControllerMiddleware
         if(Auth::guard('admin')->check()){
             $action = RequestListController::class.'@adminIndex';
             $request->route()->setAction(array_merge($request->route()->getAction(),[
-                'uses' => $action,
+                'uses'       => $action,
                 'controller' => $action
             ]));
         }

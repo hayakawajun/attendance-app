@@ -23,8 +23,8 @@ class AdminsLoginTest extends TestCase
     public function test_admins_login_email_validation()
     {
         Admin::create([
-            'name' => '管理者テストネーム',
-            'email' => 'admin-test@example.com',
+            'name'     => '管理者テストネーム',
+            'email'    => 'admin-test@example.com',
             'password' => Hash::make('adminpass')
         ]);
 
@@ -32,7 +32,7 @@ class AdminsLoginTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'email' => '',
+            'email'    => '',
             'password' => 'adminpass'
         ];
 
@@ -49,8 +49,8 @@ class AdminsLoginTest extends TestCase
     public function test_admins_login_password_validation()
     {
         Admin::create([
-            'name' => '管理者テストネーム',
-            'email' => 'admin-test@example.com',
+            'name'     => '管理者テストネーム',
+            'email'    => 'admin-test@example.com',
             'password' => Hash::make('adminpass')
         ]);
 
@@ -58,7 +58,7 @@ class AdminsLoginTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'email' => 'admin-test@example.com',
+            'email'    => 'admin-test@example.com',
             'password' => ''
         ];
 
@@ -75,8 +75,8 @@ class AdminsLoginTest extends TestCase
     public function test_admins_login_match_validation()
     {
         Admin::create([
-            'name' => '管理者テストネーム',
-            'email' => 'admin-test@example.com',
+            'name'     => '管理者テストネーム',
+            'email'    => 'admin-test@example.com',
             'password' => Hash::make('adminpass')
         ]);
 
@@ -84,7 +84,7 @@ class AdminsLoginTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'email' => 'wrong-address@example.com',
+            'email'    => 'wrong-address@example.com',
             'password' => 'adminpass'
         ];
 

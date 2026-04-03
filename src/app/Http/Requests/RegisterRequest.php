@@ -24,34 +24,33 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required | string | max:20',
-            'email' => 'required | string | email | max:255 | unique:users',
-            'password' => 'required | string | min:8 | max:255',
-            'password_confirmation' => 'required | string | min:8 | max:255 | same:password'
+            'name'                  => ['required','string','max:20'],
+            'email'                 => ['required','string','email','max:255','unique:users'],
+            'password'              => ['required','string','min:8','max:255'],
+            'password_confirmation' => ['required','string','min:8','max:255','same:password']
         ];
     }
 
         public function messages()
     {
         return [
-            'name.required' => 'お名前を入力してください',
-            'name.string' => 'お名前は文字列で入力してください',
-            'name.max' => 'お名前は20文字以内で入力してください',
-            'email.required' => 'メールアドレスを入力してください',
-            'email.string' => 'メールアドレスは文字列で入力してください',
-            'email.email' => 'メールアドレスはメール形式で入力してください',
-            'email.max' => 'メールアドレスは255文字以内で入力してください',
-            'email.unique' => 'このメールアドレスは既に使用されています',
-            'password.required' => 'パスワードを入力してください',
-            'password.string' => 'パスワードは文字列で入力してください',
-            'password.min' => 'パスワードは8文字以上で入力してください',
-            'password.max' => 'パスワードは255文字以内で入力してください',
+            'name.required'                  => 'お名前を入力してください',
+            'name.string'                    => 'お名前は文字列で入力してください',
+            'name.max'                       => 'お名前は20文字以内で入力してください',
+            'email.required'                 => 'メールアドレスを入力してください',
+            'email.string'                   => 'メールアドレスは文字列で入力してください',
+            'email.email'                    => 'メールアドレスはメール形式で入力してください',
+            'email.max'                      => 'メールアドレスは255文字以内で入力してください',
+            'email.unique'                   => 'このメールアドレスは既に使用されています',
+            'password.required'              => 'パスワードを入力してください',
+            'password.string'                => 'パスワードは文字列で入力してください',
+            'password.min'                   => 'パスワードは8文字以上で入力してください',
+            'password.max'                   => 'パスワードは255文字以内で入力してください',
             'password_confirmation.required' => '確認用パスワードを入力してください',
-            'password_confirmation.string' => '確認用パスワードは文字列で入力してください',
-            'password_confirmation.min' => '確認用パスワードは8文字以上で入力してください',
-            'password_confirmation.max' => '確認用パスワードは255文字以内で入力してください',
-            'password_confirmation.same' => 'パスワードと一致しません'
+            'password_confirmation.string'   => '確認用パスワードは文字列で入力してください',
+            'password_confirmation.min'      => '確認用パスワードは8文字以上で入力してください',
+            'password_confirmation.max'      => '確認用パスワードは255文字以内で入力してください',
+            'password_confirmation.same'     => 'パスワードと一致しません'
         ];
     }
-
 }

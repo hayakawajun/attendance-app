@@ -29,9 +29,9 @@ class AttendanceCorrectionRequestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
@@ -41,12 +41,12 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '18:00',
-            'attendance_end_time' => '17:00',
-            'reason' => '打刻ミスの為'
+            'attendance_end_time'   => '17:00',
+            'reason'                => '打刻ミスの為'
         ];
 
         $response = $this->post('/attendance/request', $inputData);
@@ -71,16 +71,16 @@ class AttendanceCorrectionRequestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->actingAs($user);
@@ -89,15 +89,15 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '08:00',
-            'attendance_end_time' => '17:00',
+            'attendance_end_time'   => '17:00',
             'rests' => [
                 $rest->id => [
                     'start_time' => '18:00',
-                    'end_time' => '13:00'
+                    'end_time'   => '13:00'
                 ]
             ],
             'reason' => '打刻ミスの為'
@@ -118,16 +118,16 @@ class AttendanceCorrectionRequestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->actingAs($user);
@@ -136,15 +136,15 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '08:00',
-            'attendance_end_time' => '17:00',
+            'attendance_end_time'   => '17:00',
             'rests' => [
                 $rest->id => [
                     'start_time' => '12:00',
-                    'end_time' => '18:00'
+                    'end_time'   => '18:00'
                 ]
             ],
             'reason' => '打刻ミスの為'
@@ -165,9 +165,9 @@ class AttendanceCorrectionRequestTest extends TestCase
         $user = User::factory()->create(['email_verified_at' => now()]);
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
@@ -177,12 +177,12 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '10:00',
-            'attendance_end_time' => '20:00',
-            'reason' => null
+            'attendance_end_time'   => '20:00',
+            'reason'                => null
         ];
 
         $response = $this->post('/attendance/request', $inputData);
@@ -201,23 +201,23 @@ class AttendanceCorrectionRequestTest extends TestCase
         $this->travelTo($knownDate);
 
         $user = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $user->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->actingAs($user);
@@ -226,15 +226,15 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '08:08',
-            'attendance_end_time' => '17:17',
+            'attendance_end_time'   => '17:17',
             'rests' => [
                 $rest->id => [
                     'start_time' => '12:12',
-                    'end_time' => '13:13'
+                    'end_time'   => '13:13'
                 ]
             ],
             'reason' => '申請テスト'
@@ -275,22 +275,22 @@ class AttendanceCorrectionRequestTest extends TestCase
         $this->travelTo($knownDate);
 
         $user = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $user->markEmailAsVerified();
 
         $firstAttendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
         $secondAttendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-02-01',
-            'clock_in' => '2026-02-01 08:00',
+            'clock_in'  => '2026-02-01 08:00',
             'clock_out' => '2026-02-01 17:00'
         ]);
 
@@ -300,12 +300,12 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $firstAttendanceInputData = [
-            'attendance_id' => $firstAttendance->id,
-            'work_date' => $firstAttendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $firstAttendance->id,
+            'work_date'             => $firstAttendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '11:11',
-            'attendance_end_time' => '22:22',
-            'reason' => '申請その1'
+            'attendance_end_time'   => '22:22',
+            'reason'                => '申請その1'
         ];
 
         $response = $this->post('/attendance/request', $firstAttendanceInputData);
@@ -317,12 +317,12 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $secondAttendanceInputData = [
-            'attendance_id' => $secondAttendance->id,
-            'work_date' => $secondAttendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $secondAttendance->id,
+            'work_date'             => $secondAttendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '11:11',
-            'attendance_end_time' => '22:22',
-            'reason' => '申請その2'
+            'attendance_end_time'   => '22:22',
+            'reason'                => '申請その2'
         ];
 
         $response = $this->post('/attendance/request', $secondAttendanceInputData);
@@ -346,22 +346,22 @@ class AttendanceCorrectionRequestTest extends TestCase
         $this->travelTo($knownDate);
 
         $user = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $user->markEmailAsVerified();
 
         $firstAttendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
         $secondAttendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-02-01',
-            'clock_in' => '2026-02-01 08:00',
+            'clock_in'  => '2026-02-01 08:00',
             'clock_out' => '2026-02-01 17:00'
         ]);
 
@@ -371,12 +371,12 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $firstAttendanceInputData = [
-            'attendance_id' => $firstAttendance->id,
-            'work_date' => $firstAttendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $firstAttendance->id,
+            'work_date'             => $firstAttendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '11:11',
-            'attendance_end_time' => '22:22',
-            'reason' => '申請その1'
+            'attendance_end_time'   => '22:22',
+            'reason'                => '申請その1'
         ];
 
         $response = $this->post('/attendance/request', $firstAttendanceInputData);
@@ -388,12 +388,12 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $secondAttendanceInputData = [
-            'attendance_id' => $secondAttendance->id,
-            'work_date' => $secondAttendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $secondAttendance->id,
+            'work_date'             => $secondAttendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '11:11',
-            'attendance_end_time' => '22:22',
-            'reason' => '申請その2'
+            'attendance_end_time'   => '22:22',
+            'reason'                => '申請その2'
         ];
 
         $response = $this->post('/attendance/request', $secondAttendanceInputData);
@@ -439,23 +439,23 @@ class AttendanceCorrectionRequestTest extends TestCase
         $this->travelTo($knownDate);
 
         $user = User::create([
-            'name' => 'テストネーム',
-            'email' => 'test@example.com',
+            'name'     => 'テストネーム',
+            'email'    => 'test@example.com',
             'password' => Hash::make('dummypass')
         ]);
         $user->markEmailAsVerified();
 
         $attendance = Attendance::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'work_date' => '2026-01-01',
-            'clock_in' => '2026-01-01 08:00',
+            'clock_in'  => '2026-01-01 08:00',
             'clock_out' => '2026-01-01 17:00'
         ]);
 
         $rest = Rest::create([
             'attendance_id' => $attendance->id,
-            'start_time' => '2026-01-01 12:00',
-            'end_time' => '2026-01-01 13:00'
+            'start_time'    => '2026-01-01 12:00',
+            'end_time'      => '2026-01-01 13:00'
         ]);
 
         $this->actingAs($user);
@@ -464,15 +464,15 @@ class AttendanceCorrectionRequestTest extends TestCase
         $response->assertStatus(200);
 
         $inputData = [
-            'attendance_id' => $attendance->id,
-            'work_date' => $attendance->work_date,
-            'staff_id' => $user->id,
+            'attendance_id'         => $attendance->id,
+            'work_date'             => $attendance->work_date,
+            'staff_id'              => $user->id,
             'attendance_start_time' => '08:08',
-            'attendance_end_time' => '17:17',
+            'attendance_end_time'   => '17:17',
             'rests' => [
                 $rest->id => [
                     'start_time' => '12:12',
-                    'end_time' => '13:13'
+                    'end_time'   => '13:13'
                 ]
             ],
             'reason' => '申請テスト'
