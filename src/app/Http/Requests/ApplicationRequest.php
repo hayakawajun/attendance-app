@@ -73,18 +73,11 @@ class ApplicationRequest extends FormRequest
             $rawStart = $this->input('attendance_start_time');
             $rawEnd = $this->input('attendance_end_time');
 
-            if(!$this->isNextDay($rawEnd) && $rawStart >= $rawEnd) {
-                $validator->errors()->add('attendance_end_time','出勤時間もしくは退勤時間が不適切な値です');
-                return;
-            }
-
             $start = $this->toMinutes($rawStart);
             $end = $this->toMinutes($rawEnd);
 
             if($start >= $end) {
                 $validator->errors()->add('attendance_end_time','出勤時間もしくは退勤時間が不適切な値です');
-            }elseif($end >= 1740) {
-                $validator->errors()->add('attendance_end_time','退勤時間は勤怠締め時刻「05:00」より前で入力してください');
             }
 
             $allRests = [];
@@ -97,12 +90,10 @@ class ApplicationRequest extends FormRequest
 
                     if($restStart <= $start || $restStart >= $end) {
                         $validator->errors()->add("{$key}.{$index}.start_time",'休憩時間が不適切な値です');
-                    }elseif($restEnd <= $restStart || $restEnd <= $start || $restEnd >= $end) {
+                    }elseif($restEnd >= $end) {
                         $validator->errors()->add("{$key}.{$index}.end_time",'休憩時間もしくは退勤時間が不適切な値です');
-                    }elseif($restStart >= 1740) {
-                        $validator->errors()->add("{$key}.{$index}.start_time",'休憩開始時間は勤怠締め時刻「05:00」より前で入力してください');
-                    }elseif($restEnd >= 1740) {
-                        $validator->errors()->add("{$key}.{$index}.end_time",'休憩終了時間は勤怠締め時刻「05:00」より前で入力してください');
+                    }elseif($restStart >= $restEnd) {
+                        $validator->errors()->add("{$key}.{$index}.start_time",'休憩開始時間は休憩終了時間より前に設定してください');
                     }
 
                     $allRests[] = ['s' => $restStart, 'e' => $restEnd];
@@ -129,14 +120,6 @@ class ApplicationRequest extends FormRequest
         });
     }
 
-    // 勤怠締め時刻より前の「0:00〜4:59」の間かどうかを判定するメソッド
-    private function isNextDay($timeStr)
-    {
-        if(!$timeStr) return false;
-        list($hour) = explode(':', $timeStr);
-        return (int)$hour <= 5;
-    }
-
     // 入力した時刻を分換算するメソッド（5:00未満なら+1440分で翌日扱いに）
     private function toMinutes($timeStr)
     {
@@ -145,7 +128,7 @@ class ApplicationRequest extends FormRequest
         list($hour, $minute) = explode(':', $timeStr);
         $minutes = (int)$hour * 60 + (int)$minute;
 
-        if($minutes <= 300) {
+        if($minutes < 300) {
             $minutes += 1440;
         }
         return $minutes;

@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
     // 毎朝5:01を定刻として未入力勤怠自動補完コマンドを実行させる機能
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('auto:clock-out')->dailyAt('05:01');
+        $schedule->command('auto:clock-out')->dailyAt('05:00');
     }
 
     /**
