@@ -66,7 +66,7 @@ class AdminApproveController extends Controller
     // 修正申請の詳細を表示するアクション
     public function showRequest(int $attendanceCorrectRequestId)
     {
-        $attendanceRequest = AttendanceRequest::with(['user','details.original'])
+        $attendanceRequest = AttendanceRequest::with(['user','attendance.rests','details.original'])
             ->findOrFail($attendanceCorrectRequestId);
 
         $attendanceDetail = $attendanceRequest->details->first(function ($detail) {

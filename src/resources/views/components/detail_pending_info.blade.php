@@ -126,7 +126,7 @@
                             <td class="label">{{ $loop->first ? '休憩' : '休憩'.$loop->iteration }}</td>
 
                             @if(!$rest->start_time && !$rest->end_time)
-                                <td class="reason-text" colspan="3"><span>休憩を取消します</span></td>
+                                <td class="reason-text" colspan="3"><span>この休憩を取消します</span></td>
                             @else
                                 <td class="parameter">
                                     {{ $rest->start_time->format('H:i') }}

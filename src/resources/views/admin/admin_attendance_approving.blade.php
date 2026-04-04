@@ -15,12 +15,10 @@
         </div>
 
         @if($attendanceRequest->status === 'pending')
-            <form class="application__form" action="{{ route('admin.approve',['attendance_correct_request_id' => $attendanceRequest->id ]) }}" method="post">
-                @csrf
-                <input type="hidden" name="attendance_id" value="{{ $attendanceRequest->id }}">
+
+            @include('components.admins_detail_pending_info')
+
         @elseif($attendanceRequest->status === 'approved')
-            <div class="application__form">
-        @endif
 
             <div class="content">
                 <table class="detail__table">
@@ -54,7 +52,7 @@
                     @if($attendanceRequest->is_deletion)
                         <tr class="detail__table-row">
                             <td class="label">勤怠</td>
-                            <td class="reason-text" colspan="3"><span>勤怠情報の削除申請です</span></td>
+                            <td class="reason-text" colspan="3"><span>勤怠情報を削除しました</span></td>
                             <td></td>
                         </tr>
                     @else
@@ -74,24 +72,22 @@
                             @foreach($restDetails as $restDetail)
                                 <tr class="detail__table-row">
                                     <td class="label">{{ $loop->first ? '休憩' : '休憩'.$loop->iteration }}</td>
-                                    <td class="parameter">
-                                        {{ $restDetail->start_time ? $restDetail->start_time->format('H:i') : ''}}
-                                    </td>
-                                    <td class="parameter">〜</td>
-                                    <td class="parameter">
-                                        {{ $restDetail->end_time ? $restDetail->end_time->format('H:i') : '' }}
-                                    </td>
+
+                                    @if(!$restDetail->start_time && !$restDetail->end_time)
+                                        <td class="reason-text" colspan="3"><span>この休憩を取消しました</span></td>
+                                    @else
+                                        <td class="parameter">
+                                            {{ $restDetail->start_time->format('H:i') }}
+                                        </td>
+                                        <td class="parameter">〜</td>
+                                        <td class="parameter">
+                                            {{ $restDetail->end_time->format('H:i') }}
+                                        </td>
+                                    @endif
+
                                     <td></td>
                                 </tr>
                             @endforeach
-                        @else
-                            <tr class="detail__table-row">
-                                <td class="label">休憩</td>
-                                <td class="parameter"></td>
-                                <td class="parameter">〜</td>
-                                <td class="parameter"></td>
-                                <td></td>
-                            </tr>
                         @endif
 
                     @endif
@@ -106,19 +102,9 @@
             </div>
 
             <div class="form-buttons">
-
-                @if($attendanceRequest->status === 'pending')
-                    <button class="submit__button update" type="submit">承認</button>
-                @elseif($attendanceRequest->status === 'approved')
-                    <p class="already__approved">承認済み</p>
-                @endif
-
+                <p class="already__approved">承認済み</p>
             </div>
 
-        @if($attendanceRequest->status === 'pending')
-            </form>
-        @elseif($attendanceRequest->status === 'approved')
-            </div>
         @endif
 
     </div>
